@@ -19,7 +19,7 @@
          @focus="onFocus" />
       
       <!--Si es texto  -->
-      <input v-if="prop.Type=='text'"
+      <input v-if="prop.Type=='text' || prop.Type=='password'"
          class="texto" 
          ref="Ref" 
          v-model.trim="Value" 
