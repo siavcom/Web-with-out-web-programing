@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "firefox",
+        "request": "launch",
+        "name": "vuejs: firefox",
+        "url": "http://176.16.200.28:38000/Login",
+        "webRoot": "${workspaceFolder}/src",
+        "pathMappings": [
+          {
+            "url": "file://",
+            "path": ""
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,133 @@
+section.pagina {
+  background: white;
+  color: #b94295;
+  min-width: 375px;
+  min-height: 812px;
+  background-image: "/img/Logo_Empresa.bmp";
+  margin-top: 250px;
+
+}
+
+h1 {
+  margin: 40px 0 0;
+}
+div.divi{
+  /*display: inline-flex; /*block recomendado por raul*/
+  display: contents;
+  color: #18e94c;
+  background: #f7f8f7;
+  position: v-bind("props.posicion.position");
+  left: v-bind("props.posicion.left");
+  top : v-bind("props.posicion.top");
+  text-align: left;
+  margin :auto;
+/*nom_emp == null ? "Demo" : nom_emp;*/
+}
+label.error {
+  position: relative;
+  background: #f7f8f7;
+  color: #f10c0c;
+  text-align: center;
+  visibility: visible;
+  padding: 5px 0; /*relleno alrededor */
+  border-radius: 2px;
+  border-color: black;
+  z-index: 1;
+ /* bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  */
+  /* Fade in tooltip */
+  opacity: 1;
+
+
+}
+
+span.Caption { 
+  color: rgb(0,0,0)
+}
+
+span.etiqueta { 
+  display: contents;
+
+  
+ /* display: flex;
+  text-align: left;
+*/
+ /* width: auto;
+  height: auto;*/
+}
+
+input.texto {
+  border: 2px solid rgb(0, 5, 2);
+  /*padding: "5px";*/
+  border-radius: 5px;
+  text-align: left;
+ 
+}
+
+input.numero {
+  border: 2px solid rgb(0, 5, 2);
+  /*padding: "5px";*/
+  border-radius: 5px;
+  text-align: right;
+ 
+}
+
+input.fecha {
+  border: 2px solid rgb(0, 5, 2);
+  /*padding: "5px";*/
+  border-radius: 5px;
+  text-align: left;
+  /*:style="{'text-align' : 'right'}" */
+
+ 
+}
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgb(115, 181, 243);
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
