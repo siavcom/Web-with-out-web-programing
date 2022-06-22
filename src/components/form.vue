@@ -550,7 +550,7 @@ const impComp = ((name: string) => {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #08315a;
-  height: 100vh;
+  min-height: 100vh; 
   display: flex;
   justify-content: center;
   align-items: center;

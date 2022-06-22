@@ -6,7 +6,8 @@
       <form class="gridDatos">
         <!--label text-align="center">{{ prop.textLabel }}</label>  -->
         <h2><center>{{ prop.textLabel }}</center></h2>
-        <table style="margin-top:10px" class="tabla">
+        <div class="tabla">
+        <table style="margin-top:10px" >
           <thead>
             <tr style="font-size: 13px">
               <td>Renglon</td>
@@ -163,6 +164,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
       </form>
 
 
@@ -699,13 +701,12 @@ const impComp = ((name: string) => {
 h1 {
   margin: 40px 0 0;
 }
-form.tabla {
+div.tabla {
   /*position: absolute; */
   /* no borrar se utiliza junto con div.option position:relative*/
   border: 1px solid rgb(0, 5, 2);
-  border-radius: 3%;
-  overflow: hidden;
-  height: 7000%;
+  border-radius: 1%;
+  max-height: 800px;
   overflow-y: auto;
   width: 100%;
 }

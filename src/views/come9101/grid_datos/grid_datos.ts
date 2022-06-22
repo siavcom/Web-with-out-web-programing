@@ -13,6 +13,8 @@ import {GRID} from  '@/clases/Grid'
 // import { COMPONENT } from '@/clases/Component'
 
 // las clases importadas son clases tipo columna, por lo que ya no se importan columnas
+import {CON_DAT} from './con_dat'
+
 import {DES_DAT} from './des_dat'
 import {TIP_DAT} from './tip_dat'
 import {LON_DAT} from './lon_dat'
@@ -23,7 +25,8 @@ export class GRID_DATOS extends GRID {
  
  // Columna que tiene el grid
  // public con_dat = new COLUMN()
-  public des_dat = new DES_DAT()
+ public con_dat = new CON_DAT()
+ public des_dat = new DES_DAT()
   public tip_dat = new TIP_DAT()
   public lon_dat = new LON_DAT()
   public dec_dat = new DEC_DAT()
