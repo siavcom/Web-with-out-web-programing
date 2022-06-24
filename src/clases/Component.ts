@@ -27,6 +27,7 @@ export class COMPONENT {
     InputMask: "",
     MaxLenght: 0,
     ReadOnly: false,
+    Disabled: false,
     Tag: "",
     Sw_val: false,
     Sw_cap: true,
@@ -56,6 +57,7 @@ export class COMPONENT {
     Style: 0,
     Position: 'main', // main, header , footer
     Image: '',
+    Focus: false,
 
   };
   estilo = {
@@ -165,7 +167,7 @@ export class COMPONENT {
   public async when() {
 
 
-    return
+    return true
   }
 
   /////////////////////////////////////////////////////////////////////
@@ -175,7 +177,7 @@ export class COMPONENT {
   /////////////////////////////////////////////////////////////////
   public async setFocus() {
     //public setFocus = async () => {
-    this.Focus = true
+    this.prop.Focus = true
     console.log('Super setFocus ==>', this.prop.Name)
     //    this.pushEvent('Focus=true') Para probar
 

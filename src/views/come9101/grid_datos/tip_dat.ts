@@ -34,11 +34,14 @@ export class TIP_DAT extends COLUMN {
         this.estilo.flexBasis = '30%' /* width/height  - initial value: auto */
     }
 
-    ////////////////////////////////// 
+     ////////////////////////////////// 
     // Evento When
     ///////////////////////////////////
-    async when(row: number) { 
-     
+    async when() { 
+      await this.Parent.cam_dat.when()
+      this.prop.ReadOnly = this.Parent.cam_dat.prop.ReadOnly
+      return !this.prop.ReadOnly
+
     }
 
 

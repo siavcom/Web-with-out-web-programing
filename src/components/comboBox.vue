@@ -1,5 +1,6 @@
 <template>
-  <div class="divi" :style="estilo" v-if="prop.Visible">
+  <div class="divi" :style="estilo"
+     v-if="prop.Visible" :disabled="prop.Disabled || prop.ReadOnly">
     <!--Mensaje de error -->
     <label v-show="Error">{{ prop.ErrorMessage }}</label>
     <div class="tooltip">
@@ -17,9 +18,9 @@
 
         <!--span> {{ prop.Value }}</span-->
         <!--Valor seleccionado click-->
-        <div class="toggle" v-if="toggle">
+        <div class="toggle"  v-if="toggle ">
           <!--CheckBox -->
-          <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
+          <div class="option"  v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
             @mouseleave="hover = false" @click="valid(valueIndex)" :disabled="prop.ReadOnly">
             <!--Imprime Columnas -->
             <div class="columna" :disabled="prop.ReadOnly" v-for="(text, col) in option.text" :key="col"
@@ -33,7 +34,8 @@
             }}
           </span>
         </div>
-        <img class="imagen" src="Iconos/TrianguloAbajo.png" :disabled="prop.ReadOnly"
+        <img class="imagen" v-if="!prop.Disabled && !prop.ReadOnly"
+           src="Iconos/TrianguloAbajo.png" 
           @click.prevent="toggle = prop.ReadOnly == false ? !toggle.value : toggle.value" :tabindex="prop.TabIndex" />
       </div>
     </div>
@@ -91,6 +93,7 @@ const props = defineProps<{
     InputMask: "";
     MaxLength: 0;
     ReadOnly: false;
+    Disabled: false;
     Tag: "";
     Sw_val: false;
     Sw_cap: true;

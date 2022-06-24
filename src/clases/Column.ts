@@ -38,6 +38,8 @@ export class COLUMN extends COMPONENT {
     // Obtiene el valor del recno
     //console.log('When renco===>',this.Parent.prop)
    console.log('Valid =====>',this.prop.Name)
+   return true
+
   }
 
   ///////////////////////////////////////////////////// 

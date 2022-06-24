@@ -1,5 +1,5 @@
 <template>
-  <div class="divi" :style="estilo" v-if="prop.Visible">
+  <div class="divi" :style="estilo" v-if="prop.Visible" :disabled="prop.Disabled">
     <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <div class="tooltip">
       <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
@@ -10,8 +10,8 @@
          ref="Ref" 
         :min="prop.Min"
         :max="prop.Max"
-         v-model.trim="Value" 
-         :disabled="prop.ReadOnly"
+         v-model.trim="Value"
+        :readonly="prop.ReadOnly" 
         :placeholder="prop.Placeholder" 
         :tabindex="prop.TabIndex" 
         :type="prop.Type" 
@@ -23,7 +23,7 @@
          class="texto" 
          ref="Ref" 
          v-model.trim="Value" 
-         :disabled="prop.ReadOnly"
+         :readonly="prop.ReadOnly" 
         :placeholder="prop.Placeholder" 
         :tabindex="prop.TabIndex" 
         :type="prop.Type" 
@@ -35,7 +35,7 @@
          class="date" 
          ref="Ref" 
          v-model.trim="Value" 
-         :disabled="prop.ReadOnly"
+         :readonly="prop.ReadOnly" 
         :placeholder="prop.Placeholder" 
         :tabindex="prop.TabIndex" 
         :type="prop.Type" 
@@ -109,6 +109,7 @@ const props = defineProps<{
     InputMask: "";
     MaxLenght: 0;
     ReadOnly: false;
+    Disabled:false;
     Tag: "";
     Sw_val: false;
     Sw_cap: true;
@@ -395,7 +396,7 @@ watch(
     console.log('EditText Set Focus', props.prop.Name)
     if (Focus.value) {
       Ref.value.focus()
-      Ref.value.select()
+//      Ref.value.select()
       Focus.value = false
       emit("update:Focus", false)
     }

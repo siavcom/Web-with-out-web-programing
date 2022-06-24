@@ -278,7 +278,7 @@ export class FORM {
         No 7
 
         */
-          console.log('MessageBox resultado===>',tip_ale,result,result.isConfirmed)
+//          console.log('MessageBox resultado===>',tip_ale,result,result.isConfirmed)
 
           if (result.isConfirmed) resultado= 6
           if (result.isDenied) resultado= 7
@@ -286,7 +286,7 @@ export class FORM {
 
         }
      });
-     console.log('MessageBox por aqui salio')
+//     console.log('MessageBox por aqui salio')
     return resultado
   }
 

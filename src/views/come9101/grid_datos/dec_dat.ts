@@ -29,11 +29,13 @@ export class DEC_DAT extends COLUMN {
         this.estilo.flexBasis = '30%' /* width/height  - initial value: auto */
     }
 
-    ////////////////////////////////// 
+     ////////////////////////////////// 
     // Evento When
     ///////////////////////////////////
-    async when(row: number) { 
-     
+    async when() { 
+        this.prop.ReadOnly=!this.Parent.cam_dat.when() 
+      return !this.prop.ReadOnly
+         //   super.when(row)
     }
 
 

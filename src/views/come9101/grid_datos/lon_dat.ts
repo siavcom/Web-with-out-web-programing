@@ -32,10 +32,11 @@ export class LON_DAT extends COLUMN {
     ////////////////////////////////// 
     // Evento When
     ///////////////////////////////////
-    async when(row: number) { 
-     
+    async when() { 
+        await this.Parent.cam_dat.when()
+        this.prop.ReadOnly = this.Parent.cam_dat.prop.ReadOnly
+        return !this.prop.ReadOnly
     }
-
 
 
 }

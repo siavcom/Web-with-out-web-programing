@@ -31,14 +31,14 @@ export class BT_ACEPTAR extends COMPONENT {
     if (this.Form.dic_dat.prop.Value != 'M') {  // Datos
 
       // Hay datos capturados
-      this.Form.grid_datos.prop.Visible = false
-      if (await this.Form.db.select('vi_cap_dat')>0) {
+      if (this.Form.grid_datos.prop.Visible && await this.Form.db.select('vi_cap_dat')>0) {
         const resultado=await this.Form.MessageBox('Quieres Grabar la definicion de la tabla',4,'Confirm')
         console.log('bt_aceptar resultado=====>',resultado)
         if  (resultado==6)   {
-          this.Form.MessageBox('Datos grabados',0)   
+          this.Form.grid_datos.prop.Visible = false
+           this.Form.MessageBox('Datos grabados',0)   
         }
-        this.Form.dic_dat.setFocus()
+        // this.Form.dic_dat.setFocus()
         //this.Form.db.use() 
         return
       }
