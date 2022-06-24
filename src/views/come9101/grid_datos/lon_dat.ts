@@ -22,6 +22,10 @@ export class LON_DAT extends COLUMN {
         this.prop.Type='number'
         this.prop.Min='0'
         this.prop.ControlSource = 'vi_cap_dat.lon_dat'
+        this.prop.ToolTipText ='Logitud del campo'
+        this.prop.Placeholder = "Longitud del campo"
+
+        
         this.estilo.flexBasis = '30%' /* width/height  - initial value: auto */
     }
 

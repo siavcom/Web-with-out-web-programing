@@ -2,7 +2,7 @@
 // Clase : Componente Base
 // Author : Fernando Cuadras Angulo
 // Creacion : Noviembre/2021
-// Ult.Mod  : 19/Mayo/2022
+// Ult.Mod  : 22/Junio/2022
 /////////////////////////////////////////////
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
@@ -15,8 +15,8 @@ export class COMPONENT {
   Name = 'component'  // Se one aqui el name para que en el html poder hacer refere
   db: any
   Recno: 0
-  Ref : null // Referencia del componente html
-  Focus : boolean 
+  Ref: null // Referencia del componente html
+  Focus: boolean
   prop = {
     Name: "",
     textLabel: "",
@@ -52,10 +52,10 @@ export class COMPONENT {
     RecordSource: '',
     Row: 0,
     Map: "",
-    Autofocus:false,
-    Style: 0, 
-    Position : 'main', // main, header , footer
-    Image : '',
+    Autofocus: false,
+    Style: 0,
+    Position: 'main', // main, header , footer
+    Image: '',
 
   };
   estilo = {
@@ -75,7 +75,7 @@ export class COMPONENT {
     zIndex: 100,  // profundidad
     alignContent: "center",
     textAlign: "left",
-   
+
 
     // textAlign: "left";
   };
@@ -101,22 +101,22 @@ export class COMPONENT {
   // InitForm : Iicializa los valores de toda la forma en c/componente 
   ////////////////////////////////////////////////
   public async InitForm(Form) {
- 
+
     //console.log('Inicializando componente Parent ===> ', this.prop.Name,this.Parent)
 
     //console.log('InitForm  componente Parent ===> ',this.prop.Name)
-    
+
     if (this.Parent.prop) { // Si tiene padre 
-      this.prop.Map= this.Parent.prop.Map+'.'+this.prop.Name
+      this.prop.Map = this.Parent.prop.Map + '.' + this.prop.Name
     }
     //console.log('Mapa clase ======>', this.name, this.prop.Map)
 
 
 
     for (const componente in this) {
-      if (    componente != 'Ref' && 
-              componente != 'Parent' && 
-              this[componente]['InitForm']  // si es un componente
+      if (componente != 'Ref' &&
+        componente != 'Parent' &&
+        this[componente]['InitForm']  // si es un componente
       ) {
         //console.log('Inicializando componente =========> ', this.prop.Name,componente)
 
@@ -125,11 +125,11 @@ export class COMPONENT {
         if (this[componente]['init']) await this[componente]['init']() // Init del componente
       }
     }
-  
+
     this.Form = Form  // asigna la forma a la propiedad Form 
-    console.log('Init form ====>',this.prop.Name)
+    console.log('Init form ====>', this.prop.Name)
     this.prop.Status = 'A'
-  
+
     // console.log('Init Componente this.Form',this.Form)
   }
 
@@ -137,22 +137,35 @@ export class COMPONENT {
   // Valid
   // Descripcion: Cada tecla que se presiona en el input
   /////////////////////////////////////////////////////////////////
+  public async valid() {
+    //console.log('Super valid ==>',this.prop.Name)
 
-  public valid = async (sw_mut?: false) => {
-    if (sw_mut) return // si fue llamada de la mutacion del metodo retorna
+    //public valid = async (sw_mut?: false) => {
+    // if (sw_mut) return // si fue llamada de la mutacion del metodo retorna
     if (this.prop.Sw_cap) this.prop.Sw_val = true
     return true
   }
 
   /////////////////////////////////////////////////////////////////////
   // Click
-  // Descripcion: Hace el setFocus
-  // Obs : se anexa al stack de eventos a ejecutar en forma sincrona
+  // Descripcion: Hace el click
   /////////////////////////////////////////////////////////////////
 
-  public click = async () => {
+  public async click() {
 
-   return 
+
+    return
+  }
+
+  /////////////////////////////////////////////////////////////////////
+  // When VFP
+  // Descripcion: Couando recibe el focoHace el click
+  /////////////////////////////////////////////////////////////////
+
+  public async when() {
+
+
+    return
   }
 
   /////////////////////////////////////////////////////////////////////
@@ -160,19 +173,20 @@ export class COMPONENT {
   // Descripcion: Hace el setFocus
   // Obs : se anexa al stack de eventos a ejecutar en forma sincrona
   /////////////////////////////////////////////////////////////////
+  public async setFocus() {
+    //public setFocus = async () => {
+    this.Focus = true
+    console.log('Super setFocus ==>', this.prop.Name)
+    //    this.pushEvent('Focus=true') Para probar
 
-  public setFocus = async () => {
-    this.Focus=true
-//    this.pushEvent('Focus=true') Para probar
-
-//    nextTick(() => {
-//        this.prop.SetFocus=false
-//    });
+    //    nextTick(() => {
+    //        this.prop.SetFocus=false
+    //    });
 
 
-//    console.log('This setFocus Ref',this.Name,this.prop.BaseClass,this.Ref)
-//    this.pushEvent('Focus=true')
-  //  this.pushEvent('Ref.focus()') 
+    //    console.log('This setFocus Ref',this.Name,this.prop.BaseClass,this.Ref)
+    //    this.pushEvent('Focus=true')
+    //  this.pushEvent('Ref.focus()') 
   }
 
   /////////////////////////////////////////////////////////////////////
@@ -186,7 +200,7 @@ export class COMPONENT {
   public pushEvent = async (evento: string) => {
     //console.log('Componente evento empujado====>>',this.prop.Map+ '.' + evento)
 
-    this.Form.eventos.push(this.prop.Map+ '.' + evento)
+    this.Form.eventos.push(this.prop.Map + '.' + evento)
     //console.log('pushEvent eventos===>',this.Form.eventos)
 
   }
@@ -209,8 +223,8 @@ export class COMPONENT {
   // Descripcion: asigna la ref html del componente desplegado
   /////////////////////////////////////////////////////////////////
   Refe(el: any) {
-    this.Ref=el.$el
-    console.log('Columna Ref===>',this.Ref)
+    this.Ref = el.$el
+    console.log('Columna Ref===>', this.Ref)
   }
 
 

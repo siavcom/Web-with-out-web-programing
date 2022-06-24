@@ -40,8 +40,17 @@ export class DIC_DAT extends COMPONENT {
 
 
   ////////////////////////////////
+  public async setFocus() {
+  // public setFocus = async () => {
+    super.setFocus()
+    console.log('dic_dat setFocus')
+    this.Form.sis_prg.prop.Visible = false
+    this.Form.nom_tab.prop.Visible = false
+    this.Form.grid_datos.prop.Visible=false
+  }
 
-  public Valid = async () => {
+  public async valid () {
+    super.valid()
     const ThisForm = this.Form.value;
     const This = this.prop; // Hace referencia a las propiedades del componente
     const m: any = {
@@ -49,21 +58,22 @@ export class DIC_DAT extends COMPONENT {
       // cod_nom: ''
     }; // :  Record<string, never> ;
 
-    if (This.Value=='D'){
-      ThisForm.nom_tab.prop.ReadOnly = true
-      ThisForm.men_sis.prop.Visible = false
-
+    if (This.Value=='D' || This.Value=='V' || This.Value=='I'){ // Datos , Vistas o Indices
+      this.Form.nom_tab.prop.Visible = true
+      this.Form.sis_prg.prop.Visible = false
+      this.Form.nom_tab.prop.Focus= true
+ 
     }
     if (This.Value == 'M') {   // Menu
-      ThisForm.men_sis.prop.Visible = true
-      ThisForm.nom_tab.prop.Visible = false
+      this.Form.sis_prg.prop.Visible = true
+      this.Form.nom_tab.prop.Visible = false
 
       return true;
     }
     else{
-      ThisForm.nom_tab.prop.ReadOnly = false
-      ThisForm.men_sis.prop.Visible = false
-      ThisForm.nom_tab.prop.Visible = true
+      this.Form.nom_tab.prop.ReadOnly = false
+      this.Form.sis_prg.prop.Visible = false
+      this.Form.nom_tab.prop.Visible = true
     }
     
 

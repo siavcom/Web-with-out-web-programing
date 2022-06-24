@@ -23,26 +23,12 @@ export class BT_ACEPTAR extends COMPONENT {
  
   } // Fin constructor
 
- // public click = async () => {
- public async click() {  
+  public click = async () => {
     const m = {
   
     }  
     if (this.Form.dic_dat.prop.Value != 'M') {  // Datos
-
-      // Hay datos capturados
-      this.Form.grid_datos.prop.Visible = false
-      if (await this.Form.db.select('vi_cap_dat')>0) {
-        const resultado=await this.Form.MessageBox('Quieres Grabar la definicion de la tabla',4,'Confirm')
-        console.log('bt_aceptar resultado=====>',resultado)
-        if  (resultado==6)   {
-          this.Form.MessageBox('Datos grabados',0)   
-        }
-        this.Form.dic_dat.setFocus()
-        //this.Form.db.use() 
-        return
-      }
-
+      this.Form.grid_datos.prop.Enabled = false
       // this.Form.grid_indices.prop.Enabled = false
       // this.Form.grid_datos.vistas.Enabled = false
 

@@ -20,9 +20,9 @@ import { getCurrentInstance } from "vue";
 import VueSimpleAlert from "vue3-simple-alert"; // mensajes de alerta  npm i vue-simple-alert Vue.use(VueSimpleAlert);
 
 import { DATA_TYPE } from "jsstore";
-import { newLocalDb } from "@/services/jsstore_con_new";
-import { oldLocalDb } from "@/services/jsstore_con_old";
-import { Connection } from "jsstore";
+//import { newLocalDb } from "@/services/jsstore_con_new";
+//import { oldLocalDb } from "@/services/jsstore_con_old";
+//import { Connection } from "jsstore";
 import alasql from "alasql";
 
 
@@ -207,7 +207,7 @@ export class VFPDB {
       //  this.View[alias] = response; // Generamos la vista, asignamos su estructura  y filtros de condiciones
 
       return true
-
+    /*
       //this.View[alias]["ref"] = vis_act; // referencia a la vista de actualizacion
 
       this.newTables[alias] =
@@ -233,12 +233,7 @@ export class VFPDB {
         },
       };
 
-      /*
-      newTabla.columns['recno']= {
-        primaryKey: true,
-        autoIncrement: true,
-      };
-      */
+ 
       // recorre todos los campos de la tabla y genera su estructura
       // const valores ={}
 
@@ -246,12 +241,7 @@ export class VFPDB {
       let des_tab = ' CREATE TABLE ' + alias + ' (recno INT PRIMARY KEY'
       for (const nom_ele in this.View[alias].est_tabla) {
         const campo = this.View[alias].est_tabla[nom_ele];
-        /*campo={
-            "des_cam": "MANTAB",
-            "tip_cam": "C",
-            "val_cam": ""
-              }
-      */
+     
         //    valores[campo]=null;
         let dataType: string; // :any asignamos el tipo de datos a newLocalDb
         switch (campo.tip_cam) {
@@ -298,13 +288,7 @@ export class VFPDB {
 
         des_tab = des_tab + ',' + nom_ele + ' ' + dataType
 
-
-
-        /*  Indexed Local Data base
-        this.newTables[alias].columns[nom_ele] = { notNull: false, dataType: dataType }
-        this.oldTables[alias].columns[nom_ele] = { notNull: false, dataType: dataType }
-        */
-
+       
       }
       des_tab = des_tab + ')'
       // Creamos la tablas 
@@ -317,7 +301,8 @@ export class VFPDB {
       //   console.log('Vista creada ===', des_tab, alasql('SELECT * from Last.' + alias))
 
       return true;
-      // return this.View[alias].new[0];
+      // return this.View[alias].new[0]
+      */
     } catch (error) {
       console.error(error)
 
@@ -1096,11 +1081,10 @@ export class VFPDB {
       this.num_are = are_sel;
     } else {
       const alias: any = are_sel;
-      this.num_are = this.are_tra.indexOf(alias) + 1; // buesca el numero de alias
-      if (this.num_are = 0) {
-        this.messagebox.alert("No existe area de trabajo " + are_sel);
-        return 0;
-      }
+      this.num_are = this.are_tra.indexOf(alias) ; // busca el numero de alias
+      if (this.num_are==-1) this.num_are=0
+      console.log('Db select num_are ====>>',are_sel,this.num_are)
+  
     }
     /* revisar
         this.Form['dic_dat']['prop']['Status'] = 'G'
@@ -1624,7 +1608,7 @@ return false;
 
 
   // Crea tablas en  LocalDb
-
+/*
   openLocalDb = async () => {
     // console.log('ALASQL===>',alasql('select * from lla1_tab'))
 
@@ -1691,33 +1675,7 @@ return false;
       /////////////////////////////
 
 
-      /*
-      var cityData = [{city:"Redmond", population:57530},
-      {city:"Atlanta",population:447841},
-      {city:"San Fracisco", population:837442}];
-      
-      // Create IndexdDB database and fill it with data from array
-      
-      
-      alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS geo;\
-      ATTACH INDEXEDDB DATABASE geo; \
-      USE geo; \
-      DROP TABLE IF EXISTS cities; \
-      CREATE TABLE cities; \
-      SELECT * INTO cities FROM ?', [cityData], function(){
-      
-      // Select data from IndexedDB
-      alasql.promise('SELECT COLUMN * FROM cities WHERE population > 100000 ORDER BY city DESC')
-            .then(function(res){
-              document.write('Big cities: ', res.join(','));
-      });
-      });
-      
-      
-      */
 
-
-      //////////////////////////     
 
     }
     catch (error) {
@@ -1918,6 +1876,8 @@ return false;
     return true;
 
   }
+
+*/
 
   async axiosCall(dat_lla: Record<string, unknown>) {
 

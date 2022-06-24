@@ -81,7 +81,7 @@ export class FORM {
   ///////////////////////////////////////////////////////////
   // MessageBox 
   ///////////////////////////////
-   public async MessageBox(text: string, tipo: number, title: string, time: number) {
+   public async MessageBox(text: string, tipo ? : number, title: string, time: number) {
 
     let tip_ale = 'promp'  // tipo de alerta 'promp'  'alert' 'confirm' 'warning'
     let icon = 'error'  // tipo de icono  warning, error, success, info, and question
@@ -95,19 +95,20 @@ export class FORM {
     let denyButtonText = 'No'
 
     let reverseButtons= true
-    let valor = tipo
+    let valor = tipo ? tipo: 0
     let val_ini = 512
-
+    console.log('Messagebox=====>',text,tipo,title,time)
     while (valor > 5) {
       valor = valor - val_ini
       if (valor > 5) val_ini = val_ini / 2
     }
     switch (valor) {
       case 0: //ok
-        icon = 'succes'
+        icon = 'success'
         tip_ale = 'alert'
         showCancelButton = false
-        showConfirmButton = false
+        showConfirmButton = true
+        confirmButtonText = 'OK'
         showDenyButton = false
 
 
@@ -137,9 +138,9 @@ export class FORM {
 
         break;
       case 4: //yes and no 
-        showCancelButton = true
+        showCancelButton = false
         showConfirmButton = true
-        showDenyButton = false
+        showDenyButton = true
         tip_ale = 'confirm'
         icon = 'question'
         break;
@@ -251,7 +252,8 @@ export class FORM {
     
     */
     // No se importa swetAlert Ya que se importo desde cuando se hace la app de Vue
-    Swal({
+    var resultado=0
+    await Swal({
       title: title,
       text: text,
       reverseButtons: reverseButtons,
@@ -263,31 +265,29 @@ export class FORM {
       denyButtonText: denyButtonText,
       icon: icon,
     }).then((result) => {
-      console.log('MessaBox resultado===>', result.value)
-      if (result.isConfirmed && tip_ale == 'alert')
-        return 1
+      if (tip_ale == 'alert')
+        resultado=0
+      else { 
+        /* 
+        Ok 1
+        Cancel 2
+        Abort 3
+        Retry 4
+        Ignore 5
+        Yes 6
+        No 7
 
-      if (tip_ale == 'confirm'){
-        if (showCancelButton && showConfirmButton ){
-          if (result.isConfirmed) return 6
-          if (result.iscancel) return 2
-          return 7
+        */
+          console.log('MessageBox resultado===>',tip_ale,result,result.isConfirmed)
+
+          if (result.isConfirmed) resultado= 6
+          if (result.isDenied) resultado= 7
+          if (result.isDismissed) resultado= 2
+
         }
-        if (result.isConfirmed) return 1
-        return 2
-      }
-  
-  
-      if (result.isDenied) 
-        return 3 
-
-      if (result.isDimised)
-        return 2
-        
-      return 7        
-
      });
-
+     console.log('MessageBox por aqui salio')
+    return resultado
   }
 
   /////////////////////////////////////////////////////////////////////

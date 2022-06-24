@@ -1,5 +1,5 @@
 <template>
-  <div v-if="props.prop.RecordSource.length>0 && props.db.value && props.db.value.View[prop.RecordSource] " class="divi" :style="estilo" :v-show="prop.Visible">
+  <div v-if="props.prop.Visible && props.prop.RecordSource.length>0 && props.db.value && props.db.value.View[prop.RecordSource] " class="divi" :style="estilo" >
     <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <div class="tooltip">
       <!-- Grid  -->
@@ -128,6 +128,7 @@
                     v-bind:prop="This[col].prop"
                     v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion" 
                     v-bind:db="db"
+                    @focus.capture="This.Form.eventos.push(This.prop.Map+'.' + This[col].Name + '.when()')"
                     @focusout="This.Form.eventos.push(This.prop.Map+'.' + This[col].Name + '.valid()')">
 
                   </component>
@@ -707,7 +708,9 @@ div.tabla {
   border: 1px solid rgb(0, 5, 2);
   border-radius: 1%;
   max-height: 800px;
+  max-width: 900px;
   overflow-y: auto;
+  overflow-x: auto;
   width: 100%;
 }
 

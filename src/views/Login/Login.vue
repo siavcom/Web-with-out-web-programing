@@ -114,8 +114,6 @@ import {
 import imgButton from "@/components/imgButton.vue"
 import comboBox from "@/components/comboBox.vue"
 import editText from "@/components/editText.vue"
-import editNumber from "@/components/editNumber.vue"
-import editDate from "@/components/editDate.vue"
 import textLabel from "@/components/textLabel.vue"
 import grid from "@/components/grid.vue"
 
@@ -164,16 +162,6 @@ const impComp = ((name: string) => {
     case 'editText': {
       //      return defineAsyncComponent(() => import('@/components/editText.vue'))  //import('@/components/${name}.vue'))
       return editText
-      break;
-    }
-    case 'editNumber': {
-      return editNumber
-      //  return defineAsyncComponent(() => import('@/components/editNumber.vue'))  //import('@/components/${name}.vue'))
-      break;
-    }
-    case 'editDate': {
-      return editDate
-      //  return defineAsyncComponent(() => import('@/components/editDate.vue'))  //import('@/components/${name}.vue'))
       break;
     }
     case 'comboBox': {

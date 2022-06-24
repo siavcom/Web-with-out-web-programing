@@ -49,7 +49,7 @@
           v-bind:estilo="ThisForm[compHeader].estilo" 
           v-bind:posicion="ThisForm[compHeader].posicion"
           @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"
-          @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.setFocus()')">
+          @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')">
         </component>
       </div>
 
@@ -62,7 +62,7 @@
     <section class="main">
       <slot name="main">
 
-
+        <!-- @focus.capture -->
         <div v-for="(obj, comp) in ThisForm">
           <component v-if="ThisForm[comp].prop && ThisForm[comp].prop.Position == 'main'"
             :is="impComp(ThisForm[comp].prop.BaseClass)" 
@@ -78,7 +78,7 @@
             v-bind:posicion="ThisForm[comp].posicion" 
             v-bind:db="ref(ThisForm.db)"
             @focusout="ThisForm.eventos.push('ThisForm.' + comp + '.valid()')"
-            @focus.capture="ThisForm.eventos.push('ThisForm.' + comp + '.setFocus()')"
+            @focus.capture="ThisForm.eventos.push('ThisForm.' + comp + '.when()')"
             @click="ThisForm.eventos.push('ThisForm.' + comp + '.click()')"></component>
         </div>
 
@@ -92,7 +92,7 @@
       <img v-if="ThisForm.prop.Status != 'A'" src="/Iconos/BotonRojo.png" style="float:left" />
       <slot name="footer">
 
-
+        <!-- @focus.capture -->
 
         <div v-for="(obj, compFooter) in ThisForm">
           <component v-if="ThisForm[compFooter].prop && ThisForm[compFooter].prop.Position == 'footer'"
@@ -109,7 +109,7 @@
             v-bind:posicion="ThisForm[compFooter].posicion" 
             v-bind:db="ref(ThisForm.db)"
             @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')"
-            @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.setFocus()')"
+            @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
             @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')"></component>
         </div>
       </slot>
@@ -255,7 +255,7 @@ async function eje_eve() {
         return new Promise((resolve, reject) => {
           // Se tiene que pasar por referencia donde esta el ThisForm 
           const ThisForm = form.value //ya que se trabajo solo en ambiente local
-          console.log('WaitEval   =====>', evento,ThisForm)
+          console.log('WaitEval  evento ejecutado =====>', evento)
 
           //          if (evento == 'ThisForm.grid_datos.des_dat.Ref.focus()') {
 

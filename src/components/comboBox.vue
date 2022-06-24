@@ -1,5 +1,5 @@
 <template>
-  <div class="divi" :style="estilo" v-show="prop.Visible">
+  <div class="divi" :style="estilo" v-if="prop.Visible">
     <!--Mensaje de error -->
     <label v-show="Error">{{ prop.ErrorMessage }}</label>
     <div class="tooltip">
@@ -67,7 +67,7 @@ import {
 
 //import { localDb } from "@/clases/LocalDb";  // manejo del indexedDb
 //import VueSimpleAlert from "vue3-simple-alert";
-const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Ref"]);
+const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Ref","update:Focus"]);
 
 
 ///////////////////////////////////////
@@ -109,6 +109,7 @@ const props = defineProps<{
     TabIndex: number;
     BaseClass: "ComboBox";
     Style: number;
+    Focus: boolean;
 
   };
 
@@ -163,7 +164,8 @@ const Error = ref(false)
 const ErrorMessage = ref(props.prop.ErrorMessage)
 const toggle = ref(false)
 const hover = ref(false)
-
+const Focus= ref(props.prop.Focus)
+Focus.value=false
 //const zIndex = ref(props.estilo.zIndex)
 const inputWidth = ref('auto')
 //const LocalDb = new localDb();
@@ -229,10 +231,11 @@ const valid = async (num_ren: number) => {
 //              tenemos que emitir hacia el padre el valor capturado (Value.value) y ejecutar el update
 /////////////////////////////////////////////////////////////////
 const onFocus = () => {
-  Status.value = 'P';  // en proceso
+//  Status.value = 'P';  // en proceso
   Error.value = false;
   ErrorMessage.value = '';
-
+  if (Status.value == 'P') return // ya se habia hecho el foco
+  
   //emit("update:Status", Status.value); // actualiza el valor en el componente padre
 
 
@@ -241,6 +244,7 @@ const onFocus = () => {
   emit("update:ErrorMessage", '')
   emit("update")
   //console.log('On Focus status  ===>', props.prop.Status)
+
 
 }
 
@@ -568,6 +572,29 @@ watchSyncEffect(() => {
 
 */
 //watchPostEffect()
+////////////////////////////////////////
+// Hacer el set focus 
+///////////////////////////////////////
+watch(
+  () => Focus.value,
+  (new_val, old_val) => {
+    if (!Focus.value) return
+    console.log('ComboBox Set Focus', props.prop.Name)
+    if (Focus.value) {
+//      Ref.value.focus()
+      Ref.value.select()
+      Focus.value = false
+      emit("update:Focus", false)
+    }
+  },
+  { deep: false }
+);
+
+
+////////////////////////////////////////
+// Da click para renderizar 
+///////////////////////////////////////
+
 watch(
   () => toggle.value,
   (new_val, old_val) => {

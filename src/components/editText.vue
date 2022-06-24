@@ -1,5 +1,5 @@
 <template>
-  <div class="divi" :style="estilo" :v-show="prop.Visible">
+  <div class="divi" :style="estilo" v-if="prop.Visible">
     <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <div class="tooltip">
       <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
@@ -126,6 +126,7 @@ const props = defineProps<{
     Autofocus: false;
     Min: number;
     Max: number;
+    Focus: boolean;
     //    SetFocus:false;
     //compAddress: any;
   };
@@ -157,7 +158,8 @@ const ErrorMessage = ref(props.prop.ErrorMessage)
 const Key = ref(props.prop.Key)
 defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
 const Error = ref(false)
-const Focus = ref(false)
+const Focus = ref(props.prop.Focus)
+Focus.value=false
 
 /*  position
 static	Elements renders in order, as they appear in the document flow. This is default.
@@ -389,6 +391,7 @@ watch(
 watch(
   () => Focus.value,
   (new_val, old_val) => {
+    if (!Focus.value) return
     console.log('EditText Set Focus', props.prop.Name)
     if (Focus.value) {
       Ref.value.focus()
