@@ -49,13 +49,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () =>
       import("../views/NotFound.vue"),
   },
-  {
-   // path: "/Siavcom:id_con",
-    path: "/Siavcom",
-    name: "Siavcom",
-    component: Siavcom,
+  //{
+   
+  //  path: "/Siavcom",
+  //  name: "Siavcom",
+  //  component: Siavcom,
     //props: true,
- /*   path: "/user/:name", // <-- notice the colon
+ 
+    /*   path: "/user/:name", // <-- notice the colon
     name: "User",
     component: User,
     props: true,
@@ -65,7 +66,8 @@ const routes: Array<RouteRecordRaw> = [
 
      */
 
-  },
+ // }
+ // ,
 
   {
     path: "/:catchAll(.*)",

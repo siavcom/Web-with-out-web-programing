@@ -12,6 +12,7 @@ import {
 } from "vue";
 import { COMPONENT } from '@/clases/Component'
 import { VFPDB } from "@/clases/DataBase"
+import {Functions} from '@/clases/Functions'
 //import { apply } from "file-loader";
 
 export class FORM {
@@ -50,6 +51,8 @@ export class FORM {
   };
   posicion: any = {}
   db = new VFPDB();  // conexion a la base de datos
+  //messagebox = Functions.Messagebox;
+  //MessageBox=Functions.MessageBox()
 
   //  este: any = this
 
@@ -81,8 +84,9 @@ export class FORM {
   ///////////////////////////////////////////////////////////
   // MessageBox 
   ///////////////////////////////
-   public async MessageBox(text: string, tipo ? : number, title: string, time: number) {
-
+   public async MessageBox(text: string, tipo ? : number, title ?: string, timer ?: number) {
+    
+  
     let tip_ale = 'promp'  // tipo de alerta 'promp'  'alert' 'confirm' 'warning'
     let icon = 'error'  // tipo de icono  warning, error, success, info, and question
     //let showDenyButton = true
@@ -93,11 +97,18 @@ export class FORM {
     let cancelButtonText = 'Cancel'
     let confirmButtonText = 'Ok'
     let denyButtonText = 'No'
+    let timerProgressBar=false
+
+    if (timer && timer>5000)  timerProgressBar= true
+
+    cancelButtonText='<i class="fa fa-thumbs-down"></i>'
+    let confirmButtonAriaLabel= 'Thumbs up, correcto!'
+
 
     let reverseButtons= true
     let valor = tipo ? tipo: 0
     let val_ini = 512
-    console.log('Messagebox=====>',text,tipo,title,time)
+    
     while (valor > 5) {
       valor = valor - val_ini
       if (valor > 5) val_ini = val_ini / 2
@@ -108,7 +119,9 @@ export class FORM {
         tip_ale = 'alert'
         showCancelButton = false
         showConfirmButton = true
-        confirmButtonText = 'OK'
+        //confirmButtonText = 'OK'
+        confirmButtonText='<i class="fa fa-thumbs-up"></i> Great!',
+
         showDenyButton = false
 
 
@@ -206,29 +219,9 @@ export class FORM {
 
     valor = tipo - valor // restamos el primer resultado
 
-    //   this.VueSimpleAlert[tip_ale](title, text, '',
-
-
-    /*
- 
-   Swal.fire({
-     title: title,
-     showDenyButton: true,
-     showCancelButton: true,
-     confirmButtonText: 'Save',
-     denyButtonText: `Don't save`,
-   }).then((result) => {
-  
-     if (result.isConfirmed) {
-       Swal.fire('Saved!', '', 'success')
-     } else if (result.isDenied) {
-       Swal.fire('Changes are not saved', '', 'info')
-     }
-   })
- 
- */
-
-
+   ///////////////////////////////////////////
+   // Opciones Swal https://sweetalert2.github.io/
+   //////////////////////////
     /*
     showConfirmButton true 	If set to false, a "Confirm"-button will not be shown.
     showDenyButton false 	If set to true, a "Deny"-button will be shown. It can be useful when you want a popup with 3 buttons.
@@ -240,6 +233,10 @@ export class FORM {
     denyButtonColor undefined 	Use this to change the background color of the "Deny"-button. The default color is #dd6b55
     cancelButtonColor undefined 	Use this to change the background color of the "Cancel"-button. The default color is #aaa
     confirmButtonAriaLabel '' 	Use this to change the aria-label for the "Confirm"-button.
+
+    confirmButtonAriaLabel: 'Thumbs up, correcto!',
+
+
     denyButtonAriaLabel '' 	Use this to change the aria-label for the "Deny"-button.
     cancelButtonAriaLabel
     
@@ -256,6 +253,8 @@ export class FORM {
     await Swal({
       title: title,
       text: text,
+      timer: timer,
+      timerProgressBar: timerProgressBar,
       reverseButtons: reverseButtons,
       showConfirmButton: showConfirmButton,
       showCancelButton: showCancelButton,
@@ -263,6 +262,7 @@ export class FORM {
       confirmButtonText: confirmButtonText,
       cancelButtonText: cancelButtonText,
       denyButtonText: denyButtonText,
+      confirmButtonAriaLabel: confirmButtonAriaLabel,
       icon: icon,
     }).then((result) => {
       if (tip_ale == 'alert')
@@ -320,7 +320,7 @@ export class FORM {
 
     public click = async function()  {
 
-      console.log('graba ThisForm', this.Parent)
+     // console.log('graba ThisForm', this.Parent)
 
       this.Parent.db.tableUpdate().
         then((resultado) => {

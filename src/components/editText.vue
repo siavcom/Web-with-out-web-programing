@@ -27,6 +27,7 @@
         :placeholder="prop.Placeholder" 
         :tabindex="prop.TabIndex" 
         :type="prop.Type" 
+        maxlength="prop.MaxLength"
          @focusout="focusOut" 
          @focus="onFocus" />
 
@@ -128,6 +129,7 @@ const props = defineProps<{
     Min: number;
     Max: number;
     Focus: boolean;
+    MaxLength : 254;
     //    SetFocus:false;
     //compAddress: any;
   };
@@ -235,7 +237,7 @@ const emitValue = async () => {
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   emit("update") // emite un update en el componente padre
-  //console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
+ // console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
 };
 
@@ -245,14 +247,14 @@ const emitValue = async () => {
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
 const focusOut = async () => {
-  const valor = Value.value;
   if (props.prop.ControlSource && props.prop.ControlSource.length > 0) {
     // actualiza valor en localDb
+    const valor = props.prop.Type=='number' ? +Value.value : Value.value
     await props.db.value.updateCampo(valor, props.prop.ControlSource, props.Recno)
     //await LocalDb.update(valor).then(() => { 
     // })
   }
-  console.log('editBox focusout ', props.prop.Name)
+  //console.log('editBox focusout ', props.prop.Name)
   return await emitValue()
 
 
@@ -284,10 +286,11 @@ const onFocus = async () => {
 
   if (Status.value == 'P') return // ya se habia hecho el foco
   Status.value = 'P';  // en foco
-  //console.log('onFocus elemento ===>', props.prop.Name, 'P')
+  console.log('onFocus elemento ===>', props.prop.Name, 'P')
   emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
   emit("update:ErrorMessage", '')
   emit("update")
+  console.log('onFocus elemento ===>', props.prop.Name, 'P')
 
 }
 
@@ -300,7 +303,6 @@ const readCampo = async (recno: number) => {
   emitValue()
 
 }
-
 
 ////////////////////////////////////////
 // Watchers : Triggers de templates
@@ -345,7 +347,7 @@ watch(
       }
 
       if (new_val != old_val && new_val > 0) {
-        console.log('Watch EditText Recno=', new_val)
+       // console.log('Watch EditText Recno=', new_val)
         readCampo(props.Recno)
       }
       //    LocalDb.ControlSource = new_val;
@@ -381,7 +383,7 @@ watch(
   () => props.prop.Value,
   (new_val, old_val) => {
     Value.value = new_val
-    //   console.log('watch value',new_val)
+    console.log('watch value',props.prop.Name,new_val)
   },
   { deep: false }
 );
@@ -393,7 +395,7 @@ watch(
   () => Focus.value,
   (new_val, old_val) => {
     if (!Focus.value) return
-    console.log('EditText Set Focus', props.prop.Name)
+    //console.log('EditText Set Focus', props.prop.Name)
     if (Focus.value) {
       Ref.value.focus()
 //      Ref.value.select()
@@ -450,13 +452,13 @@ const init = async () => {
   if (props.prop.Autofocus) {
     emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
     emit("update") // emite un update en el componente padre
-    //  Ref.value.focus()
-    Ref.value.select()
+    Ref.value.focus()
+    //Ref.value.select()
     return
   }// else  await emitValue()
 
 
-  console.log('Init EditText==>', props.prop.Name)
+  //console.log('Init EditText==>', props.prop.Name)
 
 
   // if (props.prop.Name=='des_dat')  Ref.value.autofocus=true

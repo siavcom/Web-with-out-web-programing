@@ -14,12 +14,12 @@
 //eslint no-undef: "error"
 
 //import { inject, ref } from "vue";
-
+import { Functions } from '@/clases/Functions'
 import axios from "axios";
-import { getCurrentInstance } from "vue";
-import VueSimpleAlert from "vue3-simple-alert"; // mensajes de alerta  npm i vue-simple-alert Vue.use(VueSimpleAlert);
+//import { getCurrentInstance } from "vue";
+//import VueSimpleAlert from "vue3-simple-alert"; // mensajes de alerta  npm i vue-simple-alert Vue.use(VueSimpleAlert);
 
-import { DATA_TYPE } from "jsstore";
+//import { DATA_TYPE } from "jsstore";
 //import { newLocalDb } from "@/services/jsstore_con_new";
 //import { oldLocalDb } from "@/services/jsstore_con_old";
 //import { Connection } from "jsstore";
@@ -49,7 +49,7 @@ export class VFPDB {
   num_are: number; // numero de area de trabajo que se esta en este momento
   //db: any = {}; // estructura de toda la base de datos
   View: any = {}; // aqui se guarda toda la informacion de las vistas SQL ( estructura, recno, recCount, exp_ind)
-  messagebox = VueSimpleAlert; // asignamos las clases de VueSimpleAlert a messagebox
+  messagebox = Functions.Messagebox; // asignamos las clases de VueSimpleAlert a messagebox
   Form = {} // any = getCurrentInstance();
   Ctx = {} //this.Form.ctx; // Contexto
   id_con: string;
@@ -154,10 +154,10 @@ export class VFPDB {
 
       return true;
     } catch (error) {
-      this.messagebox.alert(
+      this.messagebox(
         error.response.status.toString() + " " + error.response.statusText,
-        "Error SQL ",
-        "error"
+        "Error SQL "
+
       );
       return false;
     } // Fin de Catch
@@ -174,7 +174,7 @@ export class VFPDB {
     }
 
     if (nom_vis == null) {
-      this.messagebox.alert("No se permite nombre de vista en null", "error");
+      this.messagebox("No se permite nombre de vista en null", "error");
       return false;
     }
     if (!alias) {
@@ -207,102 +207,102 @@ export class VFPDB {
       //  this.View[alias] = response; // Generamos la vista, asignamos su estructura  y filtros de condiciones
 
       return true
-    /*
-      //this.View[alias]["ref"] = vis_act; // referencia a la vista de actualizacion
-
-      this.newTables[alias] =
-      {
-        name: alias,
-        columns: {
-          recno: {
-            primaryKey: true,
-            autoIncrement: true,
+      /*
+        //this.View[alias]["ref"] = vis_act; // referencia a la vista de actualizacion
+  
+        this.newTables[alias] =
+        {
+          name: alias,
+          columns: {
+            recno: {
+              primaryKey: true,
+              autoIncrement: true,
+            },
           },
-        },
-      };
-
-      // this.oldData.tables[0]={
-      //const oldTabla = {
-      this.oldTables[alias] = {
-        name: alias,
-        columns: {
-          recno: {
-            primaryKey: true,
-            autoIncrement: false,
+        };
+  
+        // this.oldData.tables[0]={
+        //const oldTabla = {
+        this.oldTables[alias] = {
+          name: alias,
+          columns: {
+            recno: {
+              primaryKey: true,
+              autoIncrement: false,
+            },
           },
-        },
-      };
-
- 
-      // recorre todos los campos de la tabla y genera su estructura
-      // const valores ={}
-
-      // Como la tabla es nueva, genera la tabla con la estructura que tiene la la tabla
-      let des_tab = ' CREATE TABLE ' + alias + ' (recno INT PRIMARY KEY'
-      for (const nom_ele in this.View[alias].est_tabla) {
-        const campo = this.View[alias].est_tabla[nom_ele];
-     
-        //    valores[campo]=null;
-        let dataType: string; // :any asignamos el tipo de datos a newLocalDb
-        switch (campo.tip_cam) {
-          case "C":
-            // dataType = DATA_TYPE.String;  // localDb
-            dataType = 'STRING'
-            //  this.View[alias].valores[nom_ele] = ''
-            break;
-          case "I":
-            //            dataType = DATA_TYPE.Number;
-            dataType = 'INT';
-            //  this.View[alias].valores[nom_ele] = 0
-            break;
-          case "N":
-            //            dataType = DATA_TYPE.Number;
-            dataType = 'NUMBER';
-            //  this.View[alias].valores[nom_ele] = 0
-            break;
-          case "D":
-            // 23/Ags/2021   dataType = DATA_TYPE.DateTime;
-            //            dataType = DATA_TYPE.String;
-            dataType = 'DATE';
-          //  this.View[alias].valores[nom_ele] = '1900-01-01'
-
-          case "T":
-            // 23/Ags/2021   dataType = DATA_TYPE.DateTime;
-            //            dataType = DATA_TYPE.String;
-            dataType = 'TIME';
-            //this.View[alias].valores[nom_ele] = '1900-01-01'
-
-            break;
-          case "L":
-            //            dataType = DATA_TYPE.Boolean;
-            dataType = 'INT';
-            //this.View[alias].valores[nom_ele] = 0
-
-            break;
-          default:
-            //            dataType = DATA_TYPE.String;
-            dataType = 'STRING';
-          //this.View[alias].valores[nom_ele] = ''
-
-        }
-
-        des_tab = des_tab + ',' + nom_ele + ' ' + dataType
-
+        };
+  
+   
+        // recorre todos los campos de la tabla y genera su estructura
+        // const valores ={}
+  
+        // Como la tabla es nueva, genera la tabla con la estructura que tiene la la tabla
+        let des_tab = ' CREATE TABLE ' + alias + ' (recno INT PRIMARY KEY'
+        for (const nom_ele in this.View[alias].est_tabla) {
+          const campo = this.View[alias].est_tabla[nom_ele];
        
-      }
-      des_tab = des_tab + ')'
-      // Creamos la tablas 
-      alasql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
-      alasql(des_tab)
-
-      alasql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + '; ')
-      alasql(des_tab)
-
-      //   console.log('Vista creada ===', des_tab, alasql('SELECT * from Last.' + alias))
-
-      return true;
-      // return this.View[alias].new[0]
-      */
+          //    valores[campo]=null;
+          let dataType: string; // :any asignamos el tipo de datos a newLocalDb
+          switch (campo.tip_cam) {
+            case "C":
+              // dataType = DATA_TYPE.String;  // localDb
+              dataType = 'STRING'
+              //  this.View[alias].valores[nom_ele] = ''
+              break;
+            case "I":
+              //            dataType = DATA_TYPE.Number;
+              dataType = 'INT';
+              //  this.View[alias].valores[nom_ele] = 0
+              break;
+            case "N":
+              //            dataType = DATA_TYPE.Number;
+              dataType = 'NUMBER';
+              //  this.View[alias].valores[nom_ele] = 0
+              break;
+            case "D":
+              // 23/Ags/2021   dataType = DATA_TYPE.DateTime;
+              //            dataType = DATA_TYPE.String;
+              dataType = 'DATE';
+            //  this.View[alias].valores[nom_ele] = '1900-01-01'
+  
+            case "T":
+              // 23/Ags/2021   dataType = DATA_TYPE.DateTime;
+              //            dataType = DATA_TYPE.String;
+              dataType = 'TIME';
+              //this.View[alias].valores[nom_ele] = '1900-01-01'
+  
+              break;
+            case "L":
+              //            dataType = DATA_TYPE.Boolean;
+              dataType = 'INT';
+              //this.View[alias].valores[nom_ele] = 0
+  
+              break;
+            default:
+              //            dataType = DATA_TYPE.String;
+              dataType = 'STRING';
+            //this.View[alias].valores[nom_ele] = ''
+  
+          }
+  
+          des_tab = des_tab + ',' + nom_ele + ' ' + dataType
+  
+         
+        }
+        des_tab = des_tab + ')'
+        // Creamos la tablas 
+        alasql('USE Now ; DROP TABLE IF EXISTS Now.' + alias + '; ')
+        alasql(des_tab)
+  
+        alasql('USE Last ; DROP TABLE IF EXISTS Last.' + alias + '; ')
+        alasql(des_tab)
+  
+        //   console.log('Vista creada ===', des_tab, alasql('SELECT * from Last.' + alias))
+  
+        return true;
+        // return this.View[alias].new[0]
+        */
     } catch (error) {
       console.error(error)
 
@@ -394,11 +394,10 @@ export class VFPDB {
     } catch (error) {
       console.error(error);
 
-      this.messagebox.alert(
+      this.messagebox(
         error.response.status.toString() + " " + error.response.statusText,
-        "Error SQL ",
-        "error"
-      );
+        "Error SQL ")
+
 
       return false;
     }
@@ -435,10 +434,9 @@ export class VFPDB {
       return respuesta[0]; //response.data;
     } catch (error) {
       console.error(error);
-      this.messagebox.alert(
+      this.messagebox(
         error.response.status.toString() + " " + error.response.statusText,
-        "Error SQL ",
-        "error"
+        "Error SQL "
       );
 
       return false;
@@ -485,7 +483,7 @@ export class VFPDB {
     if (nFilas == 0) {
       // Solo actualiza un registro
       if (!recno) { // No hay registro a actualizar
-        this.messagebox.alert("No hay recno activo en " + alias, "ERROR");
+        this.messagebox("No hay recno activo en " + alias, "ERROR");
         return;
       }
       select["where"] = { recno: recno };
@@ -681,9 +679,11 @@ export class VFPDB {
     INSERT INTO Last.'+ alias + ' SELECT * FROM Now.' + alias + ' WHERE recno=?', recno)
     console.log('appendBlank alasql =====>', alasql(' SELECT * FROM Now.' + alias + ' WHERE recno=?', recno))
     //   const recno = -(this.View[alias].recCount + 1)  // Incrementamos el valor de los registros
-//    this.View[alias].recno = recno           // asignamos el valor recno
+    //    this.View[alias].recno = recno           // asignamos el valor recno
 
-    this.View[alias].recnoVal.push(recno)    // insertamos en el arreglo para llenar el grid
+    //   this.View[alias].recnoVal.push(recno)   
+    const id=this.View[alias].recnoVal.length
+    this.View[alias].recnoVal.push({ recno: recno, id:id })   // insertamos en el arreglo para llenar el grid
     this.View[alias].recCount = this.View[alias].recCount + 1
     this.View[alias].row = this.View[alias].recnoVal.length - 1 //asignamos nuevo row
 
@@ -716,9 +716,10 @@ export class VFPDB {
 
     if (row < 0) return null // no hay row por borrar
 
-    console.log('Delete alias,row,recnoVal ',alias,row,this.View[alias].recnoVal )
-    
-    recno = this.View[alias].recnoVal[row]  // obtenemos el recno
+    console.log('Delete alias,row,recnoVal ', alias, row, this.View[alias].recnoVal)
+
+    //    recno = this.View[alias].recnoVal[row]  // obtenemos el recno
+    recno = this.View[alias].recnoVal[row].recno  // obtenemos el recno
 
     // obtenemos el key_pri
     const data = alasql('USE Last;\
@@ -741,7 +742,7 @@ export class VFPDB {
 
       dat_vis.where = "key_pri=" + key_pri // obtenemos la expresion del indice
       try {
-        console.log('delete borra en la base de datos row data recno,data ===>', recno,dat_vis)
+        console.log('delete borra en la base de datos row data recno,data ===>', recno, dat_vis)
 
         /* borra en la base de datos   ojo *****
         const response = await this.axiosCall(dat_vis)
@@ -764,19 +765,21 @@ export class VFPDB {
         delete from '+ alias + ' where recno=?', recno)
     //  borra en el arreglo de recno
     //delete this.View[alias].recnoVal[row];
-    
-    console.log('delete antes slice ===>', row,this.View[alias].recnoVal)
 
-    this.View[alias].recnoVal.splice(row, 1);
-   // this.View[alias].recnoVal.slice(row)  // borramos de arreglo 
-    console.log('delete despues slice ===>', row,this.View[alias].recnoVal)
+    console.log('delete antes slice ===>', row, this.View[alias].recnoVal)
+
+    this.View[alias].recnoVal.slice(row, 1);
+    // this.View[alias].recnoVal.slice(row)  // borramos de arreglo 
+    console.log('delete despues slice ===>', row, this.View[alias].recnoVal)
 
 
     if (this.View[alias].recnoVal.length - 1 < row)
       row = this.View[alias].recnoVal.length - 1
 
     this.View[alias].row = row
-    recno = this.View[alias].recnoVal[row]
+    //    recno = this.View[alias].recnoVal[row]
+    recno = this.View[alias].recnoVal[row].recno
+
     return await this.goto(recno)    // se va a leer registro
 
 
@@ -848,10 +851,9 @@ export class VFPDB {
 
       return;
     } catch (error) {
-      this.messagebox.alert(
+      this.messagebox(
         error.response.status.toString() + " " + error.response.statusText,
-        "Error SQL ",
-        "error"
+        "Error SQL "
       );
       return false;
     }
@@ -1081,10 +1083,10 @@ export class VFPDB {
       this.num_are = are_sel;
     } else {
       const alias: any = are_sel;
-      this.num_are = this.are_tra.indexOf(alias) ; // busca el numero de alias
-      if (this.num_are==-1) this.num_are=0
-      console.log('Db select num_are ====>>',are_sel,this.num_are)
-  
+      this.num_are = this.are_tra.indexOf(alias); // busca el numero de alias
+      if (this.num_are == -1) this.num_are = 0
+      console.log('Db select num_are ====>>', are_sel, this.num_are)
+
     }
     /* revisar
         this.Form['dic_dat']['prop']['Status'] = 'G'
@@ -1197,7 +1199,9 @@ export class VFPDB {
       let recnoVal = []
       for (let i = 0; i < data.length; i++) {
         data[i]['recno'] = i + 1
-        recnoVal[i] = i + 1
+        //        recnoVal[i] = i + 1
+        recnoVal[i]={recno : i + 1, id:i} 
+
       }
 
 
@@ -1232,30 +1236,12 @@ export class VFPDB {
 
         })
 
+      // revisr despues si al insertar los datos el recno queda como lo habiamos generado
+      // o seleccionar los recno para llenar el recnoval
+      // recnoVal=alasql(SELECT recno FROM Now.' + alias) 
+
       this.View[alias].recnoVal = [...recnoVal] // utilizamos el spread Operator 
-      //console.log('Valor vista===>',alasql('select * from '+alias) )
-
-      /*
-      if (!this.View[alias].componente) return // si  no hat asignacion a valores de componentes
-      const componente = this.View[alias].componente
-
-      for (let comp in componente) {  // recorre componente por componente
-        for (let i = 0; i < comp.length; i++) {
-          componente[comp][i].value = recnoVal[comp] // asignamos el valor a c/componente del form
-        }
-      }
-      */
-
-      // Generamos el recnoVal
-      //const recnoVal=[]
-      /*
-          for (let i = 0; i < respuesta.length; i++) {
-            this.View[alias]['recnoVal']=[...i+1]
-            //recnoVal.push(i + 1)
-          }
-      
-          this.View[alias]['recnoVal']=[...recnoVal]; // copia el registro . Para que sea rectivo con el DOM
-       */
+      console.log('RecnoVal===>',this.View[alias].recnoVa)
     } else this.View[alias]['data'] = {} // no hay datos
 
   }
@@ -1317,11 +1303,11 @@ export class VFPDB {
         try {
           const estructura = await this.axiosCall(dat_est)
           console.log('Data vista===>>', respuesta)
-          
-          respuesta.est_tabla=estructura
+
+          respuesta.est_tabla = estructura
           console.log('Estructura vista===>>', respuesta)
 
-          
+
         } catch (error) {
           console.log('Error SQL', error)
           /*      this.messagebox.alert(
@@ -1358,8 +1344,8 @@ export class VFPDB {
         */
 
       }
-     // console.log('Estructura View respuesta===>', alias, respuesta)
-     // console.log('Estructura View ===>', alias, this.View[alias].val_def)
+      // console.log('Estructura View respuesta===>', alias, respuesta)
+      // console.log('Estructura View ===>', alias, this.View[alias].val_def)
 
 
 
@@ -1400,7 +1386,9 @@ export class VFPDB {
       let recnoVal = []
       for (let i = 0; i < respuesta.length; i++) {
         respuesta[i]['recno'] = i + 1
-        recnoVal[i] = i + 1
+        //        recnoVal[i] = i + 1
+        recnoVal[i]={recno : i + 1,id : i}
+
       }
 
 
@@ -1443,7 +1431,7 @@ export class VFPDB {
 
       if (!this.View[alias].componente) return // si  no hay asignacion a valores de componentes
       const componente = this.View[alias].componente
-
+      // revisar no entiendo
       for (let comp in componente) {  // recorre componente por componente
         for (let i = 0; i < comp.length; i++) {
           componente[comp][i].value = recnoVal[comp] // asignamos el valor a c/componente del form
@@ -1451,16 +1439,6 @@ export class VFPDB {
       }
 
 
-      // Generamos el recnoVal
-      //const recnoVal=[]
-      /*
-          for (let i = 0; i < respuesta.length; i++) {
-            this.View[alias]['recnoVal']=[...i+1]
-            //recnoVal.push(i + 1)
-          }
-      
-          this.View[alias]['recnoVal']=[...recnoVal]; // copia el registro . Para que sea rectivo con el DOM
-       */
     } else this.View[alias]['data'] = {} // no hay datos
 
   }
@@ -1608,286 +1586,285 @@ return false;
 
 
   // Crea tablas en  LocalDb
-/*
-  openLocalDb = async () => {
-    // console.log('ALASQL===>',alasql('select * from lla1_tab'))
-
-    this.newTables['recno'] =
-    {
-      name: 'recno',
-      columns: {
-        recno: {
-          primaryKey: true,
-          autoIncrement: true,
+  /*
+    openLocalDb = async () => {
+      // console.log('ALASQL===>',alasql('select * from lla1_tab'))
+  
+      this.newTables['recno'] =
+      {
+        name: 'recno',
+        columns: {
+          recno: {
+            primaryKey: true,
+            autoIncrement: true,
+          },
         },
-      },
-    };
-
-    const newDb = {
-      name: "New",
-      tables: []
-    };
-    const oldDb = {
-      name: "Old",
-      tables: []
-    };
-
-    const recno_values = {};
-
-    try {
-
-
-
-      for (const tabla in this.oldTables)  // anexamos todas las tablas
-      {
-
-        // aumenta la columna con el nombre de la vista en la tabla recno        
+      };
+  
+      const newDb = {
+        name: "New",
+        tables: []
+      };
+      const oldDb = {
+        name: "Old",
+        tables: []
+      };
+  
+      const recno_values = {};
+  
+      try {
+  
+  
+  
+        for (const tabla in this.oldTables)  // anexamos todas las tablas
+        {
+  
+          // aumenta la columna con el nombre de la vista en la tabla recno        
+          newDb.tables.push(this.newTables[tabla]);
+          oldDb.tables.push(this.oldTables[tabla]);
+  
+          this.newTables['recno'].columns[tabla] = { notNull: false, dataType: DATA_TYPE.Number }
+          recno_values[tabla] = null;
+  
+        }
+        const tabla: any = 'recno';
         newDb.tables.push(this.newTables[tabla]);
-        oldDb.tables.push(this.oldTables[tabla]);
-
-        this.newTables['recno'].columns[tabla] = { notNull: false, dataType: DATA_TYPE.Number }
-        recno_values[tabla] = null;
-
+        console.log('Tablas locales ====>>>', newDb)
+  
+        await newLocalDb.initDb(newDb);
+        await oldLocalDb.initDb(oldDb);
+  
+  
+  
+        // insertamos los valores de recno de cada tabla
+        await newLocalDb.insert({
+          into: "recno",
+          values: [recno_values],
+        });
+  
+        // 
+  
+        // alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS TEMPO ;\
+        //         ATTACH INDEXEDDB DATABASE new;\
+        //         ATTACH INDEXEDDB DATABASE old')
+  
+  
+  
+        /////////////////////////////
+  
+  
+  
+  
       }
-      const tabla: any = 'recno';
-      newDb.tables.push(this.newTables[tabla]);
-      console.log('Tablas locales ====>>>', newDb)
-
-      await newLocalDb.initDb(newDb);
-      await oldLocalDb.initDb(oldDb);
-
-
-
-      // insertamos los valores de recno de cada tabla
-      await newLocalDb.insert({
-        into: "recno",
-        values: [recno_values],
-      });
-
-      // 
-
-      // alasql('CREATE INDEXEDDB DATABASE IF NOT EXISTS TEMPO ;\
-      //         ATTACH INDEXEDDB DATABASE new;\
-      //         ATTACH INDEXEDDB DATABASE old')
-
-
-
-      /////////////////////////////
-
-
-
-
-    }
-    catch (error) {
-      this.messagebox.alert(
-        error,
-        "Error OpenlocalDb ",
-        "error"
-      );
-      return false;
-    }
-  }
-
-  ////////////////////////////////////////////////////
-  // Graba valor de la tabla local
-  /////////////////////////////////////////
-  //  Record<string, unknown>
-  async updateLocalDb(alias: string, datos: Record<string, unknown>) {
-    // actualizamos el timestamp
-    const timestamp = datos.timestamp;
-    const recno: any = datos.recno;
-    //console.log('updateLocalDb',alias,timestamp,recno);
-    //newLocalDb.transaction()
-    const resultado = await newLocalDb.update(
-      {
-        in: alias,
-        set: { timestamp: timestamp },
-        where: {
-          recno: recno
-        }
-      })
-
-    if (resultado == 1) { // si se pudo actualizar leemos datos actuales 
-      const updated = await newLocalDb.select({
-        from: alias,
-        where: {
-          recno: recno
-        }
-      })
-      // actualizamos el registro old
-      await oldLocalDb.insert({
-        into: alias,
-        return: true,
-        upsert: true,
-        values: updated,
-      }).then((resultado) => {
-        if (resultado) {
-          return
-        }
-        else {
-          alert('No se pudo actualizar oldLocalDb');
-          return false
-        }
-
-      })
-    }
-
-
-  }
-  ////////////////////////////////////////////////////
-  // Incerta  valores en la tabla local
-  /////////////////////////////////////////
-  //  Record<string, unknown>
-  async insertLocalDb(alias: string, datos: Record<string, unknown>) {
-    //  if (datos.recno && datos.recno>0) {
-    const ThisForm = this.Form    //.ctx.ThisForm;
-    if (datos.length == 0) return true
-    const valores = {};
-
-
-    // Recorremos todos los registros obtenidos desde la bas de datos y los transforma
-    for (const campo in datos) {
-      let valor: any = datos[campo];
-      if (campo == "recno") valores['recno'] = +valor; // si es el campo recno no busca en la estructura de la tabla
-      if (campo != "recno" && campo != "createdAt" && campo != "updatedAt") {
-        //console.log('UpdateLocalDb campo',campo);
-
-        if (
-          this.View[alias].est_tabla[campo].tip_cam == "D" &&
-          valor > "1900"
-        ) {
-          // Si el campo es tipo fecha, le quitamos el tiempo
-          valor = valor.substring(0, 10);
-        }
-        //console.log('Campo==>',campo,this.View[alias].est_tabla[campo].tip_cam,respuesta[i][campo])
-        //let val_date= new Date() 
-        switch (this.View[alias].est_tabla[campo].tip_cam) {
-          case "NUMERIC":
-            valores[campo] = +valor; // generamos valores para localDb
-            break;
-          case "INT":
-            valores[campo] = +valor; // generamos valores para localDb
-            break;
-          case "DATE":
-            if (valor) {
-              if (valor <= '1900-01-01T9') valor = "1900-01-01T00:00:00.000";
-              // 23/Ags/2021 cambiamos a guardar en string     valores[campo] = new Date(valor);
-              valores[campo] = valor;
-              // console.log('Valor Fecha', campo, valor, 'Valor=' + valores[campo]);
-            } else
-              valores[campo] = valor;
-            break;
-            //valores[campo] = moment(valores[campo]).format('YYYY-MM-DD hh:mm') ;//new Date(valor); // generamos valores para localDb
-            break;
-          case "TIME":
-            if (valor) {
-              if (valor <= '1900-01-01T9') valor = "1900-01-01T00:00:00.000";
-              // 23/Ags/2021 cambiamos a guardar en string     valores[campo] = new Date(valor);
-              valores[campo] = valor;
-              //  console.log('Valor Fecha', campo, valor, valores[campo]);
-            } else
-              valores[campo] = valor;
-            break;
-
-          default:
-            valores[campo] = valor; // generamos valores para localDb
-        }
+      catch (error) {
+        this.messagebox.alert(
+          error,
+          "Error OpenlocalDb ",
+          "error"
+        );
+        return false;
       }
     }
-    // console.log('UpdateLocalDb', valores);
-
-    try {
-      const updated: any = await newLocalDb.insert({
-        into: alias,
-        return: true,
-        upsert: true,
-        values: [valores]
-
-      });
-
-      //  console.log(' Incerto en New===>',updated);
-      console.log('New ======>', updated);
-      if (updated[0].recno && updated[0].recno > 0) {
-        const updatedOld: any = await oldLocalDb.insert({
+  
+    ////////////////////////////////////////////////////
+    // Graba valor de la tabla local
+    /////////////////////////////////////////
+    //  Record<string, unknown>
+    async updateLocalDb(alias: string, datos: Record<string, unknown>) {
+      // actualizamos el timestamp
+      const timestamp = datos.timestamp;
+      const recno: any = datos.recno;
+      //console.log('updateLocalDb',alias,timestamp,recno);
+      //newLocalDb.transaction()
+      const resultado = await newLocalDb.update(
+        {
+          in: alias,
+          set: { timestamp: timestamp },
+          where: {
+            recno: recno
+          }
+        })
+  
+      if (resultado == 1) { // si se pudo actualizar leemos datos actuales 
+        const updated = await newLocalDb.select({
+          from: alias,
+          where: {
+            recno: recno
+          }
+        })
+        // actualizamos el registro old
+        await oldLocalDb.insert({
           into: alias,
           return: true,
           upsert: true,
           values: updated,
-
-        });
-        console.log('old======>', updatedOld);
-
-        if (updatedOld[0].recno) {
-          const recno = updatedOld[0].recno; //asignamos el nuevo recno
-
-          this.View[alias].recno = recno; // actualizamos en la clase
-          await newLocalDb.update({
-            in: "recno",
-            set: {
-              [alias]: recno,
-            },
-          });
-
-          const recCount = await newLocalDb.count({ from: alias }); // obtiene el numero de registros
-          // console.log('Record Count=======>',recCount)
-          this.View[alias].recCount = recCount;
-
-        }
-        else {
-          this.View[alias].recno = null; //asignamos el nuevo recno
-          this.View[alias].recCount = 0;
-
-        }
+        }).then((resultado) => {
+          if (resultado) {
+            return
+          }
+          else {
+            alert('No se pudo actualizar oldLocalDb');
+            return false
+          }
+  
+        })
       }
-
-      // actualizamos los datos de la forma
-      for (const campo in ThisForm) {
-        if (ThisForm[campo].prop && ThisForm[campo].prop.ControlSource &&
-          ThisForm[campo].prop.ControlSource > "     "
-        ) {
-          const ControlSource = ThisForm[campo].prop.ControlSource;
-          //console.log(ControlSource)
-
-          const pos = ControlSource.indexOf(".") + 1;
-          if (pos > 1) {
-            const nom_cam = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
-            const nom_tab = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
-
-            if (nom_tab == alias && ThisForm[campo].prop.Value != updated[0][nom_cam]) {
-
-              ThisForm[campo].prop.Value = updated[0][nom_cam];
-
-            }
+  
+  
+    }
+    ////////////////////////////////////////////////////
+    // Incerta  valores en la tabla local
+    /////////////////////////////////////////
+    //  Record<string, unknown>
+    async insertLocalDb(alias: string, datos: Record<string, unknown>) {
+      //  if (datos.recno && datos.recno>0) {
+      const ThisForm = this.Form    //.ctx.ThisForm;
+      if (datos.length == 0) return true
+      const valores = {};
+  
+  
+      // Recorremos todos los registros obtenidos desde la bas de datos y los transforma
+      for (const campo in datos) {
+        let valor: any = datos[campo];
+        if (campo == "recno") valores['recno'] = +valor; // si es el campo recno no busca en la estructura de la tabla
+        if (campo != "recno" && campo != "createdAt" && campo != "updatedAt") {
+          //console.log('UpdateLocalDb campo',campo);
+  
+          if (
+            this.View[alias].est_tabla[campo].tip_cam == "D" &&
+            valor > "1900"
+          ) {
+            // Si el campo es tipo fecha, le quitamos el tiempo
+            valor = valor.substring(0, 10);
+          }
+          //console.log('Campo==>',campo,this.View[alias].est_tabla[campo].tip_cam,respuesta[i][campo])
+          //let val_date= new Date() 
+          switch (this.View[alias].est_tabla[campo].tip_cam) {
+            case "NUMERIC":
+              valores[campo] = +valor; // generamos valores para localDb
+              break;
+            case "INT":
+              valores[campo] = +valor; // generamos valores para localDb
+              break;
+            case "DATE":
+              if (valor) {
+                if (valor <= '1900-01-01T9') valor = "1900-01-01T00:00:00.000";
+                // 23/Ags/2021 cambiamos a guardar en string     valores[campo] = new Date(valor);
+                valores[campo] = valor;
+                // console.log('Valor Fecha', campo, valor, 'Valor=' + valores[campo]);
+              } else
+                valores[campo] = valor;
+              break;
+              //valores[campo] = moment(valores[campo]).format('YYYY-MM-DD hh:mm') ;//new Date(valor); // generamos valores para localDb
+              break;
+            case "TIME":
+              if (valor) {
+                if (valor <= '1900-01-01T9') valor = "1900-01-01T00:00:00.000";
+                // 23/Ags/2021 cambiamos a guardar en string     valores[campo] = new Date(valor);
+                valores[campo] = valor;
+                //  console.log('Valor Fecha', campo, valor, valores[campo]);
+              } else
+                valores[campo] = valor;
+              break;
+  
+            default:
+              valores[campo] = valor; // generamos valores para localDb
           }
         }
       }
-
+      // console.log('UpdateLocalDb', valores);
+  
+      try {
+        const updated: any = await newLocalDb.insert({
+          into: alias,
+          return: true,
+          upsert: true,
+          values: [valores]
+  
+        });
+  
+        //  console.log(' Incerto en New===>',updated);
+        console.log('New ======>', updated);
+        if (updated[0].recno && updated[0].recno > 0) {
+          const updatedOld: any = await oldLocalDb.insert({
+            into: alias,
+            return: true,
+            upsert: true,
+            values: updated,
+  
+          });
+          console.log('old======>', updatedOld);
+  
+          if (updatedOld[0].recno) {
+            const recno = updatedOld[0].recno; //asignamos el nuevo recno
+  
+            this.View[alias].recno = recno; // actualizamos en la clase
+            await newLocalDb.update({
+              in: "recno",
+              set: {
+                [alias]: recno,
+              },
+            });
+  
+            const recCount = await newLocalDb.count({ from: alias }); // obtiene el numero de registros
+            // console.log('Record Count=======>',recCount)
+            this.View[alias].recCount = recCount;
+  
+          }
+          else {
+            this.View[alias].recno = null; //asignamos el nuevo recno
+            this.View[alias].recCount = 0;
+  
+          }
+        }
+  
+        // actualizamos los datos de la forma
+        for (const campo in ThisForm) {
+          if (ThisForm[campo].prop && ThisForm[campo].prop.ControlSource &&
+            ThisForm[campo].prop.ControlSource > "     "
+          ) {
+            const ControlSource = ThisForm[campo].prop.ControlSource;
+            //console.log(ControlSource)
+  
+            const pos = ControlSource.indexOf(".") + 1;
+            if (pos > 1) {
+              const nom_cam = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
+              const nom_tab = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
+  
+              if (nom_tab == alias && ThisForm[campo].prop.Value != updated[0][nom_cam]) {
+  
+                ThisForm[campo].prop.Value = updated[0][nom_cam];
+  
+              }
+            }
+          }
+        }
+  
+        return true;
+      }
+      catch (error) {
+        this.messagebox.alert(
+          error,
+          "Error update localDb ",
+          "error"
+        );
+        return false;
+      }
+  
       return true;
+  
     }
-    catch (error) {
-      this.messagebox.alert(
-        error,
-        "Error update localDb ",
-        "error"
-      );
-      return false;
-    }
-
-    return true;
-
-  }
-
-*/
+  
+  */
 
   async axiosCall(dat_lla: Record<string, unknown>) {
 
     const ThisForm: any = this.Form
 
     if (!(this.id_con > " ")) {
-      this.messagebox.alert(
+      this.messagebox(
         "No hay conexion con la base de datos",
-        "Error SQL Open",
-        "error"
+        "Error SQL Open"
       );
       window.close();
     }
@@ -1900,10 +1877,9 @@ return false;
         const respuesta = response.data;
         return respuesta;
       } catch (error) {
-        this.messagebox.alert(
+        this.messagebox(
           error.response.status.toString() + " " + error.response.statusText,
-          "Error SQL Open",
-          "error"
+          "Error SQL Open"
         );
 
         // si no es un error de desconexion
@@ -1993,12 +1969,12 @@ return false;
 
     const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
     const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
-    console.log('readCampo=', tabla, campo, recno)
+    //console.log('readCampo=', tabla, campo, recno)
     const data = await this.nowValue(tabla, campo, recno)
     //console.log('Read renglon ',data[0])
 
     return data[0][campo]
-  
+
   };
 
 
@@ -2006,7 +1982,7 @@ return false;
   // Lee Valor de Now
   /////////////////////////////////////////
   nowValue = async (tabla: string, campos: string, recno: number) => {
-   // console.log('nowValue Select=====>', tabla, campos, recno)
+    // console.log('nowValue Select=====>', tabla, campos, recno)
 
     const data = await alasql('USE Now; SELECT ' + campos + '  FROM ' + tabla + ' WHERE recno=? ;', recno)
 
@@ -2037,11 +2013,11 @@ return false;
   ////////////////////////////////////////////////////
   // Graba Value de la tabla local
   /////////////////////////////////////////
-  updateCampo = async (Value: any, ControlSource: string, recno: int) => {
+  updateCampo = async (Value: any, ControlSource: string, recno: number) => {
     //async update(Value: any) {
     //  const ControlSource = this.ControlSource;
 
-    if (ControlSource == "") return; // No  hay ControlSource
+    if (ControlSource == "" || recno==0) return; // No  hay ControlSource
     const pos = ControlSource.indexOf(".") + 1;
     if (pos == 1) return; // si no hay definida vista
 
@@ -2071,6 +2047,7 @@ return false;
     try {
       //     await alasql('USE Now;')
       const ins_sql = `USE Now; UPDATE ${tabla}  set ${campo}=${valor}  WHERE recno=${recno}`
+      console.log('update ala===',ins_sql,tabla,campo,recno)
       await alasql(ins_sql)
       //    console.log('update componente =>', ins_sql)
       //    console.log('update componente valor=', await this.readCampo(ControlSource, recno))
@@ -2136,12 +2113,23 @@ return false;
         recno = data[1][0][recno] // un solo campo
 
       }
-
+      this.View[alias].row = -1
       if (recno > 0) {
-        this.View[alias].recnoVal = this.nowValue(alias, '*', recno) // asignamos valores del alias posicionado       
+        //        this.View[alias].recno = this.nowValue(alias, '*', recno) // asignamos valores del alias posicionado       
+        for (let row = 0; this.View[alias].recnoVal.lenght; row++) {
+          if (this.View[alias].recnoVal[row].recno == recno) {
+            this.View[alias].row = row;
+            break
+          }
+
+        }
+        //          this.View[alias].row   = this.View[alias].recnoVal  
+        //          this.View[alias].recno = this.nowValue(alias, 'recno', recno) // asignamos valores del alias posicionado       
+
       }
       else {
-        this.View[alias].recnoVal = []
+        // this.View[alias].recnoVal = []
+        this.View[alias].row = -1
         if (despla == 'top')
           this.View[alias].eof = true
         else
@@ -2176,7 +2164,9 @@ return false;
 
     let data = []
     const row = this.View[alias].row
-    let recno = this.View[alias].recnoVal(row)
+    //    let recno = this.View[alias].recnoVal(row)
+    let recno = this.View[alias].recnoVal[row].recno
+
     if (despla > 0) {
       data = await alasql('USE Now; SELECT top ' + despla.toString + '  FROM ' + alias + ' where recno>' + recno.toString + ' order by recno ')
     } else {
@@ -2214,7 +2204,9 @@ return false;
     let resultado = {}
     if (!this.are_tra[this.num_are]) return false
     const alias = this.are_tra[this.num_are]
-    const recno = this.View[alias].recnoVal[this.View[alias].row]
+    //    const recno = this.View[alias].recnoVal[this.View[alias].row]
+    const recno = this.View[alias].recnoVal[this.View[alias].row].recno
+
     const data = await this.goto(recno) // lee los datos actuales
     if (data[1] && data[1].length == 0)
       return null

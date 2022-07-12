@@ -33,15 +33,7 @@ export class COLUMN extends COMPONENT {
 //    this.componente.BaseClass = 'Component'
 //    this.componente.prop.Name = 'component'
   }
-
-  async valid() {
-    // Obtiene el valor del recno
-    //console.log('When renco===>',this.Parent.prop)
-   console.log('Valid =====>',this.prop.Name)
-   return true
-
-  }
-
+/*
   ///////////////////////////////////////////////////// 
   // asignaRenglon 
   // lee los datos del renglon actual y depliega los componentes de captura
@@ -57,6 +49,6 @@ export class COLUMN extends COMPONENT {
     // this.pushEvent('SetFocus()') Se puso la propiedad de autofocus 
    // por el watch de status de componentes se pone en activo el grid_datos
   }
-
+*/
 
 }

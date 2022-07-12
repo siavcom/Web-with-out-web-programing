@@ -12,7 +12,7 @@
 && ----------------------------------------------------------------------------------------------
 -->
 <template>
-  <section class="pagina" style="ThisForm.estilo" >
+  <section class="pagina" style="ThisForm.estilo">
 
     <!--VueForm class="cuerpo" v-bind:style="ThisForm.estilo" v-bind:posicion="ThisForm.posicion"-->
     <slot name="header">
@@ -37,16 +37,12 @@
       <div v-for="(obj, compHeader) in ThisForm">
         <component
           v-if="ThisForm[compHeader].prop && ThisForm[compHeader].prop.Position == 'header' && compHeader != 'grid_datos'"
-          :is="impComp(ThisForm[compHeader].prop.BaseClass)"
-          v-bind:Component="ref(ThisForm[compHeader])"
-          v-model:Value="ThisForm[compHeader].prop.Value"
-          v-model:Status="ThisForm[compHeader].prop.Status"
-          v-model:ErrorMessage="ThisForm[compHeader].prop.ErrorMessage" 
-          v-model:Key="ThisForm[compHeader].prop.Key"
-          v-model:Focus="ThisForm[compHeader].Focus" 
-          v-bind:Recno="ThisForm[compHeader].Recno==null ? 0 : ThisForm[compHeader].Recno"
-          v-bind:prop="ThisForm[compHeader].prop"
-          v-bind:estilo="ThisForm[compHeader].estilo" 
+          :is="impComp(ThisForm[compHeader].prop.BaseClass)" v-bind:Component="ref(ThisForm[compHeader])"
+          v-model:Value="ThisForm[compHeader].prop.Value" v-model:Status="ThisForm[compHeader].prop.Status"
+          v-model:ErrorMessage="ThisForm[compHeader].prop.ErrorMessage" v-model:Key="ThisForm[compHeader].prop.Key"
+          v-model:Focus="ThisForm[compHeader].Focus"
+          v-bind:Recno="ThisForm[compHeader].Recno == null ? 0 : ThisForm[compHeader].Recno"
+          v-bind:prop="ThisForm[compHeader].prop" v-bind:estilo="ThisForm[compHeader].estilo"
           v-bind:posicion="ThisForm[compHeader].posicion"
           @focusout="ThisForm.eventos.push('ThisForm.' + compHeader + '.valid()')"
           @focus.capture="ThisForm.eventos.push('ThisForm.' + compHeader + '.when()')">
@@ -65,18 +61,12 @@
         <!-- @focus.capture -->
         <div v-for="(obj, comp) in ThisForm">
           <component v-if="ThisForm[comp].prop && ThisForm[comp].prop.Position == 'main'"
-            :is="impComp(ThisForm[comp].prop.BaseClass)" 
-            v-bind:Component="ref(ThisForm[comp])"
-            v-model:Value="ThisForm[comp].prop.Value" 
-            v-model:Status="ThisForm[comp].prop.Status"
-            v-model:ErrorMessage="ThisForm[comp].prop.ErrorMessage" 
-            v-model:Key="ThisForm[comp].prop.Key"
-            v-model:Focus="ThisForm[comp].Focus" 
-            v-bind:Recno="ThisForm[comp].Recno==null ? 0 : ThisForm[comp].Recno"
-            v-bind:prop="ThisForm[comp].prop" 
-            v-bind:estilo="ThisForm[comp].estilo"
-            v-bind:posicion="ThisForm[comp].posicion" 
-            v-bind:db="ref(ThisForm.db)"
+            :is="impComp(ThisForm[comp].prop.BaseClass)" v-bind:Component="ref(ThisForm[comp])"
+            v-model:Value="ThisForm[comp].prop.Value" v-model:Status="ThisForm[comp].prop.Status"
+            v-model:ErrorMessage="ThisForm[comp].prop.ErrorMessage" v-model:Key="ThisForm[comp].prop.Key"
+            v-model:Focus="ThisForm[comp].Focus" v-bind:Recno="ThisForm[comp].Recno == null ? 0 : ThisForm[comp].Recno"
+            v-bind:prop="ThisForm[comp].prop" v-bind:estilo="ThisForm[comp].estilo"
+            v-bind:posicion="ThisForm[comp].posicion" v-bind:db="ref(ThisForm.db)"
             @focusout="ThisForm.eventos.push('ThisForm.' + comp + '.valid()')"
             @focus.capture="ThisForm.eventos.push('ThisForm.' + comp + '.when()')"
             @click="ThisForm.eventos.push('ThisForm.' + comp + '.click()')"></component>
@@ -96,18 +86,13 @@
 
         <div v-for="(obj, compFooter) in ThisForm">
           <component v-if="ThisForm[compFooter].prop && ThisForm[compFooter].prop.Position == 'footer'"
-            :is="impComp(ThisForm[compFooter].prop.BaseClass)" 
-            v-bind:Component="ref(ThisForm[compFooter])"
-            v-model:Value="ThisForm[compFooter].prop.Value" 
-            v-model:Status="ThisForm[compFooter].prop.Status"
-            v-model:ErrorMessage="ThisForm[compFooter].prop.ErrorMessage" 
-            v-model:Key="ThisForm[compFooter].prop.Key"
-            v-model:Focus="ThisForm[compFooter].Focus" 
-            v-bind:Recno="ThisForm[compFooter].Recno==null ? 0 : ThisForm[compFooter].Recno"
-            v-bind:prop="ThisForm[compFooter].prop" 
-            v-bind:estilo="ThisForm[compFooter].estilo"
-            v-bind:posicion="ThisForm[compFooter].posicion" 
-            v-bind:db="ref(ThisForm.db)"
+            :is="impComp(ThisForm[compFooter].prop.BaseClass)" v-bind:Component="ref(ThisForm[compFooter])"
+            v-model:Value="ThisForm[compFooter].prop.Value" v-model:Status="ThisForm[compFooter].prop.Status"
+            v-model:ErrorMessage="ThisForm[compFooter].prop.ErrorMessage" v-model:Key="ThisForm[compFooter].prop.Key"
+            v-model:Focus="ThisForm[compFooter].Focus"
+            v-bind:Recno="ThisForm[compFooter].Recno == null ? 0 : ThisForm[compFooter].Recno"
+            v-bind:prop="ThisForm[compFooter].prop" v-bind:estilo="ThisForm[compFooter].estilo"
+            v-bind:posicion="ThisForm[compFooter].posicion" v-bind:db="ref(ThisForm.db)"
             @focusout="ThisForm.eventos.push('ThisForm.' + compFooter + '.valid()')"
             @focus.capture="ThisForm.eventos.push('ThisForm.' + compFooter + '.when()')"
             @click="ThisForm.eventos.push('ThisForm.' + compFooter + '.click()')"></component>
@@ -180,7 +165,10 @@ import comboBox from "@/components/comboBox.vue"
 import editText from "@/components/editText.vue"
 import textLabel from "@/components/textLabel.vue"
 import grid from "@/components/grid.vue"
-
+// import grid from "@/components/GridScrollStatic.vue"
+// import grid from "@/components/gridVirtualList.vue"  Dejo de utilizar el item mode
+//import grid from "@/components/GridScrollInfinite.vue"
+//import grid from "@/components/VirtualScrollGrid.vue"
 
 
 /////////////////////////////////////////
@@ -206,8 +194,6 @@ const ThisForm = reactive(new props.THISFORM);
 //const estatus = reactive({}); //estatus de proceso de cada componente actualizable de la base de datos
 //const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
 
-//ThisForm.eventos=ref(eventos)
-//const m = reactive({ Value: 'valor' })
 
 
 // asigna por referencia un Value de un objeto reactivo. Con toRefs hace todas las variables reactivas a referencia
@@ -237,13 +223,14 @@ function sleep(sleepDuration: number) {
 // Ejecuta los eventos que hay en la pila de eventos
 async function eje_eve() {
   try {
-
+    console.log('Entra a eje_eve',ThisForm.eventos[0])
     //if (ThisForm.eventos.length > 0) console.log("Watch Eventos a ejecutar ===>", ThisForm.eventos);
 
+    //    while (ThisForm.eventos.length > 0) {
     while (ThisForm.eventos.length > 0) {
-
       // corremos el stack de eventos a ejecutar
       for (const nom_com in ThisForm.estatus) { //
+        console.log('eje_eve estaus ',nom_com, ThisForm.estatus[nom_com])
         if (ThisForm.estatus[nom_com] != "A") return; // Si el estatus del componente esta en Proceso se sale
       }
 
@@ -251,11 +238,11 @@ async function eje_eve() {
       // Wait for eval wrapper
 
 
-      const waitEval = (evento:string, form) => {
+      const waitEval = (evento: string, form) => {
         return new Promise((resolve, reject) => {
           // Se tiene que pasar por referencia donde esta el ThisForm 
           const ThisForm = form.value //ya que se trabajo solo en ambiente local
-          console.log('WaitEval  evento ejecutado =====>', evento)
+          //console.log('WaitEval  evento ejecutado =====>', evento)
 
           //          if (evento == 'ThisForm.grid_datos.des_dat.Ref.focus()') {
 
@@ -275,7 +262,7 @@ async function eje_eve() {
           //          }
 
 
-
+          console.log('eje_eve resolve evento',evento)
           resolve(eval(evento))
         });
       }
@@ -298,7 +285,9 @@ async function eje_eve() {
       // Necesitamos pasar por referencia el ThisForm
 
 
+      //      waitEval(ThisForm.eventos[0], ref(ThisForm)).
       waitEval(ThisForm.eventos[0], ref(ThisForm)).
+
         then(() => {
           ThisForm.prop.Status = 'A' // Se necesita cambiar un dato directamente para refresh
           //   nextTick()
@@ -311,7 +300,16 @@ async function eje_eve() {
       //eval(eventos[0]); //(); // emitimos el primer evento.Tiene que llevar () para que funcione
 
       //await waitFn(eventos[0])
-      ThisForm.eventos.splice(0, 1); // borramos el evento
+
+      //     ThisForm.eventos.splice(0, 1); // borramos el evento
+      const new_arr=[]
+      for ( let  i=1;i<ThisForm.eventos.length;i++){
+          new_arr[i-1]=ThisForm.eventos[i]
+      }
+      ThisForm.eventos=[...new_arr]
+      console.log('Stack de eventos',ThisForm.eventos)  // borramos el evento
+
+
     }
 
   }
@@ -332,24 +330,40 @@ async function eje_eve() {
  */
 
 
-
+/*
 /////////////////////////////////////////////////////
 // Incerta el evento a ejecutar en la pila de eventos
 async function push_eve(nom_eve: string) {
   ThisForm.eventos.push(nom_eve);
-  console.log("Evento empujado", eventos[0]);
+  //console.log("Evento empujado", eventos[0]);
   await eje_eve();
 }
-/*
+*/
+
+
+
 watch(
   () => eventos,
   (new_val, old_val) => {
     console.log("Eventos a ejecutar ===>", new_val);
+    if (eventos.length == 0) return
+    for (const comp in ThisForm.estatus) {
+      if (ThisForm.estatus[comp] != 'A') {
+        return
+      }
+    }
+    //const a = new Date
+    //console.log('Watch eventos===>', a, eventos[0])
     eje_eve();
-  }, { deep: true }
+    //const b = new Date
+
+   // console.log('Watch eventos fin eje ===>', b)
+
+  },
+  { deep: true }
 );
 
-*/
+
 ////////////////////////////////
 // revisa los eventos que hay a ejecutar, en caso que hay una estatus de un componente
 // no ejecuta el evento
@@ -359,13 +373,19 @@ watch(
   (new_val, old_val) => {
 
     if (ThisForm.eventos.length == 0) return
-    //console.log('Watch eventos===>',ThisForm.eventos)
     for (const comp in ThisForm.estatus) {
-      console.log('Watch estatus ===>', comp, ThisForm.estatus[comp])
       if (ThisForm.estatus[comp] != 'A') {
         return
       }
+      // console.log('Watch eventos ===>', comp, ThisForm.estatus[comp])
+      const a = new Date
+      console.log('Watch eventos cimienza ===>', a, ThisForm.eventos[0])
+
       eje_eve()
+      const b = new Date
+
+      console.log('Watch eventos fin eje ===>', b)
+
     }
   }, { deep: true }
 );
@@ -376,10 +396,10 @@ watch(
 watch(
   () => ThisForm.estatus,
   (new_val, old_val) => {
-    console.log('<=======Watch estatus =======>')
+    // console.log('<=======Watch estatus =======>')
 
     for (const comp in ThisForm.estatus) {
-      console.log('Watch estatus ===>', comp, ThisForm.estatus[comp])
+      //  console.log('Watch estatus ===>', comp, ThisForm.estatus[comp])
 
       if (ThisForm.estatus[comp] != 'A') {
         return
@@ -550,11 +570,12 @@ const impComp = ((name: string) => {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #08315a;
-  min-height: 100vh; 
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 /*
 div.contenedor {
   background: white;
@@ -573,12 +594,14 @@ header {
   border-width: 1px;
   padding: 0 10x;
 }
+
 img.logoVue {
   float: left;
   border: 1px solid #ddd;
   padding: 5px;
   width: 64px;
 }
+
 div.nemPge {
   float: left;
   width: 20%;
@@ -615,6 +638,7 @@ div.fpoPge {
   font-family: Helvetica, Arial, sans-serif;
   /*z-index: 999;*/
 }
+
 .fadeIn-enter {
   opacity: 0;
 }
@@ -667,9 +691,11 @@ img.logoEmp {
 }
 
 section.footer {
-  display: flex; /*  flex;*/
+  display: flex;
+  /*  flex;*/
   /*flex-direction: column; */
-  align-items: center; /*center;*/
+  align-items: center;
+  /*center;*/
   justify-content: space-around;
   /*width: 100%;*/
   height: 90px;
@@ -695,7 +721,8 @@ img.bt_salir {
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  border-bottom: 1px dotted black;
+  /* If you want dots under the hoverable text */
 }
 
 /* Tooltip text */

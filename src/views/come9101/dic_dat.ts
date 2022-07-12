@@ -26,6 +26,7 @@ export class DIC_DAT extends COMPONENT {
       ["Datos", "Tablas", "Indices", "Vistas", "Menú del sistema","Otros"],
       ["D", "T", "I", "V", "M","O"],
     ]; // vi_cap_doc.tdo_tdo,des_tdo
+    this.prop.ControlSource = 'vi_cap_dat.dic_dat'
     this.prop.RowSourceType = 5; //1-Value, 2-Alias, 5-Array
     this.prop.ColumnCount = 2;
     this.prop.BoundColumn = 2;
@@ -40,10 +41,10 @@ export class DIC_DAT extends COMPONENT {
 
 
   ////////////////////////////////
-  public async setFocus() {
+  public async when() {
   // public setFocus = async () => {
-    super.setFocus()
-    console.log('dic_dat setFocus')
+    super.when()
+    console.log('dic_dat when')
     this.Form.sis_prg.prop.Visible = false
     this.Form.nom_tab.prop.Visible = false
     this.Form.grid_datos.prop.Visible=false
@@ -61,7 +62,7 @@ export class DIC_DAT extends COMPONENT {
     if (This.Value=='D' || This.Value=='V' || This.Value=='I'){ // Datos , Vistas o Indices
       this.Form.nom_tab.prop.Visible = true
       this.Form.sis_prg.prop.Visible = false
-      this.Form.nom_tab.prop.Focus= true
+      this.Form.nom_tab.setFocus()
  
     }
     if (This.Value == 'M') {   // Menu

@@ -46,7 +46,6 @@ export class COMPONENT {
     ColumnCount: 1,
     BoundColumn: 1,
     RowSource: {},
-    Disabled: false,
     ColumnWidths: '100',
     Visible: true,
     Grid: false,
@@ -129,7 +128,7 @@ export class COMPONENT {
     }
 
     this.Form = Form  // asigna la forma a la propiedad Form 
-    console.log('Init form ====>', this.prop.Name)
+    //console.log('Init form ====>', this.prop.Name)
     this.prop.Status = 'A'
 
     // console.log('Init Componente this.Form',this.Form)
@@ -140,8 +139,7 @@ export class COMPONENT {
   // Descripcion: Cada tecla que se presiona en el input
   /////////////////////////////////////////////////////////////////
   public async valid() {
-    //console.log('Super valid ==>',this.prop.Name)
-
+  
     //public valid = async (sw_mut?: false) => {
     // if (sw_mut) return // si fue llamada de la mutacion del metodo retorna
     if (this.prop.Sw_cap) this.prop.Sw_val = true
@@ -166,7 +164,7 @@ export class COMPONENT {
 
   public async when() {
 
-
+    //console.log('Super when ==>',this.prop.Name)
     return true
   }
 

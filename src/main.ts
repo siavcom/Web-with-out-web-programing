@@ -4,6 +4,11 @@ import router from "./router";
 //import $VueSimpleAlert from "vue3-simple-alert"; // mensajes de alerta  npm i vue-simple-alert Vue.use(VueSimpleAlert);
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+//import VueVirtualScroller from "vue-virtual-scroller";
+//import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+
+
+
 import "@/components/styles.css"  // Estilos default de los componentes
 //import App from "./views/Siavcom.vue";
 
@@ -67,6 +72,21 @@ app.config.errorHandler = (err: any, vm, info) => {
 // Montamos el VueSweetalert2 y lo hacemos publico
 app.use(VueSweetalert2);
 window.Swal =  app.config.globalProperties.$swal;
+//app.use(VueVirtualScroller);
 app.mount("#app");
 
 //createApp(App).mount("#app");
+/*
+import Vue from "vue";
+import App from "./App.vue";
+import VueVirtualScroller from "vue-virtual-scroller";
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+
+Vue.use(VueVirtualScroller);
+Vue.config.productionTip = false;
+
+new Vue({
+  render: h => h(App)
+}).$mount("
+
+*/

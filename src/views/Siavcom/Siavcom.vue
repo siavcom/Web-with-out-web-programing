@@ -140,7 +140,7 @@ import {FORM} from"@/views/Siavcom/Form.ts"
 //////////////////////////////////////////////
 // Clases Externas
 //////////////////////////////////////////////
-import { VueSimpleAlert } from "vue3-simple-alert";
+import {Functions} from '@/clases/Functions'
 import { VFPDB } from "@/clases/DataBase";
 
 //import { PAS_USU } from "@/views/Login/pas_usu";
@@ -224,7 +224,7 @@ const bt_graba = new BT_GRABA();
 //console.log('This Cod_nom ====>',cod_nom);
 
 const fec_act = new Date().toISOString().substr(0, 10); //  Fecha actual de la computadora cliente
-const messagebox = VueSimpleAlert; // asignamos las clases de VueSimpleAlert a messagebox
+const messagebox = Functions.MessageBox; // asignamos las clases de VueSimpleAlert a messagebox
 
 //////////////   Clase Base de datos ///////////////////////////////
 //const db = new VFPDB("http://siavcom.com.mx:58000/", "Demo", "sa", "******");

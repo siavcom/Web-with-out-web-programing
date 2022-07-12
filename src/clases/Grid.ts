@@ -63,6 +63,7 @@ export class GRID extends COMPONENT {
   // lee los datos del renglon actual y depliega los componentes de captura
   ///////////////////////////////////////////////////////////
   public async asignaRenglon(row: number) {
+    console.log('asignaRenglon row ',row,this.Form.db.View[this.prop.RecordSource].recnoVal)
     if (row>this.Form.db.View[this.prop.RecordSource].recnoVal.length-1) 
       row=this.Form.db.View[this.prop.RecordSource].recnoVal.length-1
     else row=row
@@ -94,7 +95,7 @@ export class GRID extends COMPONENT {
 
   }
 
-
+/*
   ////////////////////////////////////////////////////
   // Recorrera todos los componentes columna donde esta el foco y
   // asigna todos los Value a los componentes del grid que sean columnas
@@ -108,37 +109,11 @@ export class GRID extends COMPONENT {
       const data = await this.Form.db.nowValue(RecordSource, ' * ', recno)
       Values=data[0]
     } else   console.log('Asigna Valores Values =====>>', Values)
-
-
-    
-    // recorre los componentes columna para asignar su valor
-/*    
-    for (const comp in this) { 
-      
-            if (this[comp].BaseClass == 'Column') {
-        const ControlSource = this[comp].prop.ControlSource // asignamos el control Source de la columna
-        const pos = ControlSource.indexOf(".") + 1;
-        if (pos > 0) {  // Si hay control source
-   
-          const campo = ControlSource.slice(pos).trim(); // obtenemos el nombre del campo
-          const tabla = ControlSource.slice(0, pos - 1).trim(); // obtenemos el nombre de la vista (queda hasta el punto)
-
-          if (tabla == RecordSource) { // Si es el mismo RecordSource asigna valor
-            this[comp].prop.Value = Values[campo]
-            console.log('Asigna Valores =====>>', RecordSource,comp,this[comp].prop.Value)
-
-          } 
-
-        }
-
-      }
-
-
-    }
+  }
 
 */
-  }
-//////////////////////////
+
+  //////////////////////////
 // Borra renglon
 // row: renglon a borrar
 /////////////////////////

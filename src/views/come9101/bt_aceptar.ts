@@ -57,7 +57,7 @@ export class BT_ACEPTAR extends COMPONENT {
         if (await this.Form.db.select('vi_cap_dat')==0)  await this.Form.db.select(0)
         await this.Form.db.use("vi_cap_dat",m)
         this.Form.grid_datos.prop.Visible=true 
-        console.log('bt_aceptar====>>',this.Form.grid_datos)
+        console.log('bt_aceptar recnoVal====>>',this.Form.db.View.vi_cap_dat.recnoVal)
 //        this.Form.grid_datos.prop.Enabled = true
 
      //   await this.Form.db.vista_captura(m, "vi_cap_dat")

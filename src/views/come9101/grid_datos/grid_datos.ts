@@ -49,12 +49,12 @@ export class GRID_DATOS extends GRID {
   // this.prop.Label = "Campos de una tabla2";
     this.prop.ReadOnly = false;
     this.prop.ColumnCount=8
-    this.estilo.display='flex'
-    this.estilo.flexWrap= 'wrap'
+    //this.estilo.display='flex'
+    //this.estilo.flexWrap= 'wrap'
 
-    this.estilo.flexGrow= '0'     /* do not grow   - initial value: 0 */
-    this.estilo.flexShrink= '0'   /* do not shrink - initial value: 1 */
-    this.estilo.flexBasis= '900px'
+    //this.estilo.flexGrow= '0'     /* do not grow   - initial value: 0 */
+    //this.estilo.flexShrink= '0'   /* do not shrink - initial value: 1 */
+    //this.estilo.flexBasis= '900px'
 
     
     /*   Las propiedades de cada columna estan en cada clase columna

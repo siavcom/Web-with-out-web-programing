@@ -2,203 +2,84 @@
   <div
     v-if="props.prop.Visible && props.prop.RecordSource.length > 0 && props.db.value && props.db.value.View[prop.RecordSource]"
     class="divi" :style="estilo" ref="Ref">
-    <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
-    <div class="tooltip">
-      <!-- Grid  -->
-      <form class="gridDatos">
-        <!--label text-align="center">{{ prop.textLabel }}</label>  -->
-        <h2>{{ prop.textLabel }}</h2>
-        <div class="tabla">
-          <table style="margin-top:10px">
-            <thead>
-              <tr style="font-size: 13px">
-                <td>Renglon</td>
-                <td v-for="(obj, elemento) in This">
-                  <!--Header:
-                      Solo imprime si su clase es header 
-                   Tambien se pueden utilizar las prop de cada componente
-                      ejemplo: elemento.Value ( elemento.prop.Value)
-                      hay que poner el v-if para que solo se evaluen las columnas
-                       v-if="This[elemento.Name]"   Si existe la elemento
-                       && This[elemento.Name].BaseClass== 'Column' 
-                       :ref="el => { This.Ref = el }"
-                      :set="nomCom = impComp(This[elemento].prop.BaseClass)"
-                  -->
-                  <div
-                    v-if="This[elemento] != null && This[elemento].BaseClass && This[elemento].BaseClass == 'Column'">
-                    <!--Imprime como etiqueta el header de cada columna-->
-                    {{ obj.textLabel }}
-                  </div>
-                </td>
-              </tr>
-            </thead>
-            <!-------------  Cuerpo  
-                        v-if="prop.Status == 'A' && db.View[prop.RecordSource] && db.View[prop.RecordSource]recnoVal.length > 0" >
-                [RecordSource]
-          ------------------------->
-            <tbody v-if="prop.Status == 'A' && scroll.dataPage.length > 0">
-              <!-------------  Renglones  -----------------------
-              @click="() => items.splice(i, 1)
-              -->
-              <!-- Repetira segun el numero de renglones que tenga datos   
-               
-               This.db.View.[prop.RecordSource].recnoVal 
-                             <div  v-if="This.db.View['[prop.RecordSource]']"
-                >registros={{ This.db.View['[prop.RecordSource]']['recnoVal']}}</div>
-                this.View[alias].recnoVal   
-                Views.[prop.RecordSource].recnoVal 
-                in scroll.dataPage  
-              -->
-              <!--tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
-              <tr v-for="item in scroll.dataPage" :key="item.id">
 
-                <td>
-                  {{ item.id + 1 }}{{ This.Row }}
-                </td>
-                <!-------------  Columnas  ------------------------->
-                <!-- Por cada renglon Repetimos segun el numero de columnas tenga  
-                  {{ i + 1 }}
-                  v-bind:Recno="This.renglon[i]" 
-                      v-model="This[columna.Name].prop.Value"
-                      v-model:Status="This[columna.Name].prop.Status"
-                      v-model:ErrorMessage="This[columna.Name].prop.ErrorMessage"
-                      v-model:Key="This[columna.Name].prop.Key"
-                      v-bind:Recno="This.db.View.recnoVal[i]"
-                      v-bind:prop="This[columna.Name].prop"
-                      v-bind:estilo="This[columna.Name].estilo"
-                      v-bind:posicion="This[columna.Name].posicion"
-                      v-bind:db="ref(This.db)"
-                                            v-bind:Recno="This.db.View.[columna.Name].recnoVal[i]"
-                      :is="impComp(This[columna.Name].BaseClass)"
-                       v-model:Value="m.Value"
+    <!--RecycleScroller-->
 
-                      @focusout="push_eve('This.' + columna.Name + '.valid()')"
-                      @focus.capture="push_eve('This.' + columna.Name + '.when('+i+')')"
-                      @focusout="eventos.push(This[columna.Name].valid())"
-                      @focus.capture="eventos.push(This[columna.Name].when(i))" />
+    <DynamicScroller 
+      :items="Db.View[prop.RecordSource]['recnoVal']" 
+      :item-size="25"
+      :min-item-size="25" 
+      page-mode 
+      class="scroller"
+      :prerender="10" 
+      key-field="id">
 
 
-                  <div v-if="This[columna.Name] && i == This.Row">
-                    <component :is="impComp(This[columna.Name].prop.BaseClass)"
-                      
-                      v-model:Status="This[columna.Name].prop.Status"
-                      v-model:ErrorMessage="This[columna.Name].prop.ErrorMessage"
-                      v-model:Key="This[columna.Name].prop.Key"
-                      v-bind:Recno="This.db.View.[prop.RecordSource].recnoVal[i]"
-                      v-bind:prop="This[columna.Name].prop"
-                      v-bind:estilo="This[columna.Name].estilo"
-                      v-bind:posicion="This[columna.Name].posicion" v-bind:db="ref(This.db)"
-                      @focusout="eventos.push(This[columna.Name].valid())" 
-                      @focus.capture="eventos.push(This[columna.Name].when(i))"
-                      :ref="el => { This[columna.Name].Ref = el }"
-                      @onmouseover=""/>
+      <template #before>
+        {{ prop.textLabel }}
 
-                        </div>
-                        -->
-                <!--
-                     Al asignar el Recno al componente, automaticamente toma su valor desde el componente
-                    v-bind:Recno="This.db.View.[prop.RecordSource].recnoVal[i]"
-                     Pasamos por referencia el objeto donde esta la bd para poder leer y grabar su valor
-                      v-bind:db="ref(This.db)"
-                      :ref="el => {This[columna.Name].Refe(el)}"
-                      :ref="el => {This[columna.Name].Ref=el}"
-
-                      @focus.capture="This.eventos.push('This.' + columna.Name + '.when(' + i + ')')"
-                      @focusout or @change="This.eventos.push('This.' + columna.Name + '.valid()')" />
-                      :ref="el => { refe[col] = el }"
-                    v-model:Ref="This[col].Ref"
-                    :is="textLabel"
-                                        @focus.capture="This.Form.eventos.push(This.prop.Map+'.' + This[col].Name + '.when()')"
- 
-                v-if="props.db.value.View[prop.RecordSource].recnoVal" 
-                v-show="i != This.Row"
-                    -->
-                <td v-for="(obj, col) in This" :key=obj.ColumnOrder style="padding:0; text-align:center">
-
-                  <div v-if="This[col].BaseClass && This[col].BaseClass == 'Column' && This[col].prop.Status != 'I'">
-                    <!--template-->
-                    <!--focus.capture.stop para que solo ejecute el evento en el componente actual-->
-                    <div v-show="item.id != This.Row">
-
-                      <KeepAlive>
-                        <textLabel v-bind:Recno="item.recno" v-bind:prop="This[col].prop"
-                          v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion" v-bind:db="db"
-                          @focus.capture.stop="eventos.push(This.prop.Map + '.asignaRenglon(' + item.id + ')')"
-                          @click.stop="" @focusout.stop="">
-                        </textLabel>
-                      </KeepAlive>
-                    </div>
-                    <!--/template-->
-                    <div v-if="item.id == This.Row">
-                      <component :is="impComp(This[col].prop.BaseClass)" v-model:Value="This[col].prop.Value"
-                        v-model:Status="This[col].prop.Status" v-model:ErrorMessage="This[col].prop.ErrorMessage"
-                        v-model:Key="This[col].prop.Key" v-model:Focus="This[col].Focus"
-                        v-bind:Component="ref(This.Form[col])" v-bind:Recno="item.recno" v-bind:prop="This[col].prop"
-                        v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion" v-bind:db="db"
-                        @focusout.capture.stop="eventos.push(This.prop.Map + '.' + This[col].Name + '.valid()')"
-                        @focus.capture.stop="eventos.push(This.prop.Map + '.' + This[col].Name + '.when()')">
-                        @click.stop
-                      </component>
-                    </div>
-                  </div>
-                </td>
-                <div class="left-btn hide-in-print" @click="eventos.push(This.prop.Map + '.deleteRow(' + i + ')')">
-                  <img src="/Iconos/delete.jpeg" width="20">
-                </div>
-
-              </tr>
-              <tr>
-                <td>
-                  <!-------------  Si el numero de Columnas es menor que 2 y da un click genera nuevo registro
-                    @click="() => items.push({ key: Math.random(), ref: 'MyRef', desc: 'My description', qty: 1, price: 0 })"
-                    v-if="This.renglon<2 "
-
-
-                 <div  v-if="i==This.db.View.[prop.RecordSource].recno-1"
-                    :ref="Status => { This.prop.Status='A'}" >
-                     Status={{i}} {{This.db.View.[prop.RecordSource].recno}} {{This.prop.Status}}
-                 </div>
-
-                   :ref="Status => { This.prop.Status='A'}"
-
-                  -->
-
-                  <div v-if="props.db.value.View[prop.RecordSource]" class="left-btn hide-in-print"
-                    @click="eventos.push(This.prop.Map + '.appendRow()')">
-                    <img src="/Iconos/plus.jpeg" width="20" />
-                    {{ This.Row }}
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </form>
-
-      <!--span v-if="prop.ToolTipText" class="tooltiptext">
-        {{
-            prop.ToolTipText
-        }}
-      </span-->
-    </div>
-    <span @click.prevent="first()">
-      <img src="/Iconos/first.png" width="20" />
-    </span>
-    <span @click.prevent="previous()">
-      <img src="/Iconos/previous.png" width="20" />
-    </span>
-    <span @click.prevent="next()">
-      <img src="/Iconos/next.png" width="20" />
-    </span>
-    <span @click.prevent="last()">
-      <img src="/Iconos/last.png" width="20" />
-    </span>
+      </template>
 
 
 
+
+      <!-- slot que me da los renglones con el identificador item-->
+      <template v-slot="{ item, index, active }">
+
+        <DynamicScrollerItem
+         :item="item" 
+         :active="active" 
+         :data-index="index"
+         tag='tr'>
+         
+
+
+
+
+
+        <!--tr v-if="item == 1">
+          <td>Renglon</td>
+          <td v-for="(obj, elemento) in This">
+         
+            <div v-if="This[elemento] != null && This[elemento].BaseClass && This[elemento].BaseClass == 'Column'">
+            
+              {{ obj.textLabel }}
+            </div>
+          </td>
+
+        </tr-->
+
+        <tr>{{item}}</tr>
+        <!-- Columnasdiv v-for="cell in item" ><label>{{cell}}{{item}}</label></div-->
+
+        <td v-for="(obj, col) in This" :key=obj.ColumnOrder style="padding:0; text-align:center">
+
+          <div v-if="This[col].BaseClass && This[col].BaseClass == 'Column' && This[col].prop.Status != 'I'">
+            <!--template-->
+            <KeepAlive>
+
+              <textLabel v-bind:Recno="props.db.value.View[prop.RecordSource].recnoVal[index]"
+                v-bind:prop="This[col].prop" v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion"
+                v-bind:db="db">
+              </textLabel>
+
+
+            </KeepAlive>
+            <!--/template-->
+          </div>
+        </td>
+        </DynamicScrollerItem>
+      </template>
+
+      <template #after>
+        temlplate finall
+      </template>
+
+
+
+    </DynamicScroller>
   </div>
 </template>
-
 
 
 <script setup lang="ts">
@@ -221,12 +102,13 @@ import {
 } from "vue";
 
 
+import { DynamicScroller,DynamicScrollerItem } from 'vue3-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 import imgButton from "@/components/imgButton.vue"
 import comboBox from "@/components/comboBox.vue"
 import editText from "@/components/editText.vue"
 import textLabel from "@/components/textLabel.vue"
-import Grid from "vue-virtual-scroll-grid";
 
 const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key", "update:Focus"]);
 //import { localDb } from "@/clases/LocalDb";  // manejo del indexedDb
@@ -235,6 +117,7 @@ const emit = defineEmits(["update", "update:Value", "update:Status", "update:Err
 // Propiedades del componente reactivas
 ////////////////////////////////////
 const props = defineProps<{
+  item:Object,
   prop: {
     ToolTipText: string;
     View: "";
@@ -261,7 +144,6 @@ const props = defineProps<{
     Grid: false;
     Autofocus: false;
     RecordSource: string;
-    Rows: number;
     //    SetFocus:false;
     //compAddress: any;
   };
@@ -284,7 +166,6 @@ const props = defineProps<{
   Recno: 0;
   Component: null;
   db: any
-
 }>();
 // Valores componente padre
 const Component = ref(props.Component)
@@ -308,17 +189,6 @@ const Key = ref(props.prop.Key)
 defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
 const Error = ref(false)
 const Focus = ref(false)
-
-const scroll = reactive({
-  dataPage: [],
-  top: true,
-  bottom: false,
-  page: 0,
-  rows: props.prop.Rows
-})
-
-
-
 
 /*  position
 static	Elements renders in order, as they appear in the document flow. This is default.
@@ -459,6 +329,28 @@ const onFocus = async () => {
 // Notas : Si se tiene en props, se tiene que vigilar el cambio de props.prop.Value
 /*
 ////////////////////////////////////////
+// ControlSource
+///////////////////////////////////////
+watch(
+  () => props.prop.ControlSource,
+  (new_val, old_val) => {
+    if (new_val != old_val) {
+      if (props.Recno > 0 && new_val.trim().length) {
+
+        Value.value = props.db.value.readRenglon(new_val, props.Recno)
+        emitValue()
+      }
+    }
+    //    LocalDb.ControlSource = new_val;
+
+
+  },
+  { deep: false }
+);
+
+*/
+/*
+////////////////////////////////////////
 // Recno
 // Nota: Lee de la base de datos local segun el valor de recno
 ///////////////////////////////////////
@@ -547,47 +439,33 @@ watch(
 );
 
 
-///////////////////////////////////////////////
-// Cuando se cambial el RecordSource  
-///////////////////////////////////////////////
+/////////////////////////////////////////
+// Metodo init Vfp
+// Aqui debemos de asignar todos los Valores inciales del componente
+// A pesar que nom_nom se pasa por referencia, se tuvo que definir en props para qu fuera reactivo
+// Se tiene que emitir para que cambie el Valor en el template
+/////////////////////////////////////////
 
-watch(
-  () => props.prop.RecordSource,
-  (new_val, old_val) => {
+const init = async () => {
 
-    if (new_val && !old_val &&
-      props.prop.RecordSource.length > 3) {
-      scroll.page = 0
-      scroll.top = true
-      scroll.bottom = false
-      scroll.dataPage.length = 0
-      console.log('RecordSource scroll===>', scroll)
-      if (props.prop.RecordSource.length > 3) {
-        loadData()
-      }
 
+
+  for (const componente in This) {
+    if (
+      This[componente].prop &&       // Si tiene propiedades
+      This[componente].prop.Sw_cap &&  // Si es componete de captura
+      This[componente].prop.Sw_cap == true
+    ) {
+      This.estatus[componente] = toRef(This[componente].prop, "Status"); // stack de estatus de componentes
     }
-  },
-  { deep: false }
-);
+  }
+  console.log('Init Grid==>', props.prop.Name)
 
 
-
-watch(
-  () => props.prop.Visible,
-  (new_val, old_val) => {
-
-    if (new_val && !old_val &&
-      props.prop.RecordSource.length > 3) {
-      console.log('watch Visible ===>', scroll)
-      scroll.page = 0
-      scroll.top = false
-      scroll.bottom = false
-      loadData()
-    }
-  },
-  { deep: false }
-);
+  // if (props.prop.Name=='des_dat')  Ref.value.autofocus=true
+  //Status.value = 'I';
+  //Value.value = 0; // asignamos Valor inicial
+};
 
 /************************************************************************************ */
 ////////////////////////////////
@@ -615,8 +493,7 @@ watch(
 
       for (let i = 0; i < eventos.length; i++) {
         console.log('Grid watch eventos', eventos[i])
-        const evento = eventos[i]
-        This.Form.eventos.push(evento)
+        //This.Form.eventos.push(eventos[i])
       }
       eventos.length = 0 // borramos los eventos
       console.log('Grid watch eventos limpia eventos', eventos)
@@ -675,138 +552,6 @@ watch(
 
 
 //************************************************** */
-
-
-
-
-
-/////////////////////////////////////////
-// Metodo loadDataFromServer
-// Descripcion : se trae datos des
-/////////////////////////////////////////
-
-
-const loadData = async () => {
-
-  try {
-    if (!props.db.value || props.db.value.View[props.prop.RecordSource].length < 3)
-      return false
-
-
-    const result = []
-    if (!scroll.rows || scroll.rows == 0) scroll.rows = 10
-
-    const Rows = scroll.rows
-    if (scroll.page == 0) scroll.top = true
-    else scroll.top = false
-
-    scroll.bottom = false
-    for (let i = 0; i < Rows; i++) {
-      const elementNo = ((scroll.page) * Rows) + i
-      if (Db.View[props.prop.RecordSource].recnoVal[elementNo]) {
-        scroll.dataPage[i] = Db.View[props.prop.RecordSource].recnoVal[elementNo]
-      }
-
-      else {  // borra los elementos que ya no existen
-        //    scroll.dataPage.slice(i, Rows - 1 - i)
-        scroll.bottom = true
-        scroll.dataPage.length = i
-        console.log('Scroll i,scroll  ======>', i, scroll)
-
-
-        // scroll.dataPage.length=i+1
-        //  scroll.bottom=true
-
-        break
-      }
-
-    }
-
-
-    /*
-            if(result.length) {
-              
-              scroll.dataPage.push(...result);
-              scroll.page++;
-            } else {
-              scroll.noResult = true;
-             scroll.message = "No result found";
-            }
-            */
-  } catch (err) {
-    //    scroll.noResult = true;
-    //    scroll.message = "Error loading data";
-  }
-}
-
-
-
-const first = async () => {
-  if (scroll.top) return
-  scroll.page = 0
-  loadData()
-}
-
-
-const previous = async () => {
-  scroll.page--
-  loadData()
-
-}
-
-const next = async () => {
-  scroll.page++
-  loadData()
-
-}
-
-const last = async () => {
-  console.log('grid last 1 ====>', scroll, Db.View[props.prop.RecordSource].recnoVal.length, scroll.rows)
-
-  if (scroll.bottom) return
-  scroll.page = Db.View[props.prop.RecordSource].recnoVal.length / scroll.rows
-  console.log('grid last 2 ====>', scroll.page)
-
-  scroll.page = Math.trunc(scroll.page)
-  if (scroll.page > 0) scroll.page--
-
-  console.log('grid last 3 ====>', scroll.page)
-
-  loadData()
-
-}
-
-
-
-
-/////////////////////////////////////////
-// Metodo init Vfp
-// Aqui debemos de asignar todos los Valores inciales del componente
-// A pesar que nom_nom se pasa por referencia, se tuvo que definir en props para qu fuera reactivo
-// Se tiene que emitir para que cambie el Valor en el template
-/////////////////////////////////////////
-
-const init = async () => {
-
-
-
-  for (const componente in This) {
-    if (
-      This[componente].prop &&       // Si tiene propiedades
-      This[componente].prop.Sw_cap &&  // Si es componete de captura
-      This[componente].prop.Sw_cap == true
-    ) {
-      This.estatus[componente] = toRef(This[componente].prop, "Status"); // stack de estatus de componentes
-    }
-  }
-  console.log('Init Grid==>', props.prop.Name)
-
-
-  // if (props.prop.Name=='des_dat')  Ref.value.autofocus=true
-  //Status.value = 'I';
-  //Value.value = 0; // asignamos Valor inicial
-};
-
 init(); // Ejecuta el init
 
 //////////////////////////////////////
@@ -931,3 +676,61 @@ input {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <!--style scoped src="@/components/styles.css" /-->
+
+
+
+
+<!--
+<template>
+  <div>
+    <RecycleScroller :items="rows" :item-size="32" class="scroller" key-field="id">
+      <template slot-scope="{ item }">
+        <div class="flex">
+          <div class="cell" v-for="cell in item.fields" :key="cell.id">{{ cell }}</div>
+        </div>
+      </template>
+    </RecycleScroller>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "HelloWorld",
+  props: {
+    msg: String
+  },
+  data() {
+    return {
+      rows: []
+    };
+  },
+  mounted() {
+    setTimeout(() => {
+      this.rows = new Array(10000).fill().map(createRow.bind(this));
+    }, 1000);
+  }
+};
+
+function createRow(val, idx) {
+  return {
+    id: idx,
+    fields: new Array(15).fill("Lorem")
+  };
+}
+</script>
+
+<style>
+.scroller {
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.cell {
+  flex: 1;
+}
+</style>
+-->

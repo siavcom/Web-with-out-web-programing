@@ -1,8 +1,10 @@
 <template>
   <div class="divi" :style="estilo" :v-show="prop.Visible">
     <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
-    <div class="Caption" v-text="Caption" />
-    <!--  :v-show="prop.Value > ' '" v-model="Value"  
+    <!--
+          <div class="Caption" v-text="Caption" ></div>
+
+      :v-show="prop.Value > ' '" v-model="Value"  
     
     <input class="texto" readonly="true" 
     -->
@@ -28,7 +30,7 @@ import {
   // onUnmounted,
 
 } from "vue";
-const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key"]);
+const emit = defineEmits(["update", "update:Value", "update:Status"]);
 //import { localDb } from "@/clases/LocalDb";  // manejo del indexedDb
 
 ///////////////////////////////////////
@@ -129,7 +131,7 @@ const emitValue = async () => {
   Status.value = 'A'
 
   //Text.value = Value.value
-  console.log('textLabel emit Value ====>', Text.value)
+  //console.log('textLabel emit Value ====>', Text.value)
   //emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   //emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   emit("update") // emite un update en el componente padre
@@ -512,7 +514,7 @@ watch(
 );
 */
 
-
+/*
 watch(
   () => props.prop.Value,
   (new_val, old_val) => {
@@ -525,11 +527,12 @@ watch(
   },
   { deep: false }
 );
-
+*/
 
 ///////////////////////////////////////
 // ControlSource
 ///////////////////////////////////////
+/*
 watch(
   () => props.prop.ControlSource,
   (new_val, old_val) => {
@@ -546,12 +549,13 @@ watch(
   },
   { deep: false }
 );
-
+*/
 
 ////////////////////////////////////////
 // Recno
 // Nota: Lee de la base de datos local segun el valor de recno
 ///////////////////////////////////////
+/*
 watch(
   () => props.Recno,
   (new_val, old_val) => {
@@ -584,9 +588,10 @@ watch(
   },
   { deep: false }
 );
-
+*/
 
 // RowSoure
+/*
 watch(
   () => props.prop.RowSource,
 
@@ -599,6 +604,8 @@ watch(
   { deep: true }
 );
 //RowSourceType
+*/
+/*
 watch(
   () => props.prop.RowSourceType,
 
@@ -612,7 +619,8 @@ watch(
   },
   { deep: false }
 );
-
+*/
+/*
 
 //ColumCount
 watch(
@@ -627,9 +635,10 @@ watch(
   },
   { deep: false }
 );
-
+*/
 
 //BoundColum
+/*
 watch(
   () => props.prop.BoundColumn,
 
@@ -642,8 +651,9 @@ watch(
   },
   { deep: false }
 );
-
+*/
 //width
+/*
 watch(
   () => props.estilo.width,
 
@@ -662,6 +672,7 @@ watch(
   },
   { deep: false }
 );
+*/
 /////////////////////////////////////////////
 // Computed
 /////////////////////////////////////////////
@@ -679,13 +690,14 @@ watch(
 
 const init = async () => {
 
-  console.log('Init textLabel  ==>', props.prop.Name, props.Recno, props.prop.ControlSource.length)
+   console.log('Init textLabel  ==>', props.prop.Name, props.Recno, props.prop.ControlSource.length)
 
   if (props.Recno > 0 && props.prop.ControlSource.length > 2) {
 
     //    Status.value = 'P';  // en lectura
     //    emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-    await readCampo(props.Recno)
+    // await 
+    readCampo(props.Recno)
   }
 
   //  if (props.prop.Autofocus) {

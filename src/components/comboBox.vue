@@ -295,7 +295,7 @@ const asignaResultado = (valor?: string) => {
   // console.log("AsignaResultado  valor,columnas ======>",valor, columnas)
 
   if (valor) {
-        console.log("ComboBox AsignaResultado valor columnas =======>", props.prop.Name,valor,columnas)
+      //  console.log("ComboBox AsignaResultado valor columnas =======>", props.prop.Name,valor,columnas)
 
 
     for (let i = 0; i < columnas.length; i++) {
@@ -313,7 +313,7 @@ const asignaResultado = (valor?: string) => {
     }
   }
   else {  //aqui me quede checar cuando es por arreglo genra el value con array
-        console.log("ComboBox AsignaResultad Value.vale columnas =======>", props.prop.Name,Value.value,columnas)
+       // console.log("ComboBox AsignaResultad Value.vale columnas =======>", props.prop.Name,Value.value,columnas)
 
     for (let i = 0; i < columnas.length; i++) {
 //      if (Value.value == columnas[i]['text'][0]) { // El objeto columna tiene dos campos value y text
@@ -326,7 +326,7 @@ const asignaResultado = (valor?: string) => {
         // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
 
         //Resultado.value = columnas[i].text[0];
-        console.log("ComboBox AsignaResultado columnas =======>", props.prop.Name,props.prop.Value,columnas[i].text[0])
+       // console.log("ComboBox AsignaResultado columnas =======>", props.prop.Name,props.prop.Value,columnas[i].text[0])
 
 
         Resultado.value = columnas[i]['text'][0]   // asigna el resultado a mostrar

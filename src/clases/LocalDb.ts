@@ -8,7 +8,7 @@
 //                           recuperados de la base de datos
 /////////////////////////////////////////////
 
-import VueSimpleAlert from "vue3-simple-alert"; // mensajes de alerta  npm i vue-simple-alert Vue.use(VueSimpleAlert);
+//import VueSimpleAlert from "vue3-simple-alert"; // mensajes de alerta  npm i vue-simple-alert Vue.use(VueSimpleAlert);
 import { newLocalDb } from "@/services/jsstore_con_new";
 import { oldLocalDb } from "@/services/jsstore_con_old";
 import alasql from "alasql"
@@ -50,11 +50,12 @@ export class localDb {
       //  console.log('EditBox abre localDb=======>')
     }
     catch (error) {
-      VueSimpleAlert.alert(
+      console.log("Error localDb ",error)
+      /*VueSimpleAlert.alert(
         error,
         "Error localDb ",
         "error"
-      );
+      );*/
       return false;
     }
   }
