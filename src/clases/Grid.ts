@@ -117,14 +117,14 @@ export class GRID extends COMPONENT {
 // Borra renglon
 // row: renglon a borrar
 /////////////////////////
-  async deleteRow(row : number) {
-     console.log('Delete row, recnoVal==== ',row,this.prop.RecordSource)
+  async deleteRow(recno : number) {
+     console.log('Delete row, recnoVal==== ',recno,this.prop.RecordSource)
      //const recno=this.Form.db.View[this.prop.RecordSource].recnoVal(row) 
      //console.log('delete renglon',row,'Recno',recno,this.Form.db.View[this.prop.RecordSource].recnoVal)
 //    await this.Form.db.delete(this.Form.db.View[this.prop.RecordSource].recnoVal[row],this.prop.RecordSource)
-    await this.Form.db.delete(row,this.prop.RecordSource)
+    await this.Form.db.delete(recno,this.prop.RecordSource)
 
-    await this.asignaRenglon(row)
+    await this.asignaRenglon(recno)
 
     
   }

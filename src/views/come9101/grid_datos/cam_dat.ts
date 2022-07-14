@@ -25,7 +25,6 @@ export class CAM_DAT extends COLUMN {
  
         this.estilo.flexBasis = '10%' /* width/height  - initial value: auto */
         this.estilo.width=''
-        this.prop.Autofocus=true
     }
 
     ////////////////////////////////// 

@@ -57,6 +57,8 @@ export class COMPONENT {
     Position: 'main', // main, header , footer
     Image: '',
     Focus: false,
+    First: false,
+    Last: false,
 
   };
   estilo = {

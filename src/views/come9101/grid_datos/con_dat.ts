@@ -1,6 +1,7 @@
 //////////////////////////////////////////////
 // Clase : con_dat
-// Descripcion : Decimales del dato
+// Descripcion : Consecutivo 
+// Obs: es la primer columna 
 // Author : Fernando Cuadras Angulo
 // Creacion : Junio/2022
 // Ult.Mod  22/Junio/2022
@@ -26,6 +27,8 @@ export class CON_DAT extends COLUMN {
         this.prop.Placeholder = "Consecutivo/Orden "
         this.prop.ToolTipText = 'Consecutivo/Orden'
         this.estilo.flexBasis = '30%' /* width/height  - initial value: auto */
+  //      this.prop.Autofocus=true
+  
     }
 
     ////////////////////////////////// 

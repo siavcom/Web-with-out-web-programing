@@ -682,8 +682,8 @@ export class VFPDB {
     //    this.View[alias].recno = recno           // asignamos el valor recno
 
     //   this.View[alias].recnoVal.push(recno)   
-    const id=this.View[alias].recnoVal.length
-    this.View[alias].recnoVal.push({ recno: recno, id:id })   // insertamos en el arreglo para llenar el grid
+    const id = this.View[alias].recnoVal.length
+    this.View[alias].recnoVal.push({ recno: recno, id: id })   // insertamos en el arreglo para llenar el grid
     this.View[alias].recCount = this.View[alias].recCount + 1
     this.View[alias].row = this.View[alias].recnoVal.length - 1 //asignamos nuevo row
 
@@ -698,7 +698,7 @@ export class VFPDB {
   // alias  : Nombre de la vista a utilizar
   // row : Renglon donde se encuentra el registro a borrar
   ///////////////////////////////////////////////
-  delete = async (row: number, alias: any) => {
+  delete = async (recno: number, alias: any) => {
     if (!alias) {
       // si no se da el alias
       alias = this.are_tra[this.num_are - 1]; // asigna el nombre de la vista segun el area de trabajo
@@ -709,24 +709,23 @@ export class VFPDB {
       return;
     }
 
-    var recno = 0
-    if (!row) {
-      row = this.View[alias].row
+    if (!recno) {
+      recno = this.View[alias].recnoVal[this.View[alias].row].recno
     }
 
-    if (row < 0) return null // no hay row por borrar
+    if (recno <= 0) return null // no hay row por borrar
 
-    console.log('Delete alias,row,recnoVal ', alias, row, this.View[alias].recnoVal)
+    console.log('Delete alias,recno ', alias, recno, this.View[alias].recnoVal)
 
     //    recno = this.View[alias].recnoVal[row]  // obtenemos el recno
-    recno = this.View[alias].recnoVal[row].recno  // obtenemos el recno
+    // recno = this.View[alias].recnoVal[row].recno  // obtenemos el recno
 
     // obtenemos el key_pri
     const data = alasql('USE Last;\
     select key_pri from '+ alias + ' where recno=?', recno)
     const key_pri = data[1][0]['key_pri']
 
-    // Borrar base de datos si existe el renglon
+    // Borrar base de datos si hay key_pri de la base de datos
     if (key_pri > 0) {
 
       const dat_vis = {
@@ -766,12 +765,19 @@ export class VFPDB {
     //  borra en el arreglo de recno
     //delete this.View[alias].recnoVal[row];
 
-    console.log('delete antes slice ===>', row, this.View[alias].recnoVal)
+  
 
-    this.View[alias].recnoVal.slice(row, 1);
     // this.View[alias].recnoVal.slice(row)  // borramos de arreglo 
-    console.log('delete despues slice ===>', row, this.View[alias].recnoVal)
+    const reg=this.View[alias].recnoVal.find( ele=>ele.recno==recno)
+  
+    if (!reg) return false 
 
+    var row=reg.id
+    //this.View[alias].recnoVal.slice(row, 1);
+    //utilizamos el filter para rehacer el arreglo
+    this.View[alias].recnoVal = this.View[alias].recnoVal.filter(item => item.id !== row);
+
+  
 
     if (this.View[alias].recnoVal.length - 1 < row)
       row = this.View[alias].recnoVal.length - 1
@@ -779,6 +785,7 @@ export class VFPDB {
     this.View[alias].row = row
     //    recno = this.View[alias].recnoVal[row]
     recno = this.View[alias].recnoVal[row].recno
+   // console.log('delete despues slice recno reg recnoVal===>', recno,this.View[alias].recnoVal)
 
     return await this.goto(recno)    // se va a leer registro
 
@@ -1200,7 +1207,7 @@ export class VFPDB {
       for (let i = 0; i < data.length; i++) {
         data[i]['recno'] = i + 1
         //        recnoVal[i] = i + 1
-        recnoVal[i]={recno : i + 1, id:i} 
+        recnoVal[i] = { recno: i + 1, id: i }
 
       }
 
@@ -1241,7 +1248,7 @@ export class VFPDB {
       // recnoVal=alasql(SELECT recno FROM Now.' + alias) 
 
       this.View[alias].recnoVal = [...recnoVal] // utilizamos el spread Operator 
-      console.log('RecnoVal===>',this.View[alias].recnoVa)
+      console.log('RecnoVal===>', this.View[alias].recnoVa)
     } else this.View[alias]['data'] = {} // no hay datos
 
   }
@@ -1387,7 +1394,7 @@ export class VFPDB {
       for (let i = 0; i < respuesta.length; i++) {
         respuesta[i]['recno'] = i + 1
         //        recnoVal[i] = i + 1
-        recnoVal[i]={recno : i + 1,id : i}
+        recnoVal[i] = { recno: i + 1, id: i }
 
       }
 
@@ -2017,7 +2024,7 @@ return false;
     //async update(Value: any) {
     //  const ControlSource = this.ControlSource;
 
-    if (ControlSource == "" || recno==0) return; // No  hay ControlSource
+    if (ControlSource == "" || recno == 0) return; // No  hay ControlSource
     const pos = ControlSource.indexOf(".") + 1;
     if (pos == 1) return; // si no hay definida vista
 
@@ -2047,7 +2054,7 @@ return false;
     try {
       //     await alasql('USE Now;')
       const ins_sql = `USE Now; UPDATE ${tabla}  set ${campo}=${valor}  WHERE recno=${recno}`
-      console.log('update ala===',ins_sql,tabla,campo,recno)
+      console.log('update ala===', ins_sql, tabla, campo, recno)
       await alasql(ins_sql)
       //    console.log('update componente =>', ins_sql)
       //    console.log('update componente valor=', await this.readCampo(ControlSource, recno))
@@ -2141,7 +2148,7 @@ return false;
     }
 
     // leedatos
-    data = await alasql('USE Now; SELECT *   FROM ' + alias + ' where recno=' + recno.toString)
+    data = await alasql('USE Now; SELECT *   FROM ' + alias + '  where recno=?', recno)
     if (data[1].length > 0) {
       this.View[alias].recno = recno
       return data[1]

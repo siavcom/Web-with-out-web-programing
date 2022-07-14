@@ -3,7 +3,7 @@
     v-if="props.prop.Visible && props.prop.RecordSource.length > 0 && props.db.value && props.db.value.View[prop.RecordSource]"
     class="divi" :style="estilo" ref="Ref">
     <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
-    <div class="tooltip">
+    <!--div class="tooltip"-->
       <!-- Grid  -->
       <form class="gridDatos">
         <!--label text-align="center">{{ prop.textLabel }}</label>  -->
@@ -15,14 +15,6 @@
                 <td>Renglon</td>
                 <td v-for="(obj, elemento) in This">
                   <!--Header:
-                      Solo imprime si su clase es header 
-                   Tambien se pueden utilizar las prop de cada componente
-                      ejemplo: elemento.Value ( elemento.prop.Value)
-                      hay que poner el v-if para que solo se evaluen las columnas
-                       v-if="This[elemento.Name]"   Si existe la elemento
-                       && This[elemento.Name].BaseClass== 'Column' 
-                       :ref="el => { This.Ref = el }"
-                      :set="nomCom = impComp(This[elemento].prop.BaseClass)"
                   -->
                   <div
                     v-if="This[elemento] != null && This[elemento].BaseClass && This[elemento].BaseClass == 'Column'">
@@ -32,84 +24,20 @@
                 </td>
               </tr>
             </thead>
-            <!-------------  Cuerpo  
-                        v-if="prop.Status == 'A' && db.View[prop.RecordSource] && db.View[prop.RecordSource]recnoVal.length > 0" >
-                [RecordSource]
-          ------------------------->
-            <tbody v-if="prop.Status == 'A' && scroll.dataPage.length > 0">
-              <!-------------  Renglones  -----------------------
-              @click="() => items.splice(i, 1)
-              -->
-              <!-- Repetira segun el numero de renglones que tenga datos   
-               
-               This.db.View.[prop.RecordSource].recnoVal 
-                             <div  v-if="This.db.View['[prop.RecordSource]']"
-                >registros={{ This.db.View['[prop.RecordSource]']['recnoVal']}}</div>
-                this.View[alias].recnoVal   
-                Views.[prop.RecordSource].recnoVal 
-                in scroll.dataPage  
+            <!-------------  Detalle   ------------------------->
+          
+            <tbody v-show="This.Form.prop.Status=='A' && prop.Status == 'A' && scroll.dataPage.length > 0">
+            
+            <!-------------  Renglones  -----------------------
               -->
               <!--tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
               <tr v-for="item in scroll.dataPage" :key="item.id">
 
                 <td>
-                  {{ item.id + 1 }}{{ This.Row }}
+                  {{ item.id + 1 }}
                 </td>
                 <!-------------  Columnas  ------------------------->
-                <!-- Por cada renglon Repetimos segun el numero de columnas tenga  
-                  {{ i + 1 }}
-                  v-bind:Recno="This.renglon[i]" 
-                      v-model="This[columna.Name].prop.Value"
-                      v-model:Status="This[columna.Name].prop.Status"
-                      v-model:ErrorMessage="This[columna.Name].prop.ErrorMessage"
-                      v-model:Key="This[columna.Name].prop.Key"
-                      v-bind:Recno="This.db.View.recnoVal[i]"
-                      v-bind:prop="This[columna.Name].prop"
-                      v-bind:estilo="This[columna.Name].estilo"
-                      v-bind:posicion="This[columna.Name].posicion"
-                      v-bind:db="ref(This.db)"
-                                            v-bind:Recno="This.db.View.[columna.Name].recnoVal[i]"
-                      :is="impComp(This[columna.Name].BaseClass)"
-                       v-model:Value="m.Value"
-
-                      @focusout="push_eve('This.' + columna.Name + '.valid()')"
-                      @focus.capture="push_eve('This.' + columna.Name + '.when('+i+')')"
-                      @focusout="eventos.push(This[columna.Name].valid())"
-                      @focus.capture="eventos.push(This[columna.Name].when(i))" />
-
-
-                  <div v-if="This[columna.Name] && i == This.Row">
-                    <component :is="impComp(This[columna.Name].prop.BaseClass)"
-                      
-                      v-model:Status="This[columna.Name].prop.Status"
-                      v-model:ErrorMessage="This[columna.Name].prop.ErrorMessage"
-                      v-model:Key="This[columna.Name].prop.Key"
-                      v-bind:Recno="This.db.View.[prop.RecordSource].recnoVal[i]"
-                      v-bind:prop="This[columna.Name].prop"
-                      v-bind:estilo="This[columna.Name].estilo"
-                      v-bind:posicion="This[columna.Name].posicion" v-bind:db="ref(This.db)"
-                      @focusout="eventos.push(This[columna.Name].valid())" 
-                      @focus.capture="eventos.push(This[columna.Name].when(i))"
-                      :ref="el => { This[columna.Name].Ref = el }"
-                      @onmouseover=""/>
-
-                        </div>
-                        -->
                 <!--
-                     Al asignar el Recno al componente, automaticamente toma su valor desde el componente
-                    v-bind:Recno="This.db.View.[prop.RecordSource].recnoVal[i]"
-                     Pasamos por referencia el objeto donde esta la bd para poder leer y grabar su valor
-                      v-bind:db="ref(This.db)"
-                      :ref="el => {This[columna.Name].Refe(el)}"
-                      :ref="el => {This[columna.Name].Ref=el}"
-
-                      @focus.capture="This.eventos.push('This.' + columna.Name + '.when(' + i + ')')"
-                      @focusout or @change="This.eventos.push('This.' + columna.Name + '.valid()')" />
-                      :ref="el => { refe[col] = el }"
-                    v-model:Ref="This[col].Ref"
-                    :is="textLabel"
-                                        @focus.capture="This.Form.eventos.push(This.prop.Map+'.' + This[col].Name + '.when()')"
- 
                 v-if="props.db.value.View[prop.RecordSource].recnoVal" 
                 v-show="i != This.Row"
                     -->
@@ -118,18 +46,17 @@
                   <div v-if="This[col].BaseClass && This[col].BaseClass == 'Column' && This[col].prop.Status != 'I'">
                     <!--template-->
                     <!--focus.capture.stop para que solo ejecute el evento en el componente actual-->
-                    <div v-show="item.id != This.Row">
-
+                    <div v-show="item.id != This.Row " >
                       <KeepAlive>
                         <textLabel v-bind:Recno="item.recno" v-bind:prop="This[col].prop"
                           v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion" v-bind:db="db"
                           @focus.capture.stop="eventos.push(This.prop.Map + '.asignaRenglon(' + item.id + ')')"
-                          @click.stop="" @focusout.stop="">
+                          @click.stop @focusout.stop>
                         </textLabel>
                       </KeepAlive>
                     </div>
                     <!--/template-->
-                    <div v-if="item.id == This.Row">
+                    <div v-if="item.id == This.Row ">
                       <component :is="impComp(This[col].prop.BaseClass)" v-model:Value="This[col].prop.Value"
                         v-model:Status="This[col].prop.Status" v-model:ErrorMessage="This[col].prop.ErrorMessage"
                         v-model:Key="This[col].prop.Key" v-model:Focus="This[col].Focus"
@@ -137,13 +64,14 @@
                         v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion" v-bind:db="db"
                         @focusout.capture.stop="eventos.push(This.prop.Map + '.' + This[col].Name + '.valid()')"
                         @focus.capture.stop="eventos.push(This.prop.Map + '.' + This[col].Name + '.when()')">
-                        @click.stop
+                      
                       </component>
                     </div>
                   </div>
                 </td>
-                <div class="left-btn hide-in-print" @click="eventos.push(This.prop.Map + '.deleteRow(' + i + ')')">
-                  <img src="/Iconos/delete.jpeg" width="20">
+                <div class="left-btn hide-in-print" @click="borraRenglon(item.recno)">
+                  <img src="/Iconos/delete.jpeg" width="23">
+                 
                 </div>
 
               </tr>
@@ -163,14 +91,16 @@
 
                   -->
 
-                  <div v-if="props.db.value.View[prop.RecordSource]" class="left-btn hide-in-print"
+                  <div v-if="scroll.bottom" 
                     @click="eventos.push(This.prop.Map + '.appendRow()')">
-                    <img src="/Iconos/plus.jpeg" width="20" />
+                   <img src="/Iconos/plus.jpeg" width="20" />
                     {{ This.Row }}
                   </div>
                 </td>
               </tr>
-            </tbody>
+              
+          </tbody>
+           
           </table>
         </div>
       </form>
@@ -180,7 +110,7 @@
             prop.ToolTipText
         }}
       </span-->
-    </div>
+    <!--/div tolltiptext-->
     <span @click.prevent="first()">
       <img src="/Iconos/first.png" width="20" />
     </span>
@@ -547,10 +477,20 @@ watch(
 );
 
 
+
 ///////////////////////////////////////////////
 // Cuando se cambial el RecordSource  
 ///////////////////////////////////////////////
-
+watch(
+  () => props.prop.RecordSource,
+  (new_val, old_val) => {
+     console.log('RecordSource scroll===>', scroll)
+  }
+ ,
+  { deep: false }
+);
+ 
+/*
 watch(
   () => props.prop.RecordSource,
   (new_val, old_val) => {
@@ -561,6 +501,7 @@ watch(
       scroll.top = true
       scroll.bottom = false
       scroll.dataPage.length = 0
+      recnoVal=ref(Db.View[props.prop.RecordSource].recnoVal)
       console.log('RecordSource scroll===>', scroll)
       if (props.prop.RecordSource.length > 3) {
         loadData()
@@ -570,7 +511,7 @@ watch(
   },
   { deep: false }
 );
-
+*/
 
 
 watch(
@@ -584,10 +525,13 @@ watch(
       scroll.top = false
       scroll.bottom = false
       loadData()
+
     }
   },
   { deep: false }
 );
+
+
 
 /************************************************************************************ */
 ////////////////////////////////
@@ -687,6 +631,9 @@ watch(
 
 
 const loadData = async () => {
+  This.Row=-1
+  This.Form.prop.Status='P'
+  //console.log('loadData thisFormprop',This.Form.prop.Status)
 
   try {
     if (!props.db.value || props.db.value.View[props.prop.RecordSource].length < 3)
@@ -709,9 +656,14 @@ const loadData = async () => {
 
       else {  // borra los elementos que ya no existen
         //    scroll.dataPage.slice(i, Rows - 1 - i)
+        if (i==0) { // No hay datos, le asigna el ultimo elemento
+          scroll.dataPage[i] = Db.View[props.prop.RecordSource].recnoVal[elementNo-1]
+          scroll.dataPage.length = 1 // Solo dejamos  el ultimo elemento
+
+        }else
+          scroll.dataPage.length = i // Borramos todos los elementos restantes
+
         scroll.bottom = true
-        scroll.dataPage.length = i
-        console.log('Scroll i,scroll  ======>', i, scroll)
 
 
         // scroll.dataPage.length=i+1
@@ -721,7 +673,6 @@ const loadData = async () => {
       }
 
     }
-
 
     /*
             if(result.length) {
@@ -737,6 +688,10 @@ const loadData = async () => {
     //    scroll.noResult = true;
     //    scroll.message = "Error loading data";
   }
+
+    This.Form.prop.Status='A'
+    console.log('loadData thisFormprop',This.Form.prop.Status)
+
 }
 
 
@@ -749,35 +704,40 @@ const first = async () => {
 
 
 const previous = async () => {
+  if (scroll.top) return
   scroll.page--
   loadData()
 
 }
 
 const next = async () => {
+  if (scroll.bottom) return
   scroll.page++
   loadData()
 
 }
 
 const last = async () => {
-  console.log('grid last 1 ====>', scroll, Db.View[props.prop.RecordSource].recnoVal.length, scroll.rows)
-
+  
   if (scroll.bottom) return
   scroll.page = Db.View[props.prop.RecordSource].recnoVal.length / scroll.rows
-  console.log('grid last 2 ====>', scroll.page)
 
   scroll.page = Math.trunc(scroll.page)
-  if (scroll.page > 0) scroll.page--
-
-  console.log('grid last 3 ====>', scroll.page)
+  //if (scroll.page > 0) scroll.page--
 
   loadData()
+  scroll.bottom=true 
 
 }
 
+const borraRenglon = async (recno:number) => {
+console.log('borraRenglon',This.prop.Map + '.deleteRow(' + recno+ ')')  
+eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
+loadData()
 
-
+//scroll.dataPage= scroll.dataPage.filter(item => item.recno !== recno);
+//if (scroll.dataPage.length==0) loadData()
+}
 
 /////////////////////////////////////////
 // Metodo init Vfp
@@ -801,7 +761,7 @@ const init = async () => {
   }
   console.log('Init Grid==>', props.prop.Name)
 
-
+ 
   // if (props.prop.Name=='des_dat')  Ref.value.autofocus=true
   //Status.value = 'I';
   //Value.value = 0; // asignamos Valor inicial
@@ -880,53 +840,6 @@ input {
   border-radius: 5%;
 }
 
-/* Tooltip container */
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
-  /* If you want dots under the hoverable text */
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
-
-  /* Position the tooltip text */
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
-
-  /* Fade in tooltip */
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-/* Tooltip arrow */
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
 </style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

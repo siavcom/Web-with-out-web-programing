@@ -131,3 +131,82 @@ input.fecha {
   visibility: visible;
   opacity: 1;
 }
+
+
+/* Tooltip container */
+.error {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.blinking{
+  animation:blinkingText 1.2s infinite;
+}
+@keyframes blinkingText{
+  0%{     color: #000;    }
+  49%{    color: #000; }
+  60%{    color: transparent; }
+  99%{    color:transparent;  }
+  100%{   color: #000;    }
+}
+
+
+
+
+/* Tooltip text */
+.error .errorText {
+  visibility: visible;
+  width: 120px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(245, 9, 9);
+  text-align: center;
+ /* padding: 5px 0;*/
+  border-radius: 6px;
+  border-color: #f10c0c;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 25%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  animation:blinkingText 1.2s infinite;
+
+  
+}
+@keyframes blinkingText{
+  0%{     color: rgb(248, 8, 8);    }
+  49%{    color: rgb(248, 7, 7); }
+  60%{    color: transparent; }
+  99%{    color:transparent;  }
+  100%{   color: rgb(248, 4, 4);    }
+}
+
+
+/* Tooltip arrow */
+/*
+.error .errortext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+*/
+/* Show the tooltip text when you mouse over the tooltip container */
+/*
+.error:hover .errortext {
+  visibility: visible;
+  opacity: 1;
+}
+*/
+
+

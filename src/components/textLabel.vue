@@ -1,13 +1,6 @@
 <template>
   <div class="divi" :style="estilo" :v-show="prop.Visible">
     <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
-    <!--
-          <div class="Caption" v-text="Caption" ></div>
-
-      :v-show="prop.Value > ' '" v-model="Value"  
-    
-    <input class="texto" readonly="true" 
-    -->
     <input class="texto" readonly="true" :v-show="Text > ' '" v-model="Text" />
   </div>
 </template>
@@ -30,7 +23,7 @@ import {
   // onUnmounted,
 
 } from "vue";
-const emit = defineEmits(["update", "update:Value", "update:Status"]);
+const emit = defineEmits(["update"]);
 //import { localDb } from "@/clases/LocalDb";  // manejo del indexedDb
 
 ///////////////////////////////////////
@@ -105,9 +98,7 @@ const Caption = ref(props.prop.Caption);
 
 //const This = Component.value
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
-//const Resultado = ref("");
-//const width = reactive([{}]);
-//const width = reactive(['60%', '20%', '20%']);
+
 
 
 Status.value = 'I'
@@ -118,10 +109,6 @@ Status.value = 'I'
 
 //const zIndex = ref(props.estilo.zIndex)
 const inputWidth = ref('auto')
-//const LocalDb = new localDb();
-
-
-
 /////////////////////////////////////////////////////////////////////
 // emitValue
 // Descripcion: emite hacia el componente padre el nuavo valor asignado
@@ -129,28 +116,11 @@ const inputWidth = ref('auto')
 const emitValue = async () => {
 
   Status.value = 'A'
-
-  //Text.value = Value.value
-  //console.log('textLabel emit Value ====>', Text.value)
-  //emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
-  //emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   emit("update") // emite un update en el componente padre
   //console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
 };
 
-/*
-const readCampo = async (recno: number) => {
-  if (Status.value == 'A') {
-    Status.value = 'P'
-    emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-  }
-  console.log('readCampo textLabel Control.Source,recno===',props.prop.Name,props.prop.ControlSource,recno)
-  Value.value = await props.db.value.readCampo(props.prop.ControlSource, recno)
-  emitValue()
-
-}
-*/
 
 ////////////////////////////////////////
 // Watchers : Triggers de templates
@@ -158,60 +128,7 @@ const readCampo = async (recno: number) => {
 //                la vista a la propiedad de Value de la propiedad
 // Notas : Si se tiene en props, se tiene que vigilar el cambio de props.prop.Value
 
-/*
-////////////////////////////////////////
-// ControlSource
-///////////////////////////////////////
-watch(
-  () => props.prop.ControlSource,
-  (new_val, old_val) => {
-    if (new_val != old_val) {
-      if (props.Recno > 0 && new_val > ' ') {
-        console.log('Watch textLabel ControlSource==>', new_val)
-        readCampo(props.Recno)
-        //Value.value = props.db.value.readRenglon(new_val, props.Recno)
-        //emitValue()
-      }
-    }
-    //    LocalDb.ControlSource = new_val;
 
-
-  },
-  { deep: false }
-);
-
-////////////////////////////////////////
-// Recno
-// Nota: Lee de la base de datos local segun el valor de recno
-///////////////////////////////////////
-watch(
-  () => props.Recno,
-  (new_val, old_val) => {
-    if (props.prop.ControlSource > ' ') {
-      if (new_val = 0 && old_val > 0) {
-        Value.value = ''
-        readCampo(props.Recno)
-        //emitValue()
-        return
-
-      }
-
-      if (new_val != old_val && props.Recno > 0) {
-        //console.log('Watch textLabel Recno=', new_val)
-        readCampo(props.Recno)
-
-      }
-    }
-
-  },
-  { deep: false }
-);
-
-*/
-
-//////////////////////////////////////////////
-// ComboBox
-//////////////////////////////////////////////
 //////////////////////////////////////////////////////
 // Asigna Resultado
 /////////////////////////////////////////////////////
@@ -235,15 +152,6 @@ const asignaResultado = (valor: string) => {
 
   for (let i = 0; i < columnas.length; i++) {
     if (valor == columnas[i].value) { // El objeto columna tiene dos campos value y text
-      // console.log("Busca Value =======>", i, new_val);
-
-      // Encontro la posicion del value
-      // console.log("Encontro el Value =======>",BoundColumn,columnas[i].text[0]);
-
-      //Resultado.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
-      //      Value.value = valor // Resultado.value;  // Asigna el valor al componente
-     
-     //Value.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
      Text.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
     }
   }
@@ -335,30 +243,13 @@ const renderComboBox = async () => {
       //        const resultado = await selectLocalDb(nom_tab);// hacemos select a la tabla local
       // aqui me quede (arreglar lectura por alias)
       const data = await sql.value.localSql(props.prop.RowSource)
-      /*
-      LocalDb.select(nom_tab, {}).  // hacemos select a la tabla local
-        then(data => {
-          // Asigna valores al arreglo
-          if (data.length > 0) { // Si hay datos
-            for (let num_ren = 0; num_ren < data.length; num_ren++) { // recorremos todos los renglones del resultado
-              for (let num_col = 0; num_col < props.prop.ColumnCount; num_col++) { // recorremos las columnas 
-                val_col[num_ren][num_col] = data[num_ren][Values[num_col]]; // asignamos el valor al arreglo
-              }
-            }
 
-          }
-        })
-        */
       break;
     }
     case 3: {
       const sql = props.db
       //console.log('ComboBox db sql =======>>', sql.value)
       const data = await sql.value.localSql(props.prop.RowSource)
-      //console.log('Combo Box sql resultado ', data.length, data[0], data)     
-
-      // renglon 0 ["Inventarios", "Cuentas por cobrar", "Cuentas por pagar", "Ventas","Compras","Vendedores","Estadisticas","Cierres y utilerias","Parametros generales","Contabilidad","Control vehicular","Logistica"],
-      // renglon 1 ["IN",          "CC",                 "CP",                 "VE",   "CO",     "VN",         "ES",         "CI",                 "PG",                 "CT",            "CV",               "LO" ],
       // Generamos el arreglo 
       for (const nom_obj in data[0]) {
         const renglon = []
@@ -438,241 +329,13 @@ const renderComboBox = async () => {
   //emitValue()
 };
 
-
-const readCampo = async (recno: number) => {
-  //   if (Status.value=='A'){
-  //       Status.value='P' 
-  //       emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-  //    } 
-  //Value.value = await props.db.value.readCampo(props.prop.ControlSource, recno)
-   Text.value = await props.db.value.readCampo(props.prop.ControlSource, recno)
+const readCampo =  async (recno: number) => {
+   Text.value =  await props.db.value.readCampo(props.prop.ControlSource, recno)
 
   renderComboBox()
 
 }
 
-/*
-//ColumWidth
-const ColumnWidth = (new_val) => {
-  //console.log('Tamaño Columnas =',new_val)
-  const columnWidth = eval('["' + new_val.replace(",", '","') + '"]');
-
-
-  for (let col = 0; col < columnWidth.length; col++) {
-    width[col] = columnWidth[col];
-  }
-}
-
-/*
-
-
-/*
-watch(
-  () => toggle.value,
-  (new_val, old_val) => {
-
-   // console.log('toggle.value', props.prop.Name, old_val, new_val)
-    if (new_val == true) onFocus()
-  },
-  { deep: false }
-);
-*/
-///////////////////////////////////
-// Cuando cambia el estatus de Inicial a Activo 
-//////////////////////
-
-/*
-watch(
-  () => props.prop.Status,
-  (new_val, old_val) => {
-
-
-    if (new_val == 'A' && old_val == 'I') {
-//      console.log('Watch Estatus Renderiza por cambio de estatus==>', props.prop.Name, old_val, new_val)
-
-      renderComboBox()
-    }
-  },
-  { deep: false }
-);
-
-
-
-// ErrorMesagge
-watch(
-  () => props.prop.ErrorMessage,
-  (new_val, old_val) => {
-    if (new_val.length == 0)
-      Error.value = false
-    else
-      Error.value = true;
-
-    //console.log('Watch Mensage de error==>', new_val, Error.value)
-
-  },
-  { deep: false }
-);
-*/
-
-/*
-watch(
-  () => props.prop.Value,
-  (new_val, old_val) => {
-    if (new_val != new_val) {
-      // console.log('Watch prop.Value textLabel===>', new_val, old_val)
-      // asigna la columna que tiene el resultado
-      if (Status.value == 'A')
-        asignaResultado(new_val)
-    }
-  },
-  { deep: false }
-);
-*/
-
-///////////////////////////////////////
-// ControlSource
-///////////////////////////////////////
-/*
-watch(
-  () => props.prop.ControlSource,
-  (new_val, old_val) => {
-
-    if (new_val != old_val) {
-      //console.log('Watch prop.ControlSource textLabel===>', new_val, old_val)
-      if (props.Recno > 0 && props.prop.ControlSource > ' ') {
-        readCampo(props.Recno)
-      }
-    }
-    //    LocalDb.ControlSource = new_val;
-
-
-  },
-  { deep: false }
-);
-*/
-
-////////////////////////////////////////
-// Recno
-// Nota: Lee de la base de datos local segun el valor de recno
-///////////////////////////////////////
-/*
-watch(
-  () => props.Recno,
-  (new_val, old_val) => {
-    //console.log('Watch prop.Recno textLabel===>', new_val, old_val)
-
-    //   console.log('Watch comboBox Recno=', props.Recno,props.prop.ControlSource)
-
-    if (props.prop.ControlSource > ' ') {
-      if (props.Recno == 0) {
-        //Value.value = ''
-        Text.value = ''
-
-        emitValue()
-        return
-
-      }
-
-      // console.log('watch textLabel Recno =',props.Recno, new_val,'old_val=',old_val,props.prop.ControlSource,Value.value)
-
-      //console.log('watch textLabel Recno new_val=',new_val,'old_val=',old_val,props.prop.ControlSource,Value.value)
-
-      if (new_val != old_val && props.Recno > 0) {
-        // console.log('Watch comboBox Recno=', props.Recno)
-        readCampo(props.Recno)
-
-      }
-      //    LocalDb.ControlSource = new_val;
-    }
-
-  },
-  { deep: false }
-);
-*/
-
-// RowSoure
-/*
-watch(
-  () => props.prop.RowSource,
-
-  (new_val, old_val) => {
-    if (new_val != old_val) {
-      //console.log('Watch prop.RowSource textLabel===>', new_val, old_val)
-      renderComboBox()
-    }
-  },
-  { deep: true }
-);
-//RowSourceType
-*/
-/*
-watch(
-  () => props.prop.RowSourceType,
-
-  (new_val, old_val) => {
-    //  console.log('Watch prop.RowSourceType textLabel===>', new_val, old_val)
-
-    if (new_val != old_val) {
-      //console.log('ComboBox renderiza por cambio enRowSourceType ===>>', new_val)
-      renderComboBox()
-    }
-  },
-  { deep: false }
-);
-*/
-/*
-
-//ColumCount
-watch(
-  () => props.prop.ColumnCount,
-
-  (new_val, old_val) => {
-    if (new_val != old_val) {
-      // console.log('ComboBox renderiza por cambio en ColumnCount ===>>', new_val)
-
-      renderComboBox();
-    }
-  },
-  { deep: false }
-);
-*/
-
-//BoundColum
-/*
-watch(
-  () => props.prop.BoundColumn,
-
-  (new_val, old_val) => {
-    if (new_val != old_val) {
-      //  console.log('Watch prop.BoundColumn textLabel===>', new_val, old_val)
-
-      renderComboBox();
-    }
-  },
-  { deep: false }
-);
-*/
-//width
-/*
-watch(
-  () => props.estilo.width,
-
-  (new_val, old_val) => {
-    console.log("Cambio tamaño ", inputWidth.value);
-    if (new_val != old_val) {
-      if (props.estilo.width.substr(-2, 2) == 'px') {
-        const len = props.estilo.width.length - 2
-        const width: number = +props.estilo.width.substr(0, len) - 30
-        inputWidth.value = width.toString() + 'px'
-        // console.log("Cambio tamaño 2", inputWidth.value);
-      }
-
-
-    }
-  },
-  { deep: false }
-);
-*/
 /////////////////////////////////////////////
 // Computed
 /////////////////////////////////////////////
@@ -690,22 +353,13 @@ watch(
 
 const init = async () => {
 
-   console.log('Init textLabel  ==>', props.prop.Name, props.Recno, props.prop.ControlSource.length)
+   //console.log('Init textLabel  ==>', props.prop.Name, props.Recno, props.prop.ControlSource.length)
 
   if (props.Recno > 0 && props.prop.ControlSource.length > 2) {
-
-    //    Status.value = 'P';  // en lectura
-    //    emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-    // await 
     readCampo(props.Recno)
   }
 
-  //  if (props.prop.Autofocus) {
-  //   console.log('AutoFocus textLabel readCampo ===>')
-  //   await emitValue()
-  //  }
-
-
+  
 }
 
 init();

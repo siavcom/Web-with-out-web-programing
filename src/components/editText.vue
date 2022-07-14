@@ -1,55 +1,35 @@
 <template>
   <div class="divi" :style="estilo" v-if="prop.Visible" :disabled="prop.Disabled">
-    <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
-    <div class="tooltip">
-      <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
+    <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
+    <div class="error">
+
+
       <!--Si es numero  -->
-      <input v-if="prop.Type=='number'"
-        class="numero"
-        type="number"
-         ref="Ref" 
-        :min="prop.Min"
-        :max="prop.Max"
-         v-model.trim="Value"
-        :readonly="prop.ReadOnly" 
-        :placeholder="prop.Placeholder" 
-        :tabindex="prop.TabIndex" 
-        :type="prop.Type" 
-         @focusout="focusOut" 
-         @focus="onFocus" />
-      
-      <!--Si es texto  -->
-      <input v-if="prop.Type=='text' || prop.Type=='password'"
-         class="texto" 
-         ref="Ref" 
-         v-model.trim="Value" 
-         :readonly="prop.ReadOnly" 
-        :placeholder="prop.Placeholder" 
-        :tabindex="prop.TabIndex" 
-        :type="prop.Type" 
-        maxlength="prop.MaxLength"
-         @focusout="focusOut" 
-         @focus="onFocus" />
+      <div class="tooltip">
 
-      <!--Si es fecha  -->
-      <input v-if="prop.Type=='date'"
-         class="date" 
-         ref="Ref" 
-         v-model.trim="Value" 
-         :readonly="prop.ReadOnly" 
-        :placeholder="prop.Placeholder" 
-        :tabindex="prop.TabIndex" 
-        :type="prop.Type" 
-         @focusout="focusOut" 
-         @focus="onFocus" />
+        <input v-if="prop.Type == 'number'" class="numero" type="number" ref="Ref" :min="prop.Min" :max="prop.Max"
+          v-model.trim="Value" :readonly="prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
+          :type="prop.Type" @focusout="focusOut" @focus="onFocus" />
+
+        <!--Si es texto  -->
+        <input v-if="prop.Type == 'text' || prop.Type == 'password'" class="texto" ref="Ref" v-model.trim="Value"
+          :readonly="prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" :type="prop.Type"
+          maxlength="prop.MaxLength" @focusout="focusOut" @focus="onFocus" />
+
+        <!--Si es fecha  -->
+        <input v-if="prop.Type == 'date'" class="date" ref="Ref" v-model.trim="Value" :readonly="prop.ReadOnly"
+          :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" :type="prop.Type" @focusout="focusOut"
+          @focus="onFocus" />
 
 
 
-      <span v-if="prop.ToolTipText" class="tooltiptext">
-        {{
-            prop.ToolTipText
-        }}
-      </span>
+        <span v-if="prop.ToolTipText" class="tooltiptext">
+          {{
+              prop.ToolTipText
+          }}
+        </span>
+      </div>
+      <span class="errorText" v-show="Error">{{ prop.ErrorMessage }}</span>
     </div>
   </div>
 </template>
@@ -110,7 +90,7 @@ const props = defineProps<{
     InputMask: "";
     MaxLenght: 0;
     ReadOnly: false;
-    Disabled:false;
+    Disabled: false;
     Tag: "";
     Sw_val: false;
     Sw_cap: true;
@@ -129,7 +109,8 @@ const props = defineProps<{
     Min: number;
     Max: number;
     Focus: boolean;
-    MaxLength : 254;
+    MaxLength: 254;
+    First: false;
     //    SetFocus:false;
     //compAddress: any;
   };
@@ -162,7 +143,7 @@ const Key = ref(props.prop.Key)
 defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
 const Error = ref(false)
 const Focus = ref(props.prop.Focus)
-Focus.value=false
+Focus.value = false
 
 /*  position
 static	Elements renders in order, as they appear in the document flow. This is default.
@@ -237,7 +218,7 @@ const emitValue = async () => {
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   emit("update") // emite un update en el componente padre
- // console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
+  // console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
 };
 
@@ -249,7 +230,7 @@ const emitValue = async () => {
 const focusOut = async () => {
   if (props.prop.ControlSource && props.prop.ControlSource.length > 0) {
     // actualiza valor en localDb
-    const valor = props.prop.Type=='number' ? +Value.value : Value.value
+    const valor = props.prop.Type == 'number' ? +Value.value : Value.value
     await props.db.value.updateCampo(valor, props.prop.ControlSource, props.Recno)
     //await LocalDb.update(valor).then(() => { 
     // })
@@ -339,7 +320,7 @@ watch(
   (new_val, old_val) => {
     if (props.prop.ControlSource > ' ') {
 
-      if (props.Recno == 0 ) {
+      if (props.Recno == 0) {
         Value.value = ''
         emitValue()
         return
@@ -347,7 +328,7 @@ watch(
       }
 
       if (new_val != old_val && new_val > 0) {
-       // console.log('Watch EditText Recno=', new_val)
+        // console.log('Watch EditText Recno=', new_val)
         readCampo(props.Recno)
       }
       //    LocalDb.ControlSource = new_val;
@@ -383,7 +364,7 @@ watch(
   () => props.prop.Value,
   (new_val, old_val) => {
     Value.value = new_val
-    console.log('watch value',props.prop.Name,new_val)
+    console.log('watch value', props.prop.Name, new_val)
   },
   { deep: false }
 );
@@ -398,7 +379,7 @@ watch(
     //console.log('EditText Set Focus', props.prop.Name)
     if (Focus.value) {
       Ref.value.focus()
-//      Ref.value.select()
+      //      Ref.value.select()
       Focus.value = false
       emit("update:Focus", false)
     }
@@ -441,97 +422,27 @@ const init = async () => {
 
     await readCampo(props.Recno)
     //Value.value = await props.db.value.readCampo(props.prop.ControlSource, props.Recno)
-    if (!props.prop.Autofocus) {
+    //   if (!props.prop.Autofocus) {
+    if (!props.prop.First) {
+
       await emitValue()
     }
   }
-  const ref = Ref
-  emit("update:Ref", Ref); // actualiza el valor del Ref al componente padre
+  // const ref = Ref
+  // emit("update:Ref", Ref); // actualiza el valor del Ref al componente padre
 
-
-  if (props.prop.Autofocus) {
+  // si es el primer elemento a posicionarse
+  if (props.prop.First) {
     emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
     emit("update") // emite un update en el componente padre
-    Ref.value.focus()
+    Ref.value.focus()  // hace el foco como primer elemento
     //Ref.value.select()
     return
   }// else  await emitValue()
 
-
-  //console.log('Init EditText==>', props.prop.Name)
-
-
-  // if (props.prop.Name=='des_dat')  Ref.value.autofocus=true
-  //Status.value = 'I';
-  //Value.value = 0; // asignamos Valor inicial
 };
 
 
 init(); // Ejecuta el init
 
 </script>
-
-<!--style scoped>
-h1 {
-  margin: 40px 0 0;
-}
-input {
-  border: 2px solid rgb(0, 5, 2);
-  color: #18e94c;
-  width: "100px";
-  height: "30px";
-  background: #f7f8f7;
-  padding: "5px";
-  border-radius: 5%;
-}
-
-/* Tooltip container */
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
-
-  /* Position the tooltip text */
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
-
-  /* Fade in tooltip */
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-/* Tooltip arrow */
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
-</style-->
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<!--style scoped src="@/components/styles.css" /-->

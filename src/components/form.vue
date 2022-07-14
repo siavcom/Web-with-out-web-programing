@@ -76,10 +76,20 @@
     </section>
 
     <!--/template-->
-    <!--template v-slot:footer-->
+    <!--template v-slot:footer
+               src="/Iconos/BotonRojo.png"
+
+    -->
     <section class="footer">
-      <img v-if="ThisForm.prop.Status == 'A'" src="/Iconos/BotonVerde.png" style="float:left" />
-      <img v-if="ThisForm.prop.Status != 'A'" src="/Iconos/BotonRojo.png" style="float:left" />
+      <div v-show="ThisForm.prop.Status == 'A'">
+        <img src="/Iconos/BotonVerde.png"
+         style="float:left" />
+      </div>
+      <div v-show="ThisForm.prop.Status != 'A'">
+        <img class='botonRojo' 
+           src="/Iconos/Stop_arrows.gif"
+           style="float:left" />
+      </div>
       <slot name="footer">
 
         <!-- @focus.capture -->
@@ -223,14 +233,14 @@ function sleep(sleepDuration: number) {
 // Ejecuta los eventos que hay en la pila de eventos
 async function eje_eve() {
   try {
-    console.log('Entra a eje_eve',ThisForm.eventos[0])
+    console.log('Entra a eje_eve', ThisForm.eventos[0])
     //if (ThisForm.eventos.length > 0) console.log("Watch Eventos a ejecutar ===>", ThisForm.eventos);
 
     //    while (ThisForm.eventos.length > 0) {
     while (ThisForm.eventos.length > 0) {
       // corremos el stack de eventos a ejecutar
       for (const nom_com in ThisForm.estatus) { //
-        console.log('eje_eve estaus ',nom_com, ThisForm.estatus[nom_com])
+        console.log('eje_eve estaus ', nom_com, ThisForm.estatus[nom_com])
         if (ThisForm.estatus[nom_com] != "A") return; // Si el estatus del componente esta en Proceso se sale
       }
 
@@ -262,7 +272,7 @@ async function eje_eve() {
           //          }
 
 
-          console.log('eje_eve resolve evento',evento)
+          console.log('eje_eve resolve evento', evento)
           resolve(eval(evento))
         });
       }
@@ -302,12 +312,12 @@ async function eje_eve() {
       //await waitFn(eventos[0])
 
       //     ThisForm.eventos.splice(0, 1); // borramos el evento
-      const new_arr=[]
-      for ( let  i=1;i<ThisForm.eventos.length;i++){
-          new_arr[i-1]=ThisForm.eventos[i]
+      const new_arr = []
+      for (let i = 1; i < ThisForm.eventos.length; i++) {
+        new_arr[i - 1] = ThisForm.eventos[i]
       }
-      ThisForm.eventos=[...new_arr]
-      console.log('Stack de eventos',ThisForm.eventos)  // borramos el evento
+      ThisForm.eventos = [...new_arr]
+      console.log('Stack de eventos', ThisForm.eventos)  // borramos el evento
 
 
     }
@@ -340,7 +350,7 @@ async function push_eve(nom_eve: string) {
 }
 */
 
-
+/*
 
 watch(
   () => eventos,
@@ -357,13 +367,12 @@ watch(
     eje_eve();
     //const b = new Date
 
-   // console.log('Watch eventos fin eje ===>', b)
+    // console.log('Watch eventos fin eje ===>', b)
 
   },
   { deep: true }
 );
-
-
+*/
 ////////////////////////////////
 // revisa los eventos que hay a ejecutar, en caso que hay una estatus de un componente
 // no ejecuta el evento
