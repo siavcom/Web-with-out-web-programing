@@ -2026,6 +2026,8 @@ return false;
   updateCampo = async (Value: any, ControlSource: string, recno: number) => {
     //async update(Value: any) {
     //  const ControlSource = this.ControlSource;
+    console.log('updateCampo===', Value,ControlSource)
+    
 
     if (ControlSource == "" || recno == 0) return; // No  hay ControlSource
     const pos = ControlSource.indexOf(".") + 1;
@@ -2037,13 +2039,13 @@ return false;
 
     switch (typeof Value) {
       case "number":
-        valor = Value.toString
+        valor = Value.toString()
         break;
       case "string":
         valor = "'" + Value + "'"
         break;
       case "boolean":
-        valor = "'" + Value + "'"
+        valor = Value.toString()
         break;
       default:
         valor = "'" + Value + "'"

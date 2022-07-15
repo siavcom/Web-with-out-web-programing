@@ -7,19 +7,40 @@
       <!--Si es numero  -->
       <div class="tooltip">
 
-        <input v-if="prop.Type == 'number'" class="numero" type="number" ref="Ref" :min="prop.Min" :max="prop.Max"
+      <input class="texto" 
+               ref="Ref" 
+               v-model.trim="Value"
+               :readonly="prop.ReadOnly" 
+               :placeholder="prop.Placeholder" 
+               :tabindex="prop.TabIndex" 
+                :type="prop.Type"
+                @focus="onFocus" 
+                @focusout="focusOut" 
+                >
+
+
+
+
+
+        <!--input v-if="prop.Type == 'number'" class="numero" type="number" ref="Ref" :min="prop.Min" :max="prop.Max"
           v-model.trim="Value" :readonly="prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
-          :type="prop.Type" @focusout="focusOut" @focus="onFocus" />
+          :type="prop.Type" @focusout="focusOut" @focus="onFocus" -->
 
         <!--Si es texto  -->
-        <input v-if="prop.Type == 'text' || prop.Type == 'password'" class="texto" ref="Ref" v-model.trim="Value"
-          :readonly="prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" :type="prop.Type"
-          maxlength="prop.MaxLength" @focusout="focusOut" @focus="onFocus" />
+        <!--input class="texto" 
+               ref="Ref" 
+               v-model.trim="Value"
+               :readonly="prop.ReadOnly" 
+               :placeholder="prop.Placeholder" 
+               :tabindex="prop.TabIndex" :type="prop.Type"
+                :maxlength="prop.MaxLength" 
+                @focusout="focusOut" 
+                @focus="onFocus" -->
 
         <!--Si es fecha  -->
-        <input v-if="prop.Type == 'date'" class="date" ref="Ref" v-model.trim="Value" :readonly="prop.ReadOnly"
+        <!--input v-if="prop.Type == 'date'" class="date" ref="Ref" v-model.trim="Value" :readonly="prop.ReadOnly"
           :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" :type="prop.Type" @focusout="focusOut"
-          @focus="onFocus" />
+          @focus="onFocus"-->
 
 
 
@@ -228,7 +249,9 @@ const emitValue = async () => {
 // Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
 /////////////////////////////////////////////////////////////////
 const focusOut = async () => {
-  if (props.prop.ControlSource && props.prop.ControlSource.length > 0) {
+
+  console.log('Valid updateCampo===>', Value,props.prop.ControlSource)
+  if (props.prop.ControlSource && props.prop.ControlSource.length > 3) {
     // actualiza valor en localDb
     const valor = props.prop.Type == 'number' ? +Value.value : Value.value
     await props.db.value.updateCampo(valor, props.prop.ControlSource, props.Recno)
