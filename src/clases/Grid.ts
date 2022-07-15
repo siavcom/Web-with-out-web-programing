@@ -123,8 +123,8 @@ export class GRID extends COMPONENT {
      //console.log('delete renglon',row,'Recno',recno,this.Form.db.View[this.prop.RecordSource].recnoVal)
 //    await this.Form.db.delete(this.Form.db.View[this.prop.RecordSource].recnoVal[row],this.prop.RecordSource)
     await this.Form.db.delete(recno,this.prop.RecordSource)
-
-    await this.asignaRenglon(recno)
+    this.Row=-1
+    //await this.asignaRenglon(recno)
 
     
   }

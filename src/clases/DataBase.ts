@@ -787,6 +787,9 @@ export class VFPDB {
     recno = this.View[alias].recnoVal[row].recno
    // console.log('delete despues slice recno reg recnoVal===>', recno,this.View[alias].recnoVal)
 
+   //console.log('borra ala',alasql('USE Now; select recno,key_pri from '+ alias ))
+
+
     return await this.goto(recno)    // se va a leer registro
 
 

@@ -4,80 +4,80 @@
     class="divi" :style="estilo" ref="Ref">
     <label class="error" v-show="Error">{{ prop.ErrorMessage }}</label>
     <!--div class="tooltip"-->
-      <!-- Grid  -->
-      <form class="gridDatos">
-        <!--label text-align="center">{{ prop.textLabel }}</label>  -->
-        <h2>{{ prop.textLabel }}</h2>
-        <div class="tabla">
-          <table style="margin-top:10px">
-            <thead>
-              <tr style="font-size: 13px">
-                <td>Renglon</td>
-                <td v-for="(obj, elemento) in This">
-                  <!--Header:
+    <!-- Grid  -->
+    <form class="gridDatos">
+      <!--label text-align="center">{{ prop.textLabel }}</label>  -->
+      <h2>{{ prop.textLabel }}</h2>
+      <div class="tabla">
+        <table style="margin-top:10px">
+          <thead>
+            <tr style="font-size: 13px">
+              <td>Renglon</td>
+              <td v-for="(obj, elemento) in This">
+                <!--Header:
                   -->
-                  <div
-                    v-if="This[elemento] != null && This[elemento].BaseClass && This[elemento].BaseClass == 'Column'">
-                    <!--Imprime como etiqueta el header de cada columna-->
-                    {{ obj.textLabel }}
-                  </div>
-                </td>
-              </tr>
-            </thead>
-            <!-------------  Detalle   ------------------------->
-          
-            <tbody v-show="This.Form.prop.Status=='A' && prop.Status == 'A' && scroll.dataPage.length > 0">
-            
+                <div v-if="This[elemento] != null && This[elemento].BaseClass && This[elemento].BaseClass == 'Column'">
+                  <!--Imprime como etiqueta el header de cada columna-->
+                  {{ obj.textLabel }}
+                </div>
+              </td>
+            </tr>
+          </thead>
+          <!-------------  Detalle   ------------------------->
+
+          <tbody v-show="This.Form.prop.Status == 'A' && prop.Status == 'A' && scroll.dataPage.length > 0">
+
             <!-------------  Renglones  -----------------------
               -->
-              <!--tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
-              <tr v-for="item in scroll.dataPage" :key="item.id">
+            <!--tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
+            <tr v-for="item in scroll.dataPage" :key="item.id">
 
-                <td>
-                  {{ item.id + 1 }}
-                </td>
-                <!-------------  Columnas  ------------------------->
-                <!--
+              <td>
+                {{ item.id + 1 }}
+              </td>
+              <!-------------  Columnas  ------------------------->
+              <!--
                 v-if="props.db.value.View[prop.RecordSource].recnoVal" 
                 v-show="i != This.Row"
                     -->
-                <td v-for="(obj, col) in This" :key=obj.ColumnOrder style="padding:0; text-align:center">
+              <td v-for="(obj, col) in This" :key=obj.ColumnOrder style="padding:0; text-align:center">
 
-                  <div v-if="This[col].BaseClass && This[col].BaseClass == 'Column' && This[col].prop.Status != 'I'">
-                    <!--template-->
-                    <!--focus.capture.stop para que solo ejecute el evento en el componente actual-->
-                    <div v-show="item.id != This.Row " >
-                      <KeepAlive>
-                        <textLabel v-bind:Recno="item.recno" v-bind:prop="This[col].prop"
-                          v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion" v-bind:db="db"
-                          @focus.capture.stop="eventos.push(This.prop.Map + '.asignaRenglon(' + item.id + ')')"
-                          @click.stop @focusout.stop>
-                        </textLabel>
-                      </KeepAlive>
-                    </div>
-                    <!--/template-->
-                    <div v-if="item.id == This.Row ">
-                      <component :is="impComp(This[col].prop.BaseClass)" v-model:Value="This[col].prop.Value"
-                        v-model:Status="This[col].prop.Status" v-model:ErrorMessage="This[col].prop.ErrorMessage"
-                        v-model:Key="This[col].prop.Key" v-model:Focus="This[col].Focus"
-                        v-bind:Component="ref(This.Form[col])" v-bind:Recno="item.recno" v-bind:prop="This[col].prop"
-                        v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion" v-bind:db="db"
-                        @focusout.capture.stop="eventos.push(This.prop.Map + '.' + This[col].Name + '.valid()')"
-                        @focus.capture.stop="eventos.push(This.prop.Map + '.' + This[col].Name + '.when()')">
-                      
-                      </component>
-                    </div>
+                <div v-if="This[col].BaseClass && This[col].BaseClass == 'Column' && This[col].prop.Status != 'I'">
+                  <!--template-->
+                  <!--focus.capture.stop para que solo ejecute el evento en el componente actual-->
+                  <div v-show="item.id != This.Row">
+                    <KeepAlive>
+                      <textLabel v-bind:Recno="item.recno" v-bind:prop="This[col].prop" v-bind:estilo="This[col].estilo"
+                        v-bind:posicion="This[col].posicion" v-bind:db="db"
+                        @focus.capture.stop="eventos.push(This.prop.Map + '.asignaRenglon(' + item.id + ')')"
+                        @click.stop @focusout.stop>
+                      </textLabel>
+                    </KeepAlive>
                   </div>
-                </td>
+                  <!--/template-->
+                  <div v-if="item.id == This.Row">
+                    <component :is="impComp(This[col].prop.BaseClass)" v-model:Value="This[col].prop.Value"
+                      v-model:Status="This[col].prop.Status" v-model:ErrorMessage="This[col].prop.ErrorMessage"
+                      v-model:Key="This[col].prop.Key" v-model:Focus="This[col].Focus"
+                      v-bind:Component="ref(This.Form[col])" v-bind:Recno="item.recno" v-bind:prop="This[col].prop"
+                      v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion" v-bind:db="db"
+                      @focusout.capture.stop="eventos.push(This.prop.Map + '.' + This[col].Name + '.valid()')"
+                      @focus.capture.stop="eventos.push(This.prop.Map + '.' + This[col].Name + '.when()')">
+
+                    </component>
+                  </div>
+                </div>
+              </td>
+              <!--td>
                 <div class="left-btn hide-in-print" @click="borraRenglon(item.recno)">
                   <img src="/Iconos/delete.jpeg" width="23">
-                 
-                </div>
 
-              </tr>
-              <tr>
-                <td>
-                  <!-------------  Si el numero de Columnas es menor que 2 y da un click genera nuevo registro
+                </div>
+              </td-->
+            </tr>
+            <tr>
+              <td>
+                <!-------------  Si el numero de Columnas es menor que 2 y da un click genera nuevo registro
                     @click="() => items.push({ key: Math.random(), ref: 'MyRef', desc: 'My description', qty: 1, price: 0 })"
                     v-if="This.renglon<2 "
 
@@ -90,40 +90,57 @@
                    :ref="Status => { This.prop.Status='A'}"
 
                   -->
+              </td>
+            </tr>
 
-                  <div v-if="scroll.bottom" 
-                    @click="eventos.push(This.prop.Map + '.appendRow()')">
-                   <img src="/Iconos/plus.jpeg" width="20" />
-                    {{ This.Row }}
-                  </div>
-                </td>
-              </tr>
-              
           </tbody>
-           
-          </table>
-        </div>
-      </form>
 
-      <!--span v-if="prop.ToolTipText" class="tooltiptext">
+        </table>
+      </div>
+    </form>
+
+    <!--span v-if="prop.ToolTipText" class="tooltiptext">
         {{
             prop.ToolTipText
         }}
       </span-->
     <!--/div tolltiptext-->
-    <span @click.prevent="first()">
-      <img src="/Iconos/first.png" width="20" />
-    </span>
-    <span @click.prevent="previous()">
-      <img src="/Iconos/previous.png" width="20" />
-    </span>
-    <span @click.prevent="next()">
-      <img src="/Iconos/next.png" width="20" />
-    </span>
-    <span @click.prevent="last()">
-      <img src="/Iconos/last.png" width="20" />
-    </span>
+    <div class="controles">
 
+      <span v-if="scroll.bottom" width="30" @click="appendRow()">
+        <img src="/Iconos/plus.jpeg" width="25">
+
+      </span>
+
+
+
+      <span v-show="This.Row >= 0" width="30" class="left-btn hide-in-print" @click.capture.stop="borraRenglon()">
+        <img src="/Iconos/delete.jpeg" width="25">
+
+
+      </span>
+
+
+
+      <span v-show="scroll.page > 0">
+        <span @click.capture.stop="first()">
+          <img src="/Iconos/first.png" width="20">
+        </span>
+
+        <span @click.capture.stop="previous()">
+          <img src="/Iconos/previous.png" width="20">
+        </span>
+
+      </span>
+      <span v-show="!scroll.bottom">
+        <span @click.capture.stop="next()">
+          <img src="/Iconos/next.png" width="20">
+        </span>
+        <span @click.capture.stop="last()">
+          <img src="/Iconos/last.png" width="20">
+        </span>
+      </span>
+    </div>
 
 
   </div>
@@ -156,7 +173,7 @@ import imgButton from "@/components/imgButton.vue"
 import comboBox from "@/components/comboBox.vue"
 import editText from "@/components/editText.vue"
 import textLabel from "@/components/textLabel.vue"
-import Grid from "vue-virtual-scroll-grid";
+//import Grid from "vue-virtual-scroll-grid";
 
 const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key", "update:Focus"]);
 //import { localDb } from "@/clases/LocalDb";  // manejo del indexedDb
@@ -221,6 +238,7 @@ const Component = ref(props.Component)
 const This = Component.value
 console.log('Gridd This=====>', This)
 This['estatus'] = []
+var load_data = false
 const eventos = reactive([]);  // pila de eventos a ejecutar en forma sincrona
 
 const Db = props.db.value // Vista que utilizara el grid
@@ -484,12 +502,12 @@ watch(
 watch(
   () => props.prop.RecordSource,
   (new_val, old_val) => {
-     console.log('RecordSource scroll===>', scroll)
+    console.log('RecordSource scroll===>', scroll)
   }
- ,
+  ,
   { deep: false }
 );
- 
+
 /*
 watch(
   () => props.prop.RecordSource,
@@ -550,7 +568,7 @@ watch(
       //console.log('Watch estatus ===>', comp, This.estatus[comp])
 
       if (This.estatus[comp] != 'A' && Status.value == 'A') {
-        Status.value = 'P';  // Cambia el estatus del gri a Proceso
+        Status.value = 'P';  // Cambia el estatus del grid a Proceso
         emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
         return
@@ -570,13 +588,28 @@ watch(
   }, { deep: true }
 );
 
+//////////////////////////////////////////////
+// revisa la pila de eventos. Cuando ya no hay carga los datos
+/////////////////////////////////////////////////
+
+
+watch(
+  () => This.Form.eventos,
+  () => {
+     if (!load_data) return
+     if (This.Form.eventos.length==0) loadData()
+  },
+  { deep: false }
+);
+
+
 
 //////////////////////////////////////////////
 // revisa los estatus de todos los componentes
 watch(
   () => This.estatus,
   (new_val, old_val) => {
-    console.log('<=======Watch estatus =======>')
+    console.log('<=======Watch estatus componentes =======>',This.estatus)
 
     for (const comp in This.estatus) { // Recorre todos los estatus del grid
 
@@ -631,8 +664,10 @@ watch(
 
 
 const loadData = async () => {
-  This.Row=-1
-  This.Form.prop.Status='P'
+  This.Row = -1
+  load_data=false
+
+  This.Form.prop.Status = 'P'
   //console.log('loadData thisFormprop',This.Form.prop.Status)
 
   try {
@@ -656,11 +691,11 @@ const loadData = async () => {
 
       else {  // borra los elementos que ya no existen
         //    scroll.dataPage.slice(i, Rows - 1 - i)
-        if (i==0) { // No hay datos, le asigna el ultimo elemento
-          scroll.dataPage[i] = Db.View[props.prop.RecordSource].recnoVal[elementNo-1]
+        if (i == 0) { // No hay datos, le asigna el ultimo elemento
+          scroll.dataPage[i] = Db.View[props.prop.RecordSource].recnoVal[elementNo - 1]
           scroll.dataPage.length = 1 // Solo dejamos  el ultimo elemento
 
-        }else
+        } else
           scroll.dataPage.length = i // Borramos todos los elementos restantes
 
         scroll.bottom = true
@@ -689,8 +724,9 @@ const loadData = async () => {
     //    scroll.message = "Error loading data";
   }
 
-    This.Form.prop.Status='A'
-    console.log('loadData thisFormprop',This.Form.prop.Status)
+  This.Form.prop.Status = 'A'
+  
+  //console.log('loadData thisFormprop', This.Form.prop.Status)
 
 }
 
@@ -718,7 +754,7 @@ const next = async () => {
 }
 
 const last = async () => {
-  
+
   if (scroll.bottom) return
   scroll.page = Db.View[props.prop.RecordSource].recnoVal.length / scroll.rows
 
@@ -726,17 +762,29 @@ const last = async () => {
   //if (scroll.page > 0) scroll.page--
 
   loadData()
-  scroll.bottom=true 
+  scroll.bottom = true
 
 }
 
-const borraRenglon = async (recno:number) => {
-console.log('borraRenglon',This.prop.Map + '.deleteRow(' + recno+ ')')  
-eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
-loadData()
+const appendRow = async (recno?: number) => {
+eventos.push(This.prop.Map + '.appendRow()')
+load_data=true
+}
 
-//scroll.dataPage= scroll.dataPage.filter(item => item.recno !== recno);
-//if (scroll.dataPage.length==0) loadData()
+
+const borraRenglon = async (recno?: number) => {
+
+  if (!recno) {
+    if (This.Row < 0) return
+    recno = scroll.dataPage[This.Row].recno
+
+  }
+  eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
+  load_data=true
+
+
+  //scroll.dataPage= scroll.dataPage.filter(item => item.recno !== recno);
+  //if (scroll.dataPage.length==0) loadData()
 }
 
 /////////////////////////////////////////
@@ -761,7 +809,7 @@ const init = async () => {
   }
   console.log('Init Grid==>', props.prop.Name)
 
- 
+
   // if (props.prop.Name=='des_dat')  Ref.value.autofocus=true
   //Status.value = 'I';
   //Value.value = 0; // asignamos Valor inicial
@@ -829,6 +877,16 @@ div.tabla {
   overflow-x: auto;
   width: 100%;
 }
+div.controles {
+  /*position: absolute; */
+  /* no borrar se utiliza junto con div.option position:relative*/
+  border: 1px solid rgb(0, 5, 2);
+  background-color: rgb(229, 247, 244);
+  border-radius: 1%;
+  overflow-y: auto;
+  overflow-x: auto;
+  width: auto;
+}
 
 input {
   border: 2px solid rgb(0, 5, 2);
@@ -839,7 +897,6 @@ input {
   padding: "5px";
   border-radius: 5%;
 }
-
 </style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

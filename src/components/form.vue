@@ -240,7 +240,7 @@ async function eje_eve() {
     while (ThisForm.eventos.length > 0) {
       // corremos el stack de eventos a ejecutar
       for (const nom_com in ThisForm.estatus) { //
-        console.log('eje_eve estaus ', nom_com, ThisForm.estatus[nom_com])
+       // console.log('eje_eve estaus ', nom_com, ThisForm.estatus[nom_com])
         if (ThisForm.estatus[nom_com] != "A") return; // Si el estatus del componente esta en Proceso se sale
       }
 
@@ -272,7 +272,7 @@ async function eje_eve() {
           //          }
 
 
-          console.log('eje_eve resolve evento', evento)
+          //console.log('eje_eve resolve evento', evento)
           resolve(eval(evento))
         });
       }
@@ -317,7 +317,7 @@ async function eje_eve() {
         new_arr[i - 1] = ThisForm.eventos[i]
       }
       ThisForm.eventos = [...new_arr]
-      console.log('Stack de eventos', ThisForm.eventos)  // borramos el evento
+      //console.log('Stack de eventos', ThisForm.eventos)  // borramos el evento
 
 
     }
@@ -387,13 +387,13 @@ watch(
         return
       }
       // console.log('Watch eventos ===>', comp, ThisForm.estatus[comp])
-      const a = new Date
-      console.log('Watch eventos cimienza ===>', a, ThisForm.eventos[0])
+      //const a = new Date
+      //console.log('Watch eventos cimienza ===>', a, ThisForm.eventos[0])
 
       eje_eve()
-      const b = new Date
+      //const b = new Date
 
-      console.log('Watch eventos fin eje ===>', b)
+      //console.log('Watch eventos fin eje ===>', b)
 
     }
   }, { deep: true }
