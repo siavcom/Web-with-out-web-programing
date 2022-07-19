@@ -62,7 +62,7 @@
                       v-bind:Component="ref(This.Form[col])" v-bind:Recno="item.recno" v-bind:prop="This[col].prop"
                       v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion" v-bind:db="db"
                       @focusout.capture="eventos.push(This.prop.Map + '.' + This[col].Name + '.valid()')"
-                      @focus.capture.stop="eventos.push(This.prop.Map + '.' + This[col].Name + '.when()')">
+                      @focus="eventos.push(This.prop.Map + '.' + This[col].Name + '.when()')">
 
                     </component>
                   </div>

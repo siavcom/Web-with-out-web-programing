@@ -4,10 +4,8 @@
     <div class="error">
 
 
-      <!--Si es numero  -->
       <div class="tooltip">
-
-      <input class="texto" 
+      <!--input class="texto" 
                ref="Ref" 
                v-model.trim="Value"
                :readonly="prop.ReadOnly" 
@@ -16,18 +14,39 @@
                 :type="prop.Type"
                 @focus="onFocus" 
                 @focusout="focusOut" 
-                >
+                -->
+    <!--Si es numero  @input="Numeros($event)"
+                       @keypress="keyPress($event)"-->
+          <input v-if="prop.Type == 'number'" 
+            class="numero" 
+            type="type" 
+            ref="Ref" 
+            :min="prop.Min" 
+            :max="prop.Max"
+            :value="numberStr"
+            :readonly="prop.ReadOnly" 
+            :placeholder="prop.Placeholder" 
+            :tabindex="prop.TabIndex"
 
+            @focusout="onBlur" 
+            @focus="onFocusN"
+            @input="onInput"
+            >
 
+    <!--Si es fecha  -->
+          <input v-else-if="prop.Type == 'date'" 
+            class="date" 
+            ref="Ref" 
+            v-model.trim="Value" 
+            :readonly="prop.ReadOnly"
+            :placeholder="prop.Placeholder" 
+            :tabindex="prop.TabIndex" 
+            :type="prop.Type" 
+            @focusout="focusOut"
+            @focus="onFocus">
 
-
-
-        <!--input v-if="prop.Type == 'number'" class="numero" type="number" ref="Ref" :min="prop.Min" :max="prop.Max"
-          v-model.trim="Value" :readonly="prop.ReadOnly" :placeholder="prop.Placeholder" :tabindex="prop.TabIndex"
-          :type="prop.Type" @focusout="focusOut" @focus="onFocus" -->
-
-        <!--Si es texto  -->
-        <!--input class="texto" 
+    <!--Si es texto  -->
+          <input v-else class="texto" 
                ref="Ref" 
                v-model.trim="Value"
                :readonly="prop.ReadOnly" 
@@ -35,20 +54,9 @@
                :tabindex="prop.TabIndex" :type="prop.Type"
                 :maxlength="prop.MaxLength" 
                 @focusout="focusOut" 
-                @focus="onFocus" -->
-
-        <!--Si es fecha  -->
-        <!--input v-if="prop.Type == 'date'" class="date" ref="Ref" v-model.trim="Value" :readonly="prop.ReadOnly"
-          :placeholder="prop.Placeholder" :tabindex="prop.TabIndex" :type="prop.Type" @focusout="focusOut"
-          @focus="onFocus"-->
-
-
-
-        <span v-if="prop.ToolTipText" class="tooltiptext">
-          {{
-              prop.ToolTipText
-          }}
-        </span>
+                @focus="onFocus" >
+  
+        <span v-if="prop.ToolTipText" class="tooltiptext">{{prop.ToolTipText}} </span>
       </div>
       <span class="errorText" v-show="Error">{{ prop.ErrorMessage }}</span>
     </div>
@@ -132,6 +140,13 @@ const props = defineProps<{
     Focus: boolean;
     MaxLength: 254;
     First: false;
+    Notation: 'standard'; //standard,scientific,enginniering,compact
+    Style: string; // decimal, currency,percent,unit
+    Currency: 'MXN'; //USD,EUR,MXN
+    CurrencyDisplay : 'code'; //to use the ISO currency code.
+    Decimals : number;
+    Nu: 'arab';//
+     
     //    SetFocus:false;
     //compAddress: any;
   };
@@ -165,6 +180,70 @@ defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
 const Error = ref(false)
 const Focus = ref(props.prop.Focus)
 Focus.value = false
+var oldVal=Value.value
+
+////////////////////////////////
+// Formateador de numeros 
+/////////////////////////////
+
+const Style=ref(props.prop.Style)
+if (!Style.value) Style.value='decimal'
+
+const Currency=ref(props.prop.Currency)
+if (!Currency.value) Currency.value='MXN'
+
+const MinimumFractionDigits=ref(props.prop.Decimals) 
+if (!MinimumFractionDigits.value) MinimumFractionDigits.value=2
+
+const type = ref('text');
+const toNumberStr = (n) => {
+  return new Intl.NumberFormat('en-US', {
+    style: Style.value,
+    currency: Currency.value,
+    minimumFractionDigits: MinimumFractionDigits.value,
+    maximumFractionDigits: MinimumFractionDigits.value,
+   
+   
+    
+  }).format(n);
+};
+
+ const numberStr = ref(toNumberStr(Value.value));
+
+function toNumberString(num) { 
+  if (Number.isInteger(num)) { 
+    return num + ".0"
+  } else {
+    return num.toString(); 
+  }
+}
+
+
+
+ const onInput = ({ target }) => {
+     target.value = target.value.replace(/[^0-9.]/g, "")
+
+      
+      //Value.value = parseInt(target.value);
+      Value.value = parseFloat(target.value);
+
+};
+  const onFocusN = () => {
+      numberStr.value = Value.value;
+      type.value = 'number';
+      onFocus()
+    };
+  const onBlur = () => {
+      console.log('onBlur');
+      type.value = 'text';
+ //     numberStr.value = toNumberStr(Value.value)
+        numberStr.value = toNumberString(Value.value)
+ 
+      focusOut()
+    };
+
+
+
 
 /*  position
 static	Elements renders in order, as they appear in the document flow. This is default.
@@ -228,7 +307,6 @@ const onUnmounted = () => {
 };
 */
 
-//const LocalDb = new localDb();
 /////////////////////////////////////////////////////////////////////
 // emitValue
 // Descripcion: emite hacia el componente padre el nuavo valor asignado
@@ -238,10 +316,48 @@ const emitValue = async () => {
   //console.log('EditBox antes emit Value ====>', props.prop.Value, Value.value)
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
-  emit("update") // emite un update en el componente padre
+ // emit("update") // emite un update en el componente padre
   // console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
 };
+
+
+/////////////////////////////////////////////////////////////////////
+// Numeros
+// Descripcion: Cuando pierda el foco el componente , actualizamo el valor en cursor local
+/////////////////////////////////////////////////////////////////
+const Numeros = async ($event) => {
+
+let stringValue= $event.data.toString()    
+//x =x.replace(/\D/g, '') 
+//Value.value.split('/\D/g').join('');
+//
+let regex = /^\d*(\.\d{1,2})?$/
+
+console.log('Numeros Value ====>', Value.value)  
+
+
+if(!stringValue.match(regex) ) {
+     let Valor =Value.value
+     console.log('Numeros Not match ====>',Value.value, Valor)  
+
+   //   Value.value = oldVal
+ 
+      }
+        else {
+ 
+          // Value.value=+(Valor)
+
+          oldVal = Value.value
+
+      }
+
+}
+
+
+
+
+
 
 
 /////////////////////////////////////////////////////////////////////
@@ -250,20 +366,17 @@ const emitValue = async () => {
 /////////////////////////////////////////////////////////////////
 const focusOut = async () => {
 
-  console.log('Valid updateCampo===>', Value,props.prop.ControlSource)
+  //console.log('Valid updateCampo===>', Value,props.prop.ControlSource)
   if (props.prop.ControlSource && props.prop.ControlSource.length > 3) {
     // actualiza valor en localDb
     const valor = props.prop.Type == 'number' ? +Value.value : Value.value
+    // Actualiza el alaSQL el dato
     await props.db.value.updateCampo(valor, props.prop.ControlSource, props.Recno)
     //await LocalDb.update(valor).then(() => { 
     // })
   }
   //console.log('editBox focusout ', props.prop.Name)
   return await emitValue()
-
-
-  //console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
-  //return true;
 
 };
 /////////////////////////////////////////////////////////////////////
@@ -274,7 +387,7 @@ const focusOut = async () => {
 const keyPress = ($event) => {
   // <input       @keypress="keyPress($event)"
   const key = $event.charCode
-  emit("update:Key", Key)
+  console.log('KeyPress===>',Value.value,key)
   Key.value = key
 }
 
@@ -294,7 +407,6 @@ const onFocus = async () => {
   emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
   emit("update:ErrorMessage", '')
   emit("update")
-  console.log('onFocus elemento ===>', props.prop.Name, 'P')
 
 }
 
@@ -454,10 +566,14 @@ const init = async () => {
   // const ref = Ref
   // emit("update:Ref", Ref); // actualiza el valor del Ref al componente padre
 
+
+  oldVal=Value.value   // asignamos el valor viejo
+
   // si es el primer elemento a posicionarse
   if (props.prop.First) {
     emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
     emit("update") // emite un update en el componente padre
+   // onFocus()
     Ref.value.focus()  // hace el foco como primer elemento
     //Ref.value.select()
     return
