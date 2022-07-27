@@ -15,7 +15,7 @@ import { NOM_TAB } from "./nom_tab"
 import { SIS_PRG } from "./sis_prg"
 import { BT_ACEPTAR } from "./bt_aceptar"
 import { GRID_DATOS } from "./grid_datos/grid_datos"
-import { COMPONENT } from '@/clases/Component'
+//import { COMPONENT } from '@/clases/Component'
 /*
 import {GRID_VISTAS} from "./vistas"
 import {GRID_PROGRAMAS} from "./programas"
@@ -70,7 +70,7 @@ export class THISFORM extends FORM {
     try {
 
       const ThisForm = this
-      const This = ThisForm.prop // Hace referencia a las propiedades del componente
+      //const This = ThisForm.prop // Hace referencia a las propiedades del componente
 
       ThisForm.db.Form = this
       // Se pierde la reactividad con await
@@ -122,6 +122,7 @@ export class THISFORM extends FORM {
       const m = {
 
       }
+      
       if (this.Form.dic_dat.prop.Value != 'M') {  // Datos
         this.Form.grid_datos.prop.Enabled = false
         // this.Form.grid_indices.prop.Enabled = false

@@ -18,7 +18,7 @@
     <!--Si es numero  @input="Numeros($event)"
                        @keypress="keyPress($event)"-->
           <input v-if="prop.Type == 'number'" 
-            class="numero" 
+            class="number" 
             type="type" 
             ref="Ref" 
             :min="prop.Min" 
@@ -46,7 +46,7 @@
             @focus="onFocus">
 
     <!--Si es texto  -->
-          <input v-else class="texto" 
+          <input v-else class="text" 
                ref="Ref" 
                v-model.trim="Value"
                :readonly="prop.ReadOnly" 
@@ -185,7 +185,7 @@ var oldVal=Value.value
 ////////////////////////////////
 // Formateador de numeros 
 /////////////////////////////
-
+/*
 const Style=ref(props.prop.Style)
 if (!Style.value) Style.value='decimal'
 
@@ -207,6 +207,30 @@ const toNumberStr = (n) => {
     
   }).format(n);
 };
+*/
+
+const type = ref('text');
+const toNumberStr = (n) => {
+  let Style = props.prop.Style
+  let Currency = props.prop.Currency
+  let MinimumFractionDigits = props.prop.Decimals
+  /* if (!Style) Style = 'decimal'
+  if (!Currency) Currency = 'MXN'
+  if (!MinimumFractionDigits) MinimumFractionDigits = 2*/
+  //console.log('textLabel Digits===>',props.prop.Name,props.prop.Decimals,MinimumFractionDigits)
+
+
+
+   return new Intl.NumberFormat('en-US', {
+    style: Style,
+    currency: Currency,
+    minimumFractionDigits: MinimumFractionDigits,
+    maximumFractionDigits: MinimumFractionDigits,
+  }).format(n);
+};
+
+
+
 
  const numberStr = ref(toNumberStr(Value.value));
 
@@ -234,7 +258,6 @@ function toNumberString(num) {
       onFocus()
     };
   const onBlur = () => {
-      console.log('onBlur');
       type.value = 'text';
  //     numberStr.value = toNumberStr(Value.value)
         numberStr.value = toNumberString(Value.value)
@@ -495,6 +518,7 @@ watch(
 //  Nota : Si se cambia el valor desde la forma principal, se debe de actualizar en el
 //          Componente
 //////////////////////////////////////////
+
 watch(
   () => props.prop.Value,
   (new_val, old_val) => {

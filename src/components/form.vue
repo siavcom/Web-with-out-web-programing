@@ -233,7 +233,7 @@ function sleep(sleepDuration: number) {
 // Ejecuta los eventos que hay en la pila de eventos
 async function eje_eve() {
   try {
-    console.log('Entra a eje_eve', ThisForm.eventos[0])
+    //console.log('Entra a eje_eve', ThisForm.eventos[0])
     //if (ThisForm.eventos.length > 0) console.log("Watch Eventos a ejecutar ===>", ThisForm.eventos);
 
     //    while (ThisForm.eventos.length > 0) {

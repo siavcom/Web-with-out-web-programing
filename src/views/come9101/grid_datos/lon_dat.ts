@@ -21,6 +21,7 @@ export class LON_DAT extends COLUMN {
         this.prop.BaseClass = 'editText'
         this.prop.Type='number'
         this.prop.Min='0'
+        this.prop.Decimals=0
         this.prop.ControlSource = 'vi_cap_dat.lon_dat'
         this.prop.ToolTipText ='Logitud del campo'
         this.prop.Placeholder = "Longitud del campo"

@@ -2,8 +2,11 @@ import { createApp } from "vue";
 import App from "./App.vue";  // Comienza la aplicacion aqui
 import router from "./router";
 //import $VueSimpleAlert from "vue3-simple-alert"; // mensajes de alerta  npm i vue-simple-alert Vue.use(VueSimpleAlert);
+//////////////////// VuewSwetAlert////////////////////
+// Nceseita los dos componentes /////////////////
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+////////////////////////////////////////////////////
 //import VueVirtualScroller from "vue-virtual-scroller";
 //import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
@@ -71,7 +74,7 @@ app.config.errorHandler = (err: any, vm, info) => {
 };
 // Montamos el VueSweetalert2 y lo hacemos publico
 app.use(VueSweetalert2);
-window.Swal =  app.config.globalProperties.$swal;
+window.Swal =  app.config.globalProperties.$swal; // hacemos publico Swal
 //app.use(VueVirtualScroller);
 app.mount("#app");
 

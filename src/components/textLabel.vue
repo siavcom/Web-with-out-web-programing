@@ -1,17 +1,22 @@
 <template>
-  <div class="divi" :style="estilo" :v-show="prop.Visible">
+  <div id='divi' class="divi" :style="estilo" :v-show="prop.Visible">
     <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
-    <input class="texto" readonly="true" :v-show="Text > ' '" v-model="Text" />
+    <div>
+      <input :class="prop.Type" readonly="true"
+       type="prop.Type"  
+       :v-show="Text > ' '" v-model="Text" 
+       />
+    </div>
   </div>
 </template>
 
+
 <script setup lang="ts">
 import {
-  //  defineEmits,
-  //  defineProps,
   //  defineExpose,
   ref,
   reactive,
+  // computed,
   //  onUnmounted,
   watch,
   //  toRefs,
@@ -31,6 +36,7 @@ const emit = defineEmits(["update"]);
 ////////////////////////////////////
 const props = defineProps<{
   Recno: 0;
+  Show: false;
   prop: {
     ToolTipText: string;
     View: "";
@@ -47,7 +53,7 @@ const props = defineProps<{
     Sw_cap: true;
     Name: "";
     textLabel: "";
-    Type: "text";
+    Type: string;
     Visible: true;
     ControlSource: "";
     Key: string;
@@ -65,7 +71,16 @@ const props = defineProps<{
     ErrorMessage: string;
     ShowValue: false;
     TabIndex: number;
-    Style: number;
+
+
+    Notation: 'standard'; //standard,scientific,enginniering,compact
+    Style: string; // decimal, currency,percent,unit
+    Currency: 'MXN'; //USD,EUR,MXN
+    CurrencyDisplay: 'code'; //to use the ISO currency code.
+    Decimals: number;
+    Nu: 'arab';//
+
+
     //compAddress: any;
   };
 
@@ -87,21 +102,41 @@ const props = defineProps<{
   db: any
 }>();
 
-const Value = ref(props.prop.Value);
+const Value = ref(props.prop.Value)
 const Text = ref('')
-const Status = ref(props.prop.Status);
-const Caption = ref(props.prop.Caption);
+const Status = ref(props.prop.Status)
+const Caption = ref(props.prop.Caption)
+const Aling = ref('left')
 //const Recno = ref(props.Recno)
 //Recno.value = 0
 //defineExpose({ Caption });
-
-
 //const This = Component.value
 const columnas = reactive([{}]); // tiene todos los renglones del comboBox
-
-
-
 Status.value = 'I'
+
+////////////////////////////////
+// Formateador de numeros 
+/////////////////////////////
+
+const toNumberStr = (n) => {
+  let Style = props.prop.Style
+  let Currency = props.prop.Currency
+  let MinimumFractionDigits = props.prop.Decimals
+  /* if (!Style) Style = 'decimal'
+  if (!Currency) Currency = 'MXN'
+  if (!MinimumFractionDigits) MinimumFractionDigits = 2*/
+  //console.log('textLabel Digits===>',props.prop.Name,props.prop.Decimals,MinimumFractionDigits)
+
+
+
+   return new Intl.NumberFormat('en-US', {
+    style: Style,
+    currency: Currency,
+    minimumFractionDigits: MinimumFractionDigits,
+    maximumFractionDigits: MinimumFractionDigits,
+  }).format(n);
+};
+
 
 
 //const toggle = ref(false)
@@ -152,7 +187,7 @@ const asignaResultado = (valor: string) => {
 
   for (let i = 0; i < columnas.length; i++) {
     if (valor == columnas[i].value) { // El objeto columna tiene dos campos value y text
-     Text.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
+      Text.value = columnas[i]['text'][0];  // asigna el resultado a mostrar
     }
   }
 
@@ -242,14 +277,13 @@ const renderComboBox = async () => {
 
       //        const resultado = await selectLocalDb(nom_tab);// hacemos select a la tabla local
       // aqui me quede (arreglar lectura por alias)
-      const data = await sql.value.localSql(props.prop.RowSource)
+      const data = await  props.db.value.localSql(props.prop.RowSource)
 
       break;
     }
     case 3: {
-      const sql = props.db
       //console.log('ComboBox db sql =======>>', sql.value)
-      const data = await sql.value.localSql(props.prop.RowSource)
+      const data = await  props.db.value.localSql(props.prop.RowSource)
       // Generamos el arreglo 
       for (const nom_obj in data[0]) {
         const renglon = []
@@ -287,8 +321,8 @@ const renderComboBox = async () => {
   var valor = null
 
   if (props.prop.ControlSource > ' ')  // Si Hay controSource asigna el valor leido
-      valor = Text.value // null
-//valor = Value.value // null
+    valor = Text.value // null
+  //valor = Value.value // null
 
   for (
     let ren = 0;
@@ -329,12 +363,33 @@ const renderComboBox = async () => {
   //emitValue()
 };
 
-const readCampo =  async (recno: number) => {
-   Text.value =  await props.db.value.readCampo(props.prop.ControlSource, recno)
+
+const readCampo = async () => {
+  if (props.Recno > 0 && props.prop.ControlSource.length > 2) {
+    Text.value = await props.db.value.readCampo(props.prop.ControlSource, props.Recno)
+    if (props.prop.Type == 'number') {
+      Text.value = toNumberStr(Text.value);
+    
+    }
+  }
+
 
   renderComboBox()
 
 }
+
+
+
+
+watch(
+  () => props.Show,
+  (new_val, old_val) => {
+  
+    if (props.Show)  readCampo()
+  },
+  { deep: false }
+);
+
 
 /////////////////////////////////////////////
 // Computed
@@ -353,26 +408,30 @@ const readCampo =  async (recno: number) => {
 
 const init = async () => {
 
-   //console.log('Init textLabel  ==>', props.prop.Name, props.Recno, props.prop.ControlSource.length)
-
-  if (props.Recno > 0 && props.prop.ControlSource.length > 2) {
-    readCampo(props.Recno)
-  }
-
+ // console.log('TextLabel',props.prop.Name,props.prop.Type)
+  readCampo()
+   //readCampo()
   
 }
 
 init();
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<!--style scoped>
-h1 {
-  margin: 40px 0 0;
+<!-- Add "scoped" attribute to limit CSS to this component only 
+<style scoped> 
+input[ class="number"] {
+  text-align: right;
 }
-input {
-  color: #42b960;
-  width: "100px";
-  height: "30px";
+</style>
+
+
+<style scoped> 
+input.number {
+ 
+  text-align: right;
 }
-</style-->
+</style>
+
+
+
+-->

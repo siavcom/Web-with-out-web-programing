@@ -5,10 +5,16 @@
     "version": "0.2.0",
     "configurations": [
       {
+        "type": "browse-lite",
+        "request": "launch",
+        "name": "Browse Lite: Launch",
+        "url": "http://176.16.200.20:38000/Login"
+      },
+      {
         "type": "firefox",
         "request": "launch",
         "name": "vuejs: firefox",
-        "url": "http://176.16.200.28:38000/Login",
+        "url": "http://176.16.200.20:38000/Login",
         "webRoot": "${workspaceFolder}/src",
         "pathMappings": [
           {

@@ -9,32 +9,33 @@
       <!--label text-align="center">{{ prop.textLabel }}</label>  -->
       <h2>{{ prop.textLabel }}</h2>
       <div class="tabla">
-        <table style="margin-top:10px">
+        <table>
           <thead>
             <tr style="font-size: 13px">
-              <td>Renglon</td>
-              <td v-for="(obj, elemento) in This">
+              <th style="width : 20px;">Renglon</th>
+              <th v-for="(obj, elemento) in This">
                 <!--Header:
                   -->
                 <div v-if="This[elemento] != null && This[elemento].BaseClass && This[elemento].BaseClass == 'Column'">
                   <!--Imprime como etiqueta el header de cada columna-->
                   {{ obj.textLabel }}
                 </div>
-              </td>
+              </th>
             </tr>
           </thead>
-          <!-------------  Detalle   ------------------------->
+          <!-------------  Detalle   -----------------------
+          
+           && prop.Status == 'A' 
+          -->
 
-          <tbody v-show="This.Form.prop.Status == 'A' && prop.Status == 'A' && scroll.dataPage.length > 0">
+          <tbody v-show="This.Form.prop.Status == 'A' && scroll.dataPage.length > 0">
 
             <!-------------  Renglones  -----------------------
               -->
             <!--tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
             <tr v-for="item in scroll.dataPage" :key="item.id">
 
-              <td>
-                {{ item.id + 1 }}
-              </td>
+              <td style="width:20px">{{item.id+1}}</td>
               <!-------------  Columnas  ------------------------->
               <!--
                 v-if="props.db.value.View[prop.RecordSource].recnoVal" 
@@ -42,12 +43,14 @@
                     -->
               <td v-for="(obj, col) in This" :key=obj.ColumnOrder style="padding:0; text-align:center">
 
-                <div v-if="This[col].BaseClass && This[col].BaseClass == 'Column' && This[col].prop.Status != 'I'">
+                <div v-if="This[col].BaseClass && This[col].BaseClass == 'Column' && This[col].prop.Status != 'I'"
+                      style="This[col].estilo"   >
                   <!--template-->
                   <!--focus.capture.stop para que solo ejecute el evento en el componente actual-->
                   <div v-show="item.id != This.Row">
                     <KeepAlive>
-                      <textLabel v-bind:Recno="item.recno" v-bind:prop="This[col].prop" v-bind:estilo="This[col].estilo"
+                      <textLabel v-bind:Show="item.id != This.Row" v-bind:Recno="item.recno"
+                        v-bind:prop="This[col].prop" 
                         v-bind:posicion="This[col].posicion" v-bind:db="db"
                         @focus.capture.stop="eventos.push(This.prop.Map + '.asignaRenglon(' + item.id + ')')"
                         @click.stop @focusout.stop>
@@ -573,8 +576,12 @@ watch(
 
         return
       }
-      if (eventos.length == 0) return
+      if (eventos.length == 0) {
+        Status.value = 'A';  // Cambia el estatus del grid a Proceso
+        emit("update:Status", 'A'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
 
+        return
+      }
       for (let i = 0; i < eventos.length; i++) {
         console.log('Grid watch eventos', eventos[i])
         const evento = eventos[i]
@@ -596,8 +603,8 @@ watch(
 watch(
   () => This.Form.eventos,
   () => {
-     if (!load_data) return
-     if (This.Form.eventos.length==0) loadData()
+    if (!load_data) return
+    if (This.Form.eventos.length == 0) loadData()
   },
   { deep: false }
 );
@@ -609,7 +616,7 @@ watch(
 watch(
   () => This.estatus,
   (new_val, old_val) => {
-    console.log('<=======Watch estatus componentes =======>',This.estatus)
+    console.log('<=======Watch estatus componentes =======>', This.estatus)
 
     for (const comp in This.estatus) { // Recorre todos los estatus del grid
 
@@ -665,7 +672,7 @@ watch(
 
 const loadData = async () => {
   This.Row = -1
-  load_data=false
+  load_data = false
 
   This.Form.prop.Status = 'P'
   //console.log('loadData thisFormprop',This.Form.prop.Status)
@@ -725,7 +732,7 @@ const loadData = async () => {
   }
 
   This.Form.prop.Status = 'A'
-  
+
   //console.log('loadData thisFormprop', This.Form.prop.Status)
 
 }
@@ -767,20 +774,50 @@ const last = async () => {
 }
 
 const appendRow = async (recno?: number) => {
-eventos.push(This.prop.Map + '.appendRow()')
-load_data=true
+  
+
+  eventos.push(This.prop.Map + '.appendRow()')
+
+  // Si era el ultimo elemento de la pagina
+  if (scroll.bottom) {
+    scroll.bottom = false
+    last()
+  }
+  else
+    load_data = true
+
+  //console.log('appendRow Row,scroll.dataPage====>', row, scroll.dataPage)
+  const ult_ele = scroll.dataPage.length - 1
+  This.Row = scroll.dataPage[ult_ele].id
+
+  //v-for="item in scroll.dataPage" :key="item.id"
 }
 
 
 const borraRenglon = async (recno?: number) => {
 
   if (!recno) {
+    //console.log('borraRenglon data Page====>',This.Row,scroll.dataPage)
+
     if (This.Row < 0) return
-    recno = scroll.dataPage[This.Row].recno
+    // busca a cual recno pertenece el This.Row
+    for (let i = 0; scroll.dataPage.length - 1; i++) {
+
+      console.log('borraRenglon data Page====>', i, scroll.dataPage[i].recno)
+
+      if (scroll.dataPage[i].id == This.Row) {
+        recno = scroll.dataPage[i].recno
+        break
+      }
+    }
+    if (!recno) return
 
   }
+
+  console.log('borraRenglon recno====>', recno)
+
   eventos.push(This.prop.Map + '.deleteRow(' + recno + ')')
-  load_data=true
+  load_data = true
 
 
   //scroll.dataPage= scroll.dataPage.filter(item => item.recno !== recno);
@@ -866,6 +903,12 @@ h1 {
   margin: 40px 0 0;
 }
 
+table {
+  display: contents;
+  margin-top: 5px;
+}
+
+
 div.tabla {
   /*position: absolute; */
   /* no borrar se utiliza junto con div.option position:relative*/
@@ -876,7 +919,9 @@ div.tabla {
   overflow-y: auto;
   overflow-x: auto;
   width: 100%;
+
 }
+
 div.controles {
   /*position: absolute; */
   /* no borrar se utiliza junto con div.option position:relative*/

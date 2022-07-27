@@ -59,15 +59,38 @@ span.etiqueta {
 }
 
 input.texto {
-  border: 2px solid rgb(0, 5, 2);
+  border: 1px solid rgb(0, 5, 2);
   /*padding: "5px";*/
   border-radius: 5px;
   text-align: left;
  
 }
 
+input.text {
+  border: 1px solid rgb(0, 5, 2);
+  /*padding: "5px";*/
+  border-radius: 5px;
+  text-align: left;
+ 
+}
+
+input.date {
+  border: 1px solid rgb(0, 5, 2);
+  /*padding: "5px";*/
+  border-radius: 5px;
+  text-align: left;
+ 
+}
+
+input[ class="number"] {
+  border: 1px solid rgb(0, 5, 2);
+  /*padding: "5px";*/
+  border-radius: 5px;
+  text-align: right;
+}
+
 input.numero {
-  border: 2px solid rgb(0, 5, 2);
+  border: 1px solid rgb(0, 5, 2);
   /*padding: "5px";*/
   border-radius: 5px;
   text-align: right;
@@ -75,7 +98,7 @@ input.numero {
 }
 
 input.fecha {
-  border: 2px solid rgb(0, 5, 2);
+  border: 1px solid rgb(0, 5, 2);
   /*padding: "5px";*/
   border-radius: 5px;
   text-align: left;

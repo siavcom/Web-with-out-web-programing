@@ -22,6 +22,7 @@ export class DEC_DAT extends COLUMN {
         this.prop.Type='number'
         this.prop.Min='0'
         this.prop.Max='20'
+        this.prop.Decimals=0
         this.prop.ControlSource = 'vi_cap_dat.dec_dat'
 
         this.prop.Placeholder = "Decimales de precisión"

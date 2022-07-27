@@ -63,10 +63,9 @@ export class GRID extends COMPONENT {
   // lee los datos del renglon actual y depliega los componentes de captura
   ///////////////////////////////////////////////////////////
   public async asignaRenglon(row: number) {
-    console.log('asignaRenglon row ',row,this.Form.db.View[this.prop.RecordSource].recnoVal)
-    if (row>this.Form.db.View[this.prop.RecordSource].recnoVal.length-1) 
-      row=this.Form.db.View[this.prop.RecordSource].recnoVal.length-1
-    else row=row
+ //   console.log('asignaRenglon row ',row,this.Form.db.View[this.prop.RecordSource].recnoVal)
+//    if (row>this.Form.db.View[this.prop.RecordSource].recnoVal.length-1) 
+//      row=this.Form.db.View[this.prop.RecordSource].recnoVal.length-1
 
 
     this.Row=row
@@ -91,8 +90,9 @@ export class GRID extends COMPONENT {
   //  this.Form.eventos.push('ThisForm.grid_datos.asignaRenglon(' +row + ')')
 
     console.log('appendRow alasql =====>',this.Form.db) // this.Form.db.alasql(' SELECT * FROM Now.' + this.prop.RecordSource ))
-    this.Row=this.Form.db.View[this.prop.RecordSource].recnoVal.length-1  // asigna el row donde tomo el foco
-
+    
+    //this.Row=this.Form.db.View[this.prop.RecordSource].recnoVal.length-1  // asigna el row donde tomo el foco
+     
   }
 
 /*

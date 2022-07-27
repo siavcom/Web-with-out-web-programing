@@ -32,9 +32,6 @@ export class COMPONENT {
     Sw_val: false,
     Sw_cap: true,
     Key: 0,
-    Step: "1",
-    Min: "0",
-    Max: "999999999",
     id: 0,
     ControlSource: "",
     Status: "I",
@@ -53,12 +50,20 @@ export class COMPONENT {
     Row: 0,
     Map: "",
     Autofocus: false,
-    Style: 0,
     Position: 'main', // main, header , footer
     Image: '',
     Focus: false,
     First: false,
     Last: false,
+    // Datos numericos
+    Step: "1",
+    Min: "0",
+    Max: "999999999",
+    Style: 'decimal', // decimal, currency,percent,unit
+    Currency: 'MXN', //USD,EUR,MXN
+    CurrencyDisplay : 'code', //to use the ISO currency code.
+    Decimals : 2,
+ 
 
   };
   estilo = {

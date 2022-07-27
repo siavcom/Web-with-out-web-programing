@@ -56,6 +56,10 @@ const props = defineProps<{
     ControlSource: "";
     Status: string;
     ErrorMessage :'';
+    Style: 'decimal'; // decimal, currency,percent,unit
+    Currency: 'MXN'; //USD,EUR,MXN
+    Decimals : 2;
+ 
  
   };
 

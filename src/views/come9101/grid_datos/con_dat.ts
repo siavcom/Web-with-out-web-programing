@@ -23,10 +23,12 @@ export class CON_DAT extends COLUMN {
         this.prop.Type = 'number'
         this.prop.Min = '0'
         this.prop.Max = '256'
+        this.prop.Decimals=0
         this.prop.ControlSource = 'vi_cap_dat.con_dat'
         this.prop.Placeholder = "Consecutivo/Orden "
         this.prop.ToolTipText = 'Consecutivo/Orden'
-        this.estilo.flexBasis = '30%' /* width/height  - initial value: auto */
+        this.estilo.width= '20px'
+        //this.estilo.flexBasis = '30%' /* width/height  - initial value: auto */
   //      this.prop.Autofocus=true
   
     }

@@ -671,21 +671,23 @@ export class VFPDB {
     }
 
     //const val_defa = eval(this.View[alias].val_def)
-    console.log('Valores defaul insertados View 2===>', valores)
+    //console.log('Valores defaul insertados View 2===>', valores)
 
     alasql('USE Now;\
     INSERT INTO Now.'+ alias + ' VALUES ?', [valores])
     alasql('USE Last;\
     INSERT INTO Last.'+ alias + ' SELECT * FROM Now.' + alias + ' WHERE recno=?', recno)
-    console.log('appendBlank alasql =====>', alasql(' SELECT * FROM Now.' + alias + ' WHERE recno=?', recno))
     //   const recno = -(this.View[alias].recCount + 1)  // Incrementamos el valor de los registros
     //    this.View[alias].recno = recno           // asignamos el valor recno
 
     //   this.View[alias].recnoVal.push(recno)   
-    const id = this.View[alias].recnoVal.length
+    const ult_ele=this.View[alias].recnoVal.length-1
+    const id = this.View[alias].recnoVal[ult_ele].id+1
     this.View[alias].recnoVal.push({ recno: recno, id: id })   // insertamos en el arreglo para llenar el grid
     this.View[alias].recCount = this.View[alias].recCount + 1
     this.View[alias].row = this.View[alias].recnoVal.length - 1 //asignamos nuevo row
+   // console.log('appendBlank alasql RecnoVal=====>',this.View[alias].recnoVal )
+   
 
     return valores
 

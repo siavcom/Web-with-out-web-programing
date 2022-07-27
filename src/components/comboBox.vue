@@ -184,7 +184,7 @@ const inputWidth = ref('auto')
 // Descripcion: emite hacia el componente padre el nuavo valor asignado
 /////////////////////////////////////////////////////////////////
 const emitValue = async () => {
-  console.log('ComboBox emitValue====>')
+  //console.log('ComboBox emitValue====>')
 
   Status.value = 'A'
   //console.log('EditBox antes emit Value ====>', props.prop.Value, props.prop.Status)
@@ -944,7 +944,10 @@ img.imagen {
 }
 
 div.divi {
-  display: inline-block;
+  /*display: inline-block;*/
+  display: flex;                  /* establish flex container */
+  flex-direction: row;            /* default value; can be omitted */
+  flex-wrap: nowrap;  
 
 }
 

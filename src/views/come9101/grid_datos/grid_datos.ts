@@ -56,18 +56,6 @@ export class GRID_DATOS extends GRID {
  
   ////////////////////////////////
 
-  public valid = async () => {
-    //console.log('can_caj. this=====>', Object);
-    //console.log('ThisParent =====<',Object.getPrototypeOf('ThisForm'))
-    const m: any = {
-      //cop_nom: '',
-      // cod_nom: ''
-    }; // :  Record<string, never> ;
-
-
-    return true;
-  }; // fin metodo valid
-
  
 
 
