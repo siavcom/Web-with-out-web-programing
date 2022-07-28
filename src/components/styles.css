@@ -13,8 +13,7 @@ h1 {
 }
 div.divi{
   /*display: inline-flex; /*block recomendado por raul*/
-  display: contents;
-  color: #18e94c;
+  color:   #18e94c;
   background: #f7f8f7;
   position: v-bind("props.posicion.position");
   left: v-bind("props.posicion.left");

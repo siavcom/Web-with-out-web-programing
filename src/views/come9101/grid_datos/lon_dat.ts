@@ -28,6 +28,7 @@ export class LON_DAT extends COLUMN {
 
         
         this.estilo.flexBasis = '30%' /* width/height  - initial value: auto */
+        this.estilo.width='50px'
     }
 
     ////////////////////////////////// 

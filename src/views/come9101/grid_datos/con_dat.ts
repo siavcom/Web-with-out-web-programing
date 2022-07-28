@@ -27,7 +27,7 @@ export class CON_DAT extends COLUMN {
         this.prop.ControlSource = 'vi_cap_dat.con_dat'
         this.prop.Placeholder = "Consecutivo/Orden "
         this.prop.ToolTipText = 'Consecutivo/Orden'
-        this.estilo.width= '20px'
+        this.estilo.width= '50px'
         //this.estilo.flexBasis = '30%' /* width/height  - initial value: auto */
   //      this.prop.Autofocus=true
   

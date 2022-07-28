@@ -12,13 +12,15 @@
         <table>
           <thead>
             <tr style="font-size: 13px">
-              <th style="width : 20px;">Renglon</th>
-              <th v-for="(obj, elemento) in This">
+              <th style="max-width:43px; min-width:43px">Renglon</th>
+              <th v-for="(obj, elemento) in This" >
                 <!--Header:
                   -->
-                <div v-if="This[elemento] != null && This[elemento].BaseClass && This[elemento].BaseClass == 'Column'">
+                <div v-if="This[elemento] != null && This[elemento].BaseClass && This[elemento].BaseClass == 'Column'"
+                    style="width:100px"
+>
                   <!--Imprime como etiqueta el header de cada columna-->
-                  {{ obj.textLabel }}
+                  {{obj.textLabel}}
                 </div>
               </th>
             </tr>
@@ -35,37 +37,42 @@
             <!--tr v-for="(recno, i) in props.db.value.View[prop.RecordSource]['recnoVal']" :key="i"-->
             <tr v-for="item in scroll.dataPage" :key="item.id">
 
-              <td style="width:20px">{{item.id+1}}</td>
+              <td style="max-width:40px; min-width:40px">{{item.id+1}}</td>
               <!-------------  Columnas  ------------------------->
               <!--
                 v-if="props.db.value.View[prop.RecordSource].recnoVal" 
                 v-show="i != This.Row"
                     -->
-              <td v-for="(obj, col) in This" :key=obj.ColumnOrder style="padding:0; text-align:center">
+              <td v-for="(obj, col) in This" :key=obj.ColumnOrder style="padding:0">
 
                 <div v-if="This[col].BaseClass && This[col].BaseClass == 'Column' && This[col].prop.Status != 'I'"
-                      style="This[col].estilo"   >
-                  <!--template-->
+                       >
+                  <!--template style="This[col].estilo" -->
                   <!--focus.capture.stop para que solo ejecute el evento en el componente actual-->
-                  <div v-show="item.id != This.Row">
+                  <div v-show="item.id != This.Row" :style='{"width" :This[col].estilo.width}' >
                     <KeepAlive>
                       <textLabel v-bind:Show="item.id != This.Row" v-bind:Recno="item.recno"
                         v-bind:prop="This[col].prop" 
-                        v-bind:posicion="This[col].posicion" v-bind:db="db"
+                        v-bind:posicion="This[col].posicion"
+                        v-bind:estilo="This[col].estilo" 
+                        v-bind:db="db"
                         @focus.capture.stop="eventos.push(This.prop.Map + '.asignaRenglon(' + item.id + ')')"
-                        @click.stop @focusout.stop>
+                        @click.stop @focusout.stop
+                        
+                        >
                       </textLabel>
                     </KeepAlive>
                   </div>
                   <!--/template-->
-                  <div v-if="item.id == This.Row">
+                  <div v-if="item.id == This.Row" :style='{"width" :This[col].estilo.width}'>
                     <component :is="impComp(This[col].prop.BaseClass)" v-model:Value="This[col].prop.Value"
                       v-model:Status="This[col].prop.Status" v-model:ErrorMessage="This[col].prop.ErrorMessage"
                       v-model:Key="This[col].prop.Key" v-model:Focus="This[col].Focus"
                       v-bind:Component="ref(This.Form[col])" v-bind:Recno="item.recno" v-bind:prop="This[col].prop"
                       v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion" v-bind:db="db"
                       @focusout.capture="eventos.push(This.prop.Map + '.' + This[col].Name + '.valid()')"
-                      @focus="eventos.push(This.prop.Map + '.' + This[col].Name + '.when()')">
+                      @focus="eventos.push(This.prop.Map + '.' + This[col].Name + '.when()')"
+                      :style="{ 'width' : This[col].estilo.width}">
 
                     </component>
                   </div>

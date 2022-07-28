@@ -5,6 +5,7 @@
       <input :class="prop.Type" readonly="true"
        type="prop.Type"  
        :v-show="Text > ' '" v-model="Text" 
+       :style="{'width' : estilo.width}"
        />
     </div>
   </div>

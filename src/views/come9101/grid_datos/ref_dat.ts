@@ -24,6 +24,7 @@ export class REF_DAT extends COLUMN {
         this.prop.Placeholder = "Descripción del campo"
 
         this.estilo.flexBasis = '30%' /* width/height  - initial value: auto */
+        this.estilo.width='300px'
     }
 
     ////////////////////////////////// 

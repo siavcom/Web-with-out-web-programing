@@ -68,7 +68,7 @@ export class COMPONENT {
   };
   estilo = {
     //display: "flex",
-    display: "inline",
+    display: "inline-block",
     flexGrow: "0",     /* do not grow   - initial value: 0 */
     flexShrink: "0",   /* do not shrink - initial value: 1 */
     flexBasis: "auto", /* width/height  - initial value: auto */
@@ -77,6 +77,8 @@ export class COMPONENT {
     background: "white",
     color: "#b94295",
     width: "auto",
+    maxWidth: "auto",
+    minWidth: "auto",
     height: "auto",
     fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
     fontFamily: "Arial",

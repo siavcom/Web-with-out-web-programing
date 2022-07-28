@@ -1,5 +1,5 @@
 <template>
-  <div class="divi" :style="estilo" v-if="prop.Visible" :disabled="prop.Disabled">
+  <div class="divi" v-bind:style="estilo" v-if="prop.Visible" :disabled="prop.Disabled">
     <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
     <div class="error">
 
@@ -31,6 +31,7 @@
             @focusout="onBlur" 
             @focus="onFocusN"
             @input="onInput"
+            :style="{'width' : estilo.width}"
             >
 
     <!--Si es fecha  -->
@@ -43,7 +44,9 @@
             :tabindex="prop.TabIndex" 
             :type="prop.Type" 
             @focusout="focusOut"
-            @focus="onFocus">
+            @focus="onFocus"
+            :style="{'width' : estilo.width}"
+>
 
     <!--Si es texto  -->
           <input v-else class="text" 
@@ -54,7 +57,9 @@
                :tabindex="prop.TabIndex" :type="prop.Type"
                 :maxlength="prop.MaxLength" 
                 @focusout="focusOut" 
-                @focus="onFocus" >
+                @focus="onFocus"
+                :style="{'width' : estilo.width}"
+ >
   
         <span v-if="prop.ToolTipText" class="tooltiptext">{{prop.ToolTipText}} </span>
       </div>
@@ -155,7 +160,7 @@ const props = defineProps<{
     background: "white";
     padding: "5px"; // Relleno
     color: "#b94295";
-    width: "500px";
+    width: "200px";
     height: "30px";
     fontFamily: "Arial";
     fontSize: "13px"; // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)

@@ -14,7 +14,8 @@
 
       <div class="comboBox">
         <input class="text" ref="Ref" :class="{ ReadOnly: prop.ReadOnly }" :readonly="prop.Style == 2" type="text"
-          :value="Resultado" @focusout="focusOut" />
+          :value="Resultado" @focusout="focusOut"
+          :style="{'width' : estilo.width}" />
 
         <!--span> {{ prop.Value }}</span-->
         <!--Valor seleccionado click-->

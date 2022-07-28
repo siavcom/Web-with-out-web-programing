@@ -28,6 +28,7 @@ export class DEC_DAT extends COLUMN {
         this.prop.Placeholder = "Decimales de precisión"
         this.prop.ToolTipText ="Decimales de precisión"
         this.estilo.flexBasis = '30%' /* width/height  - initial value: auto */
+        this.estilo.width = '50px'
     }
 
      ////////////////////////////////// 
