@@ -42,90 +42,90 @@ vue ui
                     - number
                     - text
                     - date
-                    - spinner
+                    - spinner.
  
-    Name: "", // Name  of component
-    textLabel: "", // text label showing before input
-    ToolTipText: 'Principal name ',
-    Value: '', // Value of component  
+    Name: "", // Name  of component.
+    textLabel: "", // text label showing before input.
+    ToolTipText: 'Principal name ',.
+    Value: '', // Value of component . 
 
-    //  Visual properties
-    Visible: true, 
-    ReadOnly: false,
-    Disabled: false,
-    Placeholder: "",
-    ErrorMessage: "", 
-    Format: "",
-    InputMask: "",
-    MaxLenght: 0, 
-    TabIndex: 0,
-    Autofocus: false, // component who receives a focus when new register is inserted 
-    Position: 'main', // main, header , footer
-    Image: '',
+    //  Visual properties.
+    Visible: true,. 
+    ReadOnly: false,.
+    Disabled: false,.
+    Placeholder: "",.
+    ErrorMessage: "", .
+    Format: "",.
+    InputMask: "",.
+    MaxLenght: 0, .
+    TabIndex: 0,.
+    Autofocus: false, // component who receives a focus when new register is inserted .
+    Position: 'main', // main, header , footer.
+    Image: '',.
  
-    // Data Base properties
-    ControlSource: "tableName.fieldName, // Name of sql field
-    RecordSource: 'tableName',
+    // Data Base properties.
+    ControlSource: "tableName.fieldName, // Name of sql field.
+    RecordSource: 'tableName',.
     
-    // Internal properties
-    Valid: false, // internal use
-    Sw_cap: true,
-    Key: 0,         
-    id: 0,
-    Status: "I", //  P)rocess, A)ctive , I)nitialization
-    Grid: false,
-    Focus: false,
-    First: false,
-    Last: false,
+    // Internal properties.
+    Valid: false, // internal use.
+    Sw_cap: true,.
+    Key: 0,.         
+    id: 0,.
+    Status: "I", //  P)rocess, A)ctive , I)nitialization.
+    Grid: false,.
+    Focus: false,.
+    First: false,.
+    Last: false,.
 
-    // Numeric components
-    Step: "1",
-    Min: "0",
+    // Numeric components.
+    Step: "1",.
+    Min: "0",.
     Max: "999999999",
-    Style: 'decimal', // decimal, currency,percent,unit
-    Currency: 'MXN', //USD,EUR,MXN
+    Style: 'decimal', // decimal, currency,percent,unit.
+    Currency: 'MXN', //USD,EUR,MXN.
     CurrencyDisplay : 'code', //to use the ISO currency code.
-    Decimals : 2,
+    Decimals : 2,.
 
 
-    // Combo box properties   
-    RowSourceType: 0, // How to fill 1-Value, 2-Alias, 5-Array
-    ColumnCount: 1,  // Column numbers
-    BoundColumn: 1,  // The value is atached to column
-    RowSource: {},   // 
-    ColumnWidths: '100','20', 
-    Row: 0,
-    Map: "",
+    // Combo box properties .  
+    RowSourceType: 0, // How to fill 1-Value, 2-Alias, 5-Array.
+    ColumnCount: 1,  // Column numbers.
+    BoundColumn: 1,  // The value is atached to column.
+    RowSource: {},   // .
+    ColumnWidths: '100','20', .
+    Row: 0,.
+    Map: "",.
 
    // Others
-    Tag: "",
+    Tag: "",.
  
 
 
   };
-  ## Component Style  
-  estilo = {
-    display: "inline-block",
-    flexGrow: "0",     /* do not grow   - initial value: 0 */
-    flexShrink: "0",   /* do not shrink - initial value: 1 */
-    flexBasis: "auto", /* width/height  - initial value: auto */
-    flexWrap: "wrap",
+  ## Component Style  .
+  estilo = {.
+    display: "inline-block",.
+    flexGrow: "0",     /* do not grow   - initial value: 0 */.
+    flexShrink: "0",   /* do not shrink - initial value: 1 */.
+    flexBasis: "auto", /* width/height  - initial value: auto */.
+    flexWrap: "wrap",.
 
-    background: "white",
-    color: "#b94295",
-    width: "auto",
-    maxWidth: "auto",
-    minWidth: "auto",
-    height: "auto",
-    fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello)
-    fontFamily: "Arial",
-    zIndex: 100,  // profundidad
-    alignContent: "center",
-    textAlign: "left",
+    background: "white",.
+    color: "#b94295",.
+    width: "auto",.
+    maxWidth: "auto",.
+    minWidth: "auto",.
+    height: "auto",.
+    fontSize: "13px", // automaticamente vue lo cambiara por font-size (para eso se utiliza la anotacion Camello).
+    fontFamily: "Arial",.
+    zIndex: 100,  // profundidad.
+    alignContent: "center",.
+    textAlign: "left",.
 
-    ....... serveral 
+    ....... serveral .
 
-  };
+  };.
 
 
 - Grid (componet container). This component is for table data base capture
