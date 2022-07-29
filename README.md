@@ -1,5 +1,5 @@
-# Framework for Vue 3 using SQL databases. Uinsg only classes in typescript with out web programing.
-
+# Framework for Vue 3 using SQL databases. Using typescript programming with out web programming.
+# I'm a old FOX with a lot of desing and program eperience in SQL DATABASE. 
 # This Framework is based in functions and instruccions of VFP.
 
 # This Framework use:
@@ -11,7 +11,7 @@
   
 
 # Objetive:
-  - Make a simple program in typescript, but with out knowledge of web programing (HTML, CSS, VUE)
+  - Make a simple program in typescript, but with out knowledge of web programming (HTML, CSS, VUE)
 
 ## Recommended IDE Setup
 - [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar).
