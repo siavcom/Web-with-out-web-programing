@@ -15,9 +15,9 @@
                 @focus="onFocus" 
                 @focusout="focusOut" 
                 -->
-    <!--Si es numero  @input="Numeros($event)"
+          <!--Si es numero  @input="Numeros($event)"
                        @keypress="keyPress($event)"-->
-          <input v-if="prop.Type == 'number'" 
+          <input v-if="prop.Type == 'number' " 
             class="number" 
             type="type" 
             ref="Ref" 
@@ -27,14 +27,32 @@
             :readonly="prop.ReadOnly" 
             :placeholder="prop.Placeholder" 
             :tabindex="prop.TabIndex"
-
+            :maxlength="prop.MaxLength" 
+            :size="prop.MaxLength"
+            :style="{'width' : estilo.width}"
             @focusout="onBlur" 
             @focus="onFocusN"
             @input="onInput"
+            >
+          <!--Si es spinner" -->
+
+          <input v-else-if="prop.Type=='spinner'"
+            class="number" 
+            type="number" 
+            ref="Ref" 
+            :min="prop.Min" 
+            :max="prop.Max"
+            :value="numberStr"
+            :readonly="prop.ReadOnly" 
+            :placeholder="prop.Placeholder" 
+            :tabindex="prop.TabIndex"
             :style="{'width' : estilo.width}"
+            @focusout="onBlur" 
+            @focus="onFocusN"
+            @input="onInput"
             >
 
-    <!--Si es fecha  -->
+          <!--Si es fecha  -->
           <input v-else-if="prop.Type == 'date'" 
             class="date" 
             ref="Ref" 
@@ -43,23 +61,25 @@
             :placeholder="prop.Placeholder" 
             :tabindex="prop.TabIndex" 
             :type="prop.Type" 
+            :maxlength="prop.MaxLength" 
+            :size="prop.MaxLength"
+            :style="{'width' : estilo.width}"
             @focusout="focusOut"
             @focus="onFocus"
-            :style="{'width' : estilo.width}"
->
-
-    <!--Si es texto  -->
+            >
+          <!--Si es texto  -->
           <input v-else class="text" 
-               ref="Ref" 
-               v-model.trim="Value"
-               :readonly="prop.ReadOnly" 
-               :placeholder="prop.Placeholder" 
-               :tabindex="prop.TabIndex" :type="prop.Type"
-                :maxlength="prop.MaxLength" 
-                @focusout="focusOut" 
-                @focus="onFocus"
-                :style="{'width' : estilo.width}"
- >
+            ref="Ref" 
+            v-model.trim="Value"
+            :readonly="prop.ReadOnly" 
+            :placeholder="prop.Placeholder" 
+            :tabindex="prop.TabIndex" :type="prop.Type"
+            :maxlength="prop.MaxLength" 
+            :size="prop.MaxLength"
+            :style="{'width' : estilo.width}"
+            @focusout="focusOut" 
+            @focus="onFocus"
+            >
   
         <span v-if="prop.ToolTipText" class="tooltiptext">{{prop.ToolTipText}} </span>
       </div>
@@ -104,7 +124,7 @@ import {
   // onUnmounted,
 
 } from "vue";
-const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Key", "update:Ref", "update:Focus"]);
+const emit = defineEmits(["update", "update:Value", "update:Valid","update:Status", "update:ErrorMessage", "update:Key", "update:Ref", "update:Focus"]);
 //import { localDb } from "@/clases/LocalDb";  // manejo del indexedDb
 
 ///////////////////////////////////////
@@ -126,7 +146,7 @@ const props = defineProps<{
     ReadOnly: false;
     Disabled: false;
     Tag: "";
-    Sw_val: false;
+    Valid: boolean;
     Sw_cap: true;
     Name: "";
     textLabel: "";
@@ -178,6 +198,7 @@ const Component = ref(props.Component)
 const Value = ref(props.prop.Value);
 const Ref = ref(null) // Se necesita paratener referencia del :ref del componente  ref(props.prop.Ref)
 const Status = ref(props.prop.Status);
+const Valid = ref(props.prop.Valid)
 Status.value = 'I'
 const ErrorMessage = ref(props.prop.ErrorMessage)
 const Key = ref(props.prop.Key)
@@ -186,7 +207,7 @@ const Error = ref(false)
 const Focus = ref(props.prop.Focus)
 Focus.value = false
 var oldVal=Value.value
-
+var sw_dec=false // 
 ////////////////////////////////
 // Formateador de numeros 
 /////////////////////////////
@@ -234,9 +255,6 @@ const toNumberStr = (n) => {
   }).format(n);
 };
 
-
-
-
  const numberStr = ref(toNumberStr(Value.value));
 
 function toNumberString(num) { 
@@ -247,14 +265,24 @@ function toNumberString(num) {
   }
 }
 
-
-
  const onInput = ({ target }) => {
-     target.value = target.value.replace(/[^0-9.]/g, "")
-
-      
+     target.value = target.value.replace(/[^0-9.]/g, "")  // solo admite numeros y punto decimal
+    const len=target.value.length
       //Value.value = parseInt(target.value);
-      Value.value = parseFloat(target.value);
+    let punto = target.value.indexOf('.');
+ /*
+    let count = 0;
+    while (p !== -1) {
+      count++;
+      p = target.value.indexOf('.', p + 1);
+    }
+*/
+    // busca si se digito mas de un punto
+    if  (punto !== -1 && target.value.indexOf('.', punto + 1)!== -1) {
+      target.value=target.value.substr(0,len-1) // quitamos el segundo punto
+    }
+    Value.value = parseFloat(target.value)
+   //   console.log('onInput number',target.value)
 
 };
   const onFocusN = () => {
@@ -344,6 +372,7 @@ const emitValue = async () => {
   //console.log('EditBox antes emit Value ====>', props.prop.Value, Value.value)
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
+  emit("update:Valid",Valid.value)
  // emit("update") // emite un update en el componente padre
   // console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
@@ -381,11 +410,6 @@ if(!stringValue.match(regex) ) {
       }
 
 }
-
-
-
-
-
 
 
 /////////////////////////////////////////////////////////////////////
@@ -443,7 +467,22 @@ const readCampo = async (recno: number) => {
     Status.value = 'P'
     emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
   }
-  Value.value = await props.db.value.readCampo(props.prop.ControlSource, recno)
+  const data = await props.db.value.readCampo(props.prop.ControlSource, recno)
+  
+  for (const campo in data){
+     if (campo!='key_pri') Value.value=data[campo]  
+  }
+
+  //console.log('editText readCampo data ===>>',data,Value.value)
+  
+  if (data.key_pri>0){  // Ya existe en la base de datos
+     Valid.value == true
+  }else {
+     Valid.value == false
+  }
+
+ 
+//  Value.value = await props.db.value.readCampo(props.prop.ControlSource, recno)
   emitValue()
 
 }

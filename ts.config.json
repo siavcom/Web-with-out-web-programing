@@ -5,8 +5,10 @@
       "baseUrl": ".",
       "paths": {
         "@/*": ["src/*"],
-      "include": [ "./src/**/*.ts"]
-        
+      "include": [ "./src/**/*.ts"],
+      "lib": [
+        "ES2021.String"
+      ]  
       }
     }
   }

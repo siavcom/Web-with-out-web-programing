@@ -50,7 +50,7 @@ const props = defineProps<{
     MaxLenght: 0;
     ReadOnly: false;
     Tag: "";
-    Sw_val: false;
+    Valid: false;
     Sw_cap: true;
     Name: "";
     textLabel: "";
@@ -104,6 +104,7 @@ const props = defineProps<{
 }>();
 
 const Value = ref(props.prop.Value)
+
 const Text = ref('')
 const Status = ref(props.prop.Status)
 const Caption = ref(props.prop.Caption)
@@ -364,7 +365,7 @@ const renderComboBox = async () => {
   //emitValue()
 };
 
-
+/*
 const readCampo = async () => {
   if (props.Recno > 0 && props.prop.ControlSource.length > 2) {
     Text.value = await props.db.value.readCampo(props.prop.ControlSource, props.Recno)
@@ -378,6 +379,25 @@ const readCampo = async () => {
   renderComboBox()
 
 }
+*/
+
+const readCampo = async () => {
+  if (props.Recno > 0 && props.prop.ControlSource.length > 2) {
+    const data = await props.db.value.readCampo(props.prop.ControlSource, props.Recno)
+    for (const campo in data){
+       if (campo!='key_pri') Text.value=data[campo]  
+     }
+   }
+  if (props.prop.Type == 'number') {
+      Text.value = toNumberStr(Text.value);
+   }
+  renderComboBox()
+}
+
+
+
+
+
 
 
 

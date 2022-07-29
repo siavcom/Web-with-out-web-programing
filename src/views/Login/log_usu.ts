@@ -20,7 +20,7 @@ export class LOG_USU extends COMPONENT {
     this.prop.Value=''
     this.prop.textLabel = "Usuario :";
     this.prop.Type = "text";
-    this.estilo.width='210px'
+    this.estilo.width='200px'
   
   }
   public valid = async () => { 

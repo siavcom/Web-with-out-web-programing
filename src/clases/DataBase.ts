@@ -92,8 +92,6 @@ export class VFPDB {
     }
 
     //try {
-    alasql('DROP DATABASE IF EXISTS Temporales ;')
-    alasql('CREATE DATABASE Temporales ;')
     alasql('DROP DATABASE IF EXISTS Now ;')
     alasql('CREATE DATABASE Now ;')
     alasql('DROP DATABASE IF EXISTS Last ;')
@@ -900,7 +898,7 @@ export class VFPDB {
       if (respuesta.length == 0) return false
       //  console.log('Ejecutara ala con  :', respuesta)
 
-      alasql('USE Temporales ; ')
+      alasql('USE Now ; ')
       alasql('DROP TABLE IF EXISTS ' + alias + '; ')
 
 
@@ -926,10 +924,10 @@ export class VFPDB {
       alasql.promise(' CREATE TABLE ' + alias + ' ; \
           SELECT * INTO '+ alias + '  FROM ?', [respuesta]).
         then(function () {
-          alasql.promise('USE Temporales ; SELECT * FROM ' + alias)
+          alasql.promise('USE Now ; SELECT * FROM ' + alias)
             .then(function (data) {
               resp_sql = data
-              console.log('Tabla creada en Temporales Nuevo', resp_sql)
+              console.log('Tabla creada en Now Nuevo', resp_sql)
             })
             .catch(function (error) {
               console.log('Execute SELECT * FROM ' + alias, error)
@@ -1908,14 +1906,18 @@ return false;
 
   }
 
+
+
   ////////////////////////////////////////////////////
   // Instruccion sql base de datos local
   // db_name :Base de datos a utilizar
   // ins_sql : Instruccion SQL
   /////////////////////////////////////////
-  public async localSql(ins_sql: string) {
+  public async localSql(ins_sql: string,db_name?: string) {
+    if (!db_name) db_name='Now'
+    db_name=db_name+'; ' 
     try {
-      ins_sql = 'USE Temporales;' + ins_sql
+      ins_sql = 'USE '+db_name+ ins_sql
       const resultado = alasql(ins_sql)
       // console.log('Lectura SQL',resultado[1][0])
       return resultado[1]
@@ -1925,12 +1927,35 @@ return false;
     }
   }
 
+
+
+/*
+  ////////////////////////////////////////////////////
+  // Instruccion sql base de datos local
+  // db_name :Base de datos a utilizar
+  // ins_sql : Instruccion SQL
+  /////////////////////////////////////////
+  public async localSql(ins_sql: string,db_name?: string) {
+    if (!db_name) db_name='T' 
+
+
+    try {
+      ins_sql = 'USE Now;' + ins_sql
+      const resultado = alasql(ins_sql)
+      // console.log('Lectura SQL',resultado[1][0])
+      return resultado[1]
+    }
+    catch (error) {
+      console.log('localSql error==>', error)
+    }
+  }
+*/
   public async selectInto(ins_sql: string, alias?: string, filename?: string) {
     // alias  : TXT(filename)
     //          CSV(filename,options) 
     //          XLSX("restest280b.xlsx")
     try {
-      alasql(' USE Temporales ; ')
+      alasql(' USE Now ; ')
 
       if (!alias) alias = 'sqlresult'
 
@@ -1985,7 +2010,8 @@ return false;
     const data = await this.nowValue(tabla, campo, recno)
     //console.log('Read renglon ',data[0])
 
-    return data[0][campo]
+//    return data[0][campo]
+     return data[0]
 
   };
 
@@ -1996,7 +2022,7 @@ return false;
   nowValue = async (tabla: string, campos: string, recno: number) => {
     // console.log('nowValue Select=====>', tabla, campos, recno)
 
-    const data = await alasql('USE Now; SELECT ' + campos + '  FROM ' + tabla + ' WHERE recno=? ;', recno)
+    const data = await alasql('USE Now; SELECT ' + campos + ',key_pri  FROM ' + tabla + ' WHERE recno=? ;', recno)
 
     if (data.length > 1) {
       //console.log('Read Renglon===>', data[1][0].constructor.length, data[1][0])
@@ -2061,7 +2087,7 @@ return false;
     try {
       //     await alasql('USE Now;')
       const ins_sql = `USE Now; UPDATE ${tabla}  set ${campo}=${valor}  WHERE recno=${recno}`
-      console.log('update ala===', ins_sql, tabla, campo, recno)
+      console.log('update ala===>', ins_sql, tabla, campo, recno)
       await alasql(ins_sql)
       //    console.log('update componente =>', ins_sql)
       //    console.log('update componente valor=', await this.readCampo(ControlSource, recno))

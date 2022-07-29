@@ -70,7 +70,7 @@ import {
 
 //import { localDb } from "@/clases/LocalDb";  // manejo del indexedDb
 //import VueSimpleAlert from "vue3-simple-alert";
-const emit = defineEmits(["update", "update:Value", "update:Status", "update:ErrorMessage", "update:Ref", "update:Focus"]);
+const emit = defineEmits(["update", "update:Value","update:Valid", "update:Status", "update:ErrorMessage", "update:Ref", "update:Focus"]);
 
 
 ///////////////////////////////////////
@@ -96,7 +96,7 @@ const props = defineProps<{
     ReadOnly: false;
     Disabled: false;
     Tag: "";
-    Sw_val: false;
+    Valid: boolean;
     Sw_cap: true;
     Type: "text";
     Visible: true;
@@ -161,9 +161,12 @@ const width = reactive(['60%', '20%', '20%']);
 
 
 const Value = ref(props.prop.Value);
+
+
 const Ref = ref(null)
 
 const Status = ref(props.prop.Status);
+const Valid = ref(props.prop.Valid)
 Status.value = 'I'
 const Error = ref(false)
 const ErrorMessage = ref(props.prop.ErrorMessage)
@@ -190,6 +193,8 @@ const emitValue = async () => {
   Status.value = 'A'
   //console.log('EditBox antes emit Value ====>', props.prop.Value, props.prop.Status)
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
+  emit("update:Valid", Valid.value); // actualiza el valor Value en el componente padre
+
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   emit("update") // emite un update en el componente padre
   //console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
@@ -533,7 +538,7 @@ const renderComboBox = async () => {
 
   asignaResultado(valor)
 };
-
+/*
 const readCampo = async (recno: number) => {
   if (Status.value == 'A') {
     Status.value = 'P'
@@ -545,6 +550,34 @@ const readCampo = async (recno: number) => {
     renderComboBox()
   }
 }
+*/
+const readCampo = async (recno: number) => {
+  if (Status.value == 'A') {
+    Status.value = 'P'
+    emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
+  }
+  if (props.prop.ControlSource > ' ') {
+
+  const data = await props.db.value.readCampo(props.prop.ControlSource, recno)
+  
+  for (const campo in data){
+     if (campo!='key_pri') Value.value=data[campo]  
+  }
+
+  //console.log('editText readCampo data ===>>',data,Value.value)
+  
+  if (data.key_pri>0){  // Ya existe en la base de datos
+     Valid.value == true
+  }else {
+     Valid.value == false
+  }
+  } 
+  renderComboBox()
+
+}
+
+
+
 
 
 

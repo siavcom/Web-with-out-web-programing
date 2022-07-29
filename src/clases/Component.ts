@@ -29,7 +29,7 @@ export class COMPONENT {
     ReadOnly: false,
     Disabled: false,
     Tag: "",
-    Sw_val: false,
+    Valid: false,
     Sw_cap: true,
     Key: 0,
     id: 0,
