@@ -37,7 +37,7 @@ const Storage = sessionStorage;
 
 export class VFPDB {
   // propiedades de las clases
-  name = 'VFPDB'
+  name :string = 'VFPDB'
   url: string;
   nom_emp: string;
   user: string;
@@ -634,8 +634,11 @@ export class VFPDB {
     }
 
     if (!alias) {
-      alert("No existe la vista SQL " + alias);
-      return;
+      this.messagebox(
+        "No existe la vista SQL " + alias,
+        "Error SQL "
+      );
+ 
     }
 
 
@@ -705,7 +708,8 @@ export class VFPDB {
     }
 
     if (!alias) {
-      alert("No existe la vista SQL " + alias);
+      this.messagebox(
+        "No existe la vista SQL " + alias,'SQL Error');
       return;
     }
 
@@ -808,7 +812,7 @@ export class VFPDB {
     }
 
     if (!alias) {
-      alert("No existe la vista SQL " + alias);
+      this.messagebox("No existe la vista SQL " + alias,'SQL Error');
       return;
     }
     // Leemos los datos a actualizar

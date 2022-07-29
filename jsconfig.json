@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
       "baseUrl": ".",
+      "lib": ["ES2021"] ,
+      "jsx": "preserve",
       "paths": {
         "@/*": ["src/*"]
       }

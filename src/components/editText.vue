@@ -236,6 +236,7 @@ const toNumberStr = (n) => {
 */
 
 const type = ref('text');
+
 const toNumberStr = (n) => {
   let Style = props.prop.Style
   let Currency = props.prop.Currency
