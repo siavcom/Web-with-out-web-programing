@@ -32,17 +32,17 @@ export class BT_ACEPTAR extends COMPONENT {
     const ThisForm = this.Form;
     
     if (!ThisForm.emp_emp.prop.Value || ThisForm.emp_emp.prop.Value.length == 0) {
-      ThisForm.emp_emp.prop.ErrorMessage = 'Escoja una empresa'
+      ThisForm.emp_emp.prop.MessageError = 'Escoja una empresa'
       return false;
     }
 
     if (!ThisForm.log_usu.prop.Value || ThisForm.log_usu.prop.Value.length == 0) {
-      ThisForm.log_usu.prop.ErrorMessage = 'Digite usuario'
+      ThisForm.log_usu.prop.MessageError = 'Digite usuario'
       return false;
     }
     
     if (!ThisForm.pas_usu.prop.Value || ThisForm.pas_usu.prop.Value.length==0) {
-      ThisForm.pas_usu.prop.ErrorMessage = 'Digite contraseña'
+      ThisForm.pas_usu.prop.MessageError = 'Digite contraseña'
       return false;
     }
 

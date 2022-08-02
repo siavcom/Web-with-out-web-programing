@@ -30,12 +30,12 @@ export class COMPONENT {
     Disabled: false,
     Tag: "",
     Valid: false,
-    Sw_cap: true,
+    Capture: false,
     Key: 0,
     id: 0,
     ControlSource: "",
     Status: "I",
-    ErrorMessage: '',
+    MessageError: '',
     TabIndex: 0,
     BaseClass: "editText",
     Type: "text",
@@ -148,10 +148,7 @@ export class COMPONENT {
   // Descripcion: Cada tecla que se presiona en el input
   /////////////////////////////////////////////////////////////////
   public async valid() {
-  
-    //public valid = async (sw_mut?: false) => {
-    // if (sw_mut) return // si fue llamada de la mutacion del metodo retorna
-    if (this.prop.Sw_cap) this.prop.Sw_val = true
+    this.prop.Valid=true
     return true
   }
 

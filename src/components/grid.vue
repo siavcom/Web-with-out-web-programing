@@ -70,8 +70,8 @@
                       v-model:Key="This[col].prop.Key" v-model:Focus="This[col].Focus"
                       v-bind:Component="ref(This.Form[col])" v-bind:Recno="item.recno" v-bind:prop="This[col].prop"
                       v-bind:estilo="This[col].estilo" v-bind:posicion="This[col].posicion" v-bind:db="db"
-                      @focusout.capture="eventos.push(This.prop.Map + '.' + This[col].Name + '.valid()')"
-                      @focus="eventos.push(This.prop.Map + '.' + This[col].Name + '.when()')"
+                      @focusout="eventos.push(This.prop.Map + '.' + This[col].Name + '.valid()')"
+                      @focus.capture="eventos.push(This.prop.Map + '.' + This[col].Name + '.when()')"
                       :style="{ 'width' : This[col].estilo.width}">
 
                     </component>
@@ -571,9 +571,11 @@ watch(
 watch(
   () => eventos,
   (new_val, old_val) => {
-
     if (eventos.length == 0) return
-    //console.log('Watch eventos===>',This.eventos)
+
+ 
+
+    //console.log('Grid Watch eventos===>',This.eventos)
     for (const comp in This.estatus) {
       //console.log('Watch estatus ===>', comp, This.estatus[comp])
 
@@ -590,12 +592,14 @@ watch(
         return
       }
       for (let i = 0; i < eventos.length; i++) {
-        console.log('Grid watch eventos', eventos[i])
+ //       console.log('Grid watch eventos', eventos[i])
         const evento = eventos[i]
         This.Form.eventos.push(evento)
       }
+   //   console.log('Grid watch eventos', eventos[0],eventos)
+
       eventos.length = 0 // borramos los eventos
-      console.log('Grid watch eventos limpia eventos', eventos)
+   //   console.log('Grid watch eventos limpia eventos', eventos)
 
 
     }

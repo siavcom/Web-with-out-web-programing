@@ -1,7 +1,7 @@
 <template>
   <div class="divi" :style="estilo" v-if="prop.Visible" :disabled="prop.Disabled || prop.ReadOnly">
     <!--Mensaje de error -->
-    <label v-show="Error">{{ prop.ErrorMessage }}</label>
+    <label v-show="Error">{{ prop.MessageError }}</label>
     <!--Etiqueta del componente -->
     <span class="etiqueta" v-if="prop.textLabel">{{ prop.textLabel + " " }}</span>
     <!--Input del componente
@@ -13,13 +13,13 @@
     <div class="tooltip">
 
       <div class="comboBox">
-        <input class="text" ref="Ref" :class="{ ReadOnly: prop.ReadOnly }" :readonly="prop.Style == 2" type="text"
+        <input class="text" ref="Ref" :class="{ ReadOnly: prop.ReadOnly }" :readonly="prop.Style == 2 || prop.ReadOnly" type="text"
           :value="Resultado" @focusout="focusOut"
           :style="{'width' : estilo.width}" />
 
         <!--span> {{ prop.Value }}</span-->
         <!--Valor seleccionado click-->
-        <div class="toggle" v-if="toggle">
+        <div class="toggle" v-if="toggle && !prop.ReadOnly ">
           <!--CheckBox -->
           <div class="option" v-for="(option, valueIndex) in columnas" :key="valueIndex" @mouseover="hover = true"
             @mouseleave="hover = false" @click="valid(valueIndex)" :disabled="prop.ReadOnly">
@@ -70,7 +70,7 @@ import {
 
 //import { localDb } from "@/clases/LocalDb";  // manejo del indexedDb
 //import VueSimpleAlert from "vue3-simple-alert";
-const emit = defineEmits(["update", "update:Value","update:Valid", "update:Status", "update:ErrorMessage", "update:Ref", "update:Focus"]);
+const emit = defineEmits(["update", "update:Value","update:Valid", "update:Status", "update:MessageError", "update:Ref", "update:Focus"]);
 
 
 ///////////////////////////////////////
@@ -108,7 +108,7 @@ const props = defineProps<{
     BoundColumn: 1; // Columna donde se tomara el Value
     Multiple: false;
     Status: string;
-    ErrorMessage: string;
+    MessageError: string;
     ShowValue: false;
     TabIndex: number;
     BaseClass: "ComboBox";
@@ -169,7 +169,7 @@ const Status = ref(props.prop.Status);
 const Valid = ref(props.prop.Valid)
 Status.value = 'I'
 const Error = ref(false)
-const ErrorMessage = ref(props.prop.ErrorMessage)
+const MessageError = ref(props.prop.MessageError)
 const toggle = ref(false)
 const hover = ref(false)
 const Focus = ref(props.prop.Focus)
@@ -243,7 +243,7 @@ const valid = async (num_ren: number) => {
 const onFocus = () => {
   //  Status.value = 'P';  // en proceso
   Error.value = false;
-  ErrorMessage.value = '';
+  MessageError.value = '';
   if (Status.value == 'P') return // ya se habia hecho el foco
 
   //emit("update:Status", Status.value); // actualiza el valor en el componente padre
@@ -251,7 +251,7 @@ const onFocus = () => {
 
   // eslint-disable-next-line no-undef
   emit("update:Status", 'P'); // actualiza el valor en el componente padre. No se debe utilizar Status.Value
-  emit("update:ErrorMessage", '')
+  emit("update:MessageError", '')
   emit("update")
   //console.log('On Focus status  ===>', props.prop.Status)
 
@@ -261,16 +261,16 @@ const onFocus = () => {
 const lostFocus = () => {
   Status.value = 'P';  // en proceso
   Error.value = false;
-  ErrorMessage.value = '';
+  MessageError.value = '';
 
   //emit("update:Status", Status.value); // actualiza el valor en el componente padre
 
 
   // eslint-disable-next-line no-undef
   emit("update:Status", 'P'); // actualiza el valor en el componente padre. No se debe utilizar Status.Value
-  emit("update:ErrorMessage", '')
+  emit("update:MessageError", '')
   emit("update")
-  //console.log('On Focus status  ===>', props.prop.Status, props.prop.ErrorMessage)
+  //console.log('On Focus status  ===>', props.prop.Status, props.prop.MessageError)
 
 }
 
@@ -665,7 +665,7 @@ watch(
 
 // ErrorMesagge
 watch(
-  () => props.prop.ErrorMessage,
+  () => props.prop.MessageError,
   (new_val, old_val) => {
     if (new_val.length == 0)
       Error.value = false

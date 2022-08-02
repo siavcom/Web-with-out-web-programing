@@ -69,7 +69,7 @@ vue ui
     
     // Internal properties.
     Valid: false, // internal use.
-    Sw_cap: true,.
+    Capture: true,. // When capture, can't lost focus until Validate or esc
     Key: 0,.         
     id: 0,.
     Status: "I", //  P)rocess, A)ctive , I)nitialization.

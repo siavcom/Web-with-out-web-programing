@@ -31,7 +31,7 @@ export class TIP_DAT extends COLUMN {
         this.prop.ColumnCount = 2;
         this.prop.BoundColumn = 2;
         this.prop.ColumnWidths='80%,10%'        
-        this.estilo.flexBasis = '30%' /* width/height  - initial value: auto */
+        this.estilo.width = '100px' /* width/height  - initial value: auto */
     }
 
      ////////////////////////////////// 

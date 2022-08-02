@@ -67,8 +67,14 @@
             @focusout="focusOut"
             @focus="onFocus"
             >
-          <!--Si es texto  -->
-          <input v-else class="text" 
+
+
+         
+
+
+          <div v-else-if="prop.Type == 'checkbox'">
+            
+          <input  
             ref="Ref" 
             v-model.trim="Value"
             :readonly="prop.ReadOnly" 
@@ -80,10 +86,31 @@
             @focusout="focusOut" 
             @focus="onFocus"
             >
+           </div>
+
+<!--Si es texto
+            :maxlength="prop.MaxLength" 
+            :size="prop.MaxLength"
+ -->
+         
+
+
+
+          <input v-else class="text" 
+            ref="Ref" 
+            v-model.trim="Value"
+            :readonly="prop.ReadOnly" 
+            :placeholder="prop.Placeholder" 
+            :tabindex="prop.TabIndex" :type="prop.Type"
+            :style="{'width' : estilo.width}"
+            @focusout="focusOut" 
+            @focus="onFocus"
+            >
   
         <span v-if="prop.ToolTipText" class="tooltiptext">{{prop.ToolTipText}} </span>
       </div>
-      <span class="errorText" v-show="Error">{{ prop.ErrorMessage }}</span>
+      <span class="errorText" v-show="Error" 
+            @focus="onFocus">{{ prop.MessageError }}</span>
     </div>
   </div>
 </template>
@@ -124,7 +151,7 @@ import {
   // onUnmounted,
 
 } from "vue";
-const emit = defineEmits(["update", "update:Value", "update:Valid","update:Status", "update:ErrorMessage", "update:Key", "update:Ref", "update:Focus"]);
+const emit = defineEmits(["update", "update:Value", "update:Valid","update:Status", "update:MessageError", "update:Key", "update:Ref", "update:Focus"]);
 //import { localDb } from "@/clases/LocalDb";  // manejo del indexedDb
 
 ///////////////////////////////////////
@@ -154,7 +181,7 @@ const props = defineProps<{
     Visible: true;
     ControlSource: string;
     Status: string;
-    ErrorMessage: string;
+    MessageError: string;
     TabIndex: number;
     Key: string;
     BaseClass: "EditText";
@@ -200,9 +227,9 @@ const Ref = ref(null) // Se necesita paratener referencia del :ref del component
 const Status = ref(props.prop.Status);
 const Valid = ref(props.prop.Valid)
 Status.value = 'I'
-const ErrorMessage = ref(props.prop.ErrorMessage)
+const MessageError = ref(props.prop.MessageError)
 const Key = ref(props.prop.Key)
-defineExpose({ Value, Status, ErrorMessage });  // para que el padre las vea
+defineExpose({ Value, Status, MessageError });  // para que el padre las vea
 const Error = ref(false)
 const Focus = ref(props.prop.Focus)
 Focus.value = false
@@ -370,11 +397,11 @@ const onUnmounted = () => {
 /////////////////////////////////////////////////////////////////
 const emitValue = async () => {
   Status.value = 'A'
-  //console.log('EditBox antes emit Value ====>', props.prop.Value, Value.value)
+  console.log('EditBox antes emit Value ====>', props.prop.Value, Value.value)
   emit("update:Value", Value.value); // actualiza el valor Value en el componente padre
   emit("update:Status", 'A'); // actualiza el valor Status en el componente padre
   emit("update:Valid",Valid.value)
- // emit("update") // emite un update en el componente padre
+  emit("update") // emite un update en el componente padre
   // console.log('EditBox despuest emit Value ====>', props.prop.Value, props.prop.Status)
   return true;
 };
@@ -428,7 +455,6 @@ const focusOut = async () => {
     //await LocalDb.update(valor).then(() => { 
     // })
   }
-  //console.log('editBox focusout ', props.prop.Name)
   return await emitValue()
 
 };
@@ -452,13 +478,13 @@ const keyPress = ($event) => {
 /////////////////////////////////////////////////////////////////
 const onFocus = async () => {
   Error.value = false; // old revisar si se necesita
-  ErrorMessage.value = ''; // borramos el mensaje de error
+  MessageError.value = ''; // borramos el mensaje de error
 
   if (Status.value == 'P') return // ya se habia hecho el foco
   Status.value = 'P';  // en foco
-  console.log('onFocus elemento ===>', props.prop.Name, 'P')
+  //console.log('onFocus elemento ===>', props.prop.Name, 'P')
   emit("update:Status", 'P'); // actualiza el valor Status en el componente padre. No se debe utilizar Status.Value
-  emit("update:ErrorMessage", '')
+  emit("update:MessageError", '')
   emit("update")
 
 }
@@ -545,7 +571,7 @@ watch(
 /////////////////////////////////////////
 // ErrorMesagge
 watch(
-  () => props.prop.ErrorMessage,
+  () => props.prop.MessageError,
   (new_val, old_val) => {
     if (new_val.length == 0)
       Error.value = false

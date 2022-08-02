@@ -36,11 +36,11 @@ export class CON_DAT extends COLUMN {
     ////////////////////////////////// 
     // Evento When
     ///////////////////////////////////
-    async when() {
-        await this.Parent.cam_dat.when()
-        this.prop.ReadOnly = this.Parent.cam_dat.prop.ReadOnly
-        return !this.prop.ReadOnly
-        //   super.when(row)
+  ////////////////////////////////// 
+    // Evento When
+    ///////////////////////////////////
+    async when() { 
+        return this.Parent.cam_dat.when()
     }
 
 
